@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="KeyHandler.js"></script>
+    <script src="ResourceManager.js"></script>
+    <script src="SpellCreationScreenUI.js"></script>
+    <script src="Camera.js"></script>
+    <script src="Wizard.js"></script>
+    <script src="FireBall.js"></script>
+    <script src="Game.js"></script>
+    <script src="Arena.js"></script>
+    <script src="HUD.js"></script>
+    <script src="Main.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="styles/spellcreation.css">
+</head>
+<body onload = loadGame()>
+<div id="spellCreationScreen">
+    <h1> Function Input </h1>
+    <div class="functionEditor">
+        <textarea id="function_input" type="text"></textarea>
+        <input type="submit" value="Check Spell" onclick="submitSpell()">
+        <input type="submit" value="Ready To Fight!" onclick="readyToFight()">
+    </div>
+    <div id="selectors">
+        <div class="functionSelectors Selected"></div>
+        <br>
+        <div class="functionSelectors"></div>
+        <br>
+        <div class="functionSelectors"></div>
+        <br>
+        <div class="functionSelectors"></div>
+        <br>
+        <div class="functionSelectors"></div>
+        <br>
+        <div class="functionSelectors"></div>
+    </div>
+    <div id="spell_info_holder">
+        <h3>Spell Issues</h3>
+    <div id="spell_info">
+        No Problems
+    </div>
+        <br>
+        <div id="HelpSheet">
+            <h1>Basic Spells</h1>
+            BASIC.castFireBall( direction );
+        </div>
+    </div>
+    <script>
+        setUpSelectors();
+    </script>
+</div>
+<div id ='gameScreen' style="display:none">
+    <input type="submit" value="BackToSpellCreation" style="display:inherit" onclick="backToSpellCreation()">
+    <canvas id="gameCanvas" style="display:none"></canvas>
+</div>
+</body>
+</html>

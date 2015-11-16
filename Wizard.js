@@ -1,0 +1,279 @@
+var vm = require('vm');
+var FireBall = require('./FireBall.js');
+
+var WIZARD_SPEED = 2;
+var WIZARD_ACCEL = 0.5;
+var WIZARD_SPEED_FRICTION = 0.4;
+
+function Wizard(x , y , game) {
+    this.up = false;
+    this.down = false;
+    this.right = false;
+    this.left = false;
+    this.vector   = 0;
+    this.velocity = 0;
+    this.game = game;
+    this.state =  {
+        position: {
+            x: x,
+            y: y
+        },
+        health : 100,
+        mana: 100,
+        height: 20,
+        width: 20,
+    };
+
+    this.x = 1;
+    this.scripts = {
+        1: null,
+        2: null,
+        3: null,
+        4: null,
+        5: null,
+    };
+
+    // Object presented to players for their 'spells'
+    // Restricts access to variables
+    var that = this;
+    function BASIC() {
+        this.castFireBall = function(direction ) {
+            direction = direction * Math.PI  / 180;
+            var position = {
+                x : that.state.position.x + Math.sin(direction) * that.state.width  * 1.5,
+                y : that.state.position.y + Math.cos(direction) * that.state.height * 1.5,
+            };
+            var fireball = new FireBall.FireBall(direction , 1 , position);
+            that.game.addFireBall(fireball);
+        }
+    }
+    this.basic = new BASIC();
+    var sandbox = {
+        BASIC: this.basic,
+    };
+    this.context = vm.createContext(sandbox);
+
+    this.getX = function() {
+        return x;
+    }
+}
+
+Wizard.prototype.createSpell = function ( spell ) {
+    console.log("Creating spell " + spell.slot);
+    var slot = spell.slot;
+    var code = spell.code;
+    var script = new vm.Script(code);
+    var spell = this.analyzeSpell(script);
+    this.scripts[slot] = script;
+    spell.slot = slot;
+    spell.code = code;
+    this.client.emit('spellCreation' , spell);
+};
+
+Wizard.prototype.analyzeSpell = function(script) {
+    // TODO Run the spell and check certain things to determine mana cost
+    var spell = {
+        mana : 1,
+        problem : ''
+    };
+    try {
+        script.runInContext(this.context);
+        console.log("YAY good spell");
+    }
+    catch( err ) {
+        // TODO get more information to send
+        console.log("Bad spell");
+        spell.problem = err.message;
+        console.log(err);
+    }
+    return spell;
+};
+
+Wizard.prototype.castSpell = function(slot) {
+    console.log("Spell " + slot + " casted");
+    if ( slot in this.scripts && this.scripts[slot]) {
+        this.scripts[slot].runInContext(this.context);
+    }
+};
+
+Wizard.prototype.update = function() {
+    var moving = false;
+    var vX = 0;
+    var vY = 0;
+
+    if(this.up) {
+        vY -= 1;
+        moving = true;
+    }
+    if(this.down) {
+        vY += 1;
+        moving = true;
+    }
+    if(this.left) {
+        vX -= 1;
+        moving = true;
+    }
+    if(this.right) {
+        vX += 1;
+        moving = true;
+    }
+    if(moving) {
+        this.velocity += WIZARD_ACCEL;
+        this.vector = Math.atan2(vX, vY);
+    }
+    var newPos = {
+        x: this.state.position.x + Math.sin(this.vector ) *  this.velocity,
+        y: this.state.position.y + Math.cos(this.vector ) *  this.velocity
+    };
+
+    if(this.game.canBeAt({x: newPos.x, y: this.state.position.y}, this)) {
+        this.state.position.x = newPos.x;
+    }
+    else { // try to move a smaller amount
+        newPos.x = this.state.position.x + Math.sin(this.vector ) * this.velocity / 2;
+        if(this.game.canBeAt({x: newPos.x, y: this.state.position.y}, this))
+            this.state.position.x = newPos.x;
+    }
+
+    if(this.game.canBeAt({x: this.state.position.x, y: newPos.y}, this)) {
+        this.state.position.y = newPos.y;
+    }
+    else { // try to move a smaller amount
+        newPos.y = this.state.position.y + Math.cos(this.vector ) *  this.velocity / 2;
+        if(this.game.canBeAt({x: this.state.position.x, y: newPos.y}, this))
+            this.state.position.y = newPos.y;
+    }
+    this.velocity -= this.velocity * WIZARD_SPEED_FRICTION;
+
+    //update facing
+    if(this.vector > 0 && this.vector < Math.PI)
+        this.state.facing = "right";
+    else if(this.vector < 0)
+        this.state.facing = "left";
+    if ( this.vector == Math.PI) {
+        this.state.facing = "up";
+    }
+    if ( this.vector == 0) {
+        this.facing = "down";
+    }
+};
+
+Wizard.prototype.takeHit = function(projectile) {
+    console.log("Ive been hit");
+    // TODO refine
+    this.state.health-=10;
+};
+
+Wizard.prototype.keyDown = function(data) {
+    switch (data) {
+        // W, Up Arrow
+        case 87:
+        case 38: 	this.up = true;
+            break;
+
+        // A, Left Arrow
+        case 65:
+        case 37: 	this.left = true;
+            break;
+
+        // S, Down Arrow
+        case 83:
+        case 40: 	this.down = true;
+            break;
+
+        // D, Right Arrow
+        case 68:
+        case 39: 	this.right = true;
+            break;
+        // 1
+        case 49:
+            this.castSpell(1);
+            break;
+        // 2
+        case 50:
+            this.castSpell(2);
+            break;
+        // 3
+        case 51:
+            this.castSpell(3);
+            break;
+        // 4
+        case 52:
+            this.castSpell(4);
+            break;
+        // 5
+        case 53:
+            this.castSpell(5);
+            break;
+        // 6
+        case 54:
+            this.castSpell(6);
+            break;
+    }
+};
+
+Wizard.prototype.keyUp = function(data) {
+    switch (data) {
+        // W, Up Arrow
+        case 87:
+        case 38: 	this.up = false;
+            break;
+
+        // A, Left Arrow
+        case 65:
+        case 37: 	this.left = false;
+            break;
+
+        // S, Down Arrow
+        case 83:
+        case 40: 	this.down = false;
+            break;
+
+        // D, Right Arrow
+        case 68:
+        case 39: 	this.right = false;
+            break;
+
+    }
+};
+
+Wizard.prototype.getTopBounds = function() {
+    return this.state.position.y + this.state.height
+};
+
+Wizard.prototype.getBottomBounds = function() {
+    return this.state.position.y - this.state.height;
+};
+
+Wizard.prototype.getLeftBounds = function() {
+    return this.state.position.x - this.state.width;
+};
+
+Wizard.prototype.getRightBounds = function() {
+    return this.state.position.x + this.state.width;
+};
+
+Wizard.prototype.getTopBoundsFromPos = function(pos) {
+    return pos.y + this.state.width;
+};
+
+Wizard.prototype.getBottomBoundsFromPos = function(pos) {
+    return pos.y - this.state.height;
+};
+
+Wizard.prototype.getLeftBoundsFromPos = function(pos) {
+    return pos.x - this.state.width;
+};
+
+Wizard.prototype.getRightBoundsFromPos = function(pos) {
+    return pos.x + this.state.width;
+};
+
+
+
+
+
+
+
+
+module.exports = Wizard;
