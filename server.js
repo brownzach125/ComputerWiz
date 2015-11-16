@@ -13,7 +13,7 @@ app.get('/', function(req, res,next) {
 
 app.get('');
 
-server.listen(4200);
+server.listen(4000 , '192.168.1.3');
 
 
 var clients = [];

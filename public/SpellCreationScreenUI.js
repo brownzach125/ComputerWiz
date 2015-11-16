@@ -19,6 +19,7 @@ function setUpSelectors() {
                 var index = this.className.indexOf(' BadSelector');
                 if ( index >= 0)
                     this.className = this.className.substr( 0 , index) + this.className.substr(index + 12);
+                this.className += " GoodSelector";
             }
             else {
                 // Add bad if not already there
@@ -52,7 +53,7 @@ function selectSpell(slot) {
     if ( !newSpell)
         newSpell = {
             code : '',
-            info : 'No Problem',
+            info : '\"UnTested\"',
         };
     document.getElementById('function_input').value = newSpell.code;
     document.getElementById('spell_info').innerHTML = newSpell.info;

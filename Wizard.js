@@ -37,13 +37,29 @@ function Wizard(x , y , game) {
     // Restricts access to variables
     var that = this;
     function BASIC() {
-        this.castFireBall = function(direction ) {
+        this.castFireBall = function(direction , speed , radius) {
+            // Check if parameters are legal
+            if ( Math.abs(speed) > 10 ) {
+                throw {message:"CastFireBall:Speed is too large"};
+            }
+            if ( Math.abs(radius) > 20) {
+                throw {message:"CastFireBall:Radius is too large"};
+            }
+
+            // Calculate manaCost if too large do nothing
+            var manaCost = Math.abs(speed) + radius / 5;
+            if ( manaCost > that.state.mana ) {
+                return;
+            }
+            else {
+                that.state.mana -= manaCost;
+            }
             direction = direction * Math.PI  / 180;
             var position = {
-                x : that.state.position.x + Math.sin(direction) * that.state.width  * 1.5,
-                y : that.state.position.y + Math.cos(direction) * that.state.height * 1.5,
+                x : that.state.position.x + Math.sin(direction) * (that.state.width  + radius),
+                y : that.state.position.y + Math.cos(direction) * (that.state.height + radius),
             };
-            var fireball = new FireBall.FireBall(direction , 1 , position);
+            var fireball = new FireBall.FireBall(direction , speed , position , radius);
             that.game.addFireBall(fireball);
         }
     }
@@ -72,6 +88,8 @@ Wizard.prototype.createSpell = function ( spell ) {
 
 Wizard.prototype.analyzeSpell = function(script) {
     // TODO Run the spell and check certain things to determine mana cost
+    var startMana = this.state.mana;
+
     var spell = {
         mana : 1,
         problem : ''
@@ -86,6 +104,11 @@ Wizard.prototype.analyzeSpell = function(script) {
         spell.problem = err.message;
         console.log(err);
     }
+
+    // TODO hack
+    this.state.mana= startMana;
+    this.game.fireBallList.clear();
+
     return spell;
 };
 
@@ -97,6 +120,12 @@ Wizard.prototype.castSpell = function(slot) {
 };
 
 Wizard.prototype.update = function() {
+    // Regain some mana
+    if ( this.state.mana < 100 ) {
+        this.state.mana+=.1;
+    }
+
+
     var moving = false;
     var vX = 0;
     var vY = 0;

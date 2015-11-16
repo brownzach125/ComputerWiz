@@ -41,7 +41,7 @@ function redraw() {
     Game.draw();
 }
 
-var Socket = io.connect('http://localhost:4200');
+var Socket = io.connect(document.URL);
 Socket.init = function() {
     this.on('connect', function(data) {
 

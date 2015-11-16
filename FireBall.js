@@ -25,11 +25,15 @@ FireBallList.prototype.update = function() {
         var v = removeList[index];
         this.fireBalls.splice(v , 1);
         this.state.fireBalls.splice(v , 1);
-        console.log('fireball killed');
     }
 };
 
-function FireBall(direction , velocity , pos) {
+FireBallList.prototype.clear = function() {
+    this.fireBalls = [];
+    this.state.fireBalls = [];
+}
+
+function FireBall(direction , velocity , pos , radius) {
     this.state = {
         direction: direction,
         velocity: velocity,
@@ -37,9 +41,9 @@ function FireBall(direction , velocity , pos) {
             x: pos.x,
             y: pos.y
         },
-        radius: 5,
-        width: 5,
-        height: 5,
+        radius: radius,
+        width: radius,
+        height: radius,
 
     };
     console.log("Fireball created");
@@ -64,11 +68,11 @@ FireBall.prototype.getTopBounds = function() {
 };
 
 FireBall.prototype.getBottomBounds = function() {
-    return this.state.position.y + this.state.radius;
+    return this.state.position.y - this.state.radius;
 };
 
 FireBall.prototype.getLeftBounds = function() {
-    return this.state.position.x + this.state.radius;
+    return this.state.position.x - this.state.radius;
 };
 
 FireBall.prototype.getRightBounds = function() {
@@ -80,11 +84,11 @@ FireBall.prototype.getTopBoundsFromPos = function() {
 };
 
 FireBall.prototype.getBottomBoundsFromPos = function() {
-    return this.state.position.y + this.state.radius;
+    return this.state.position.y - this.state.radius;
 };
 
 FireBall.prototype.getLeftBoundsFromPos = function() {
-    return this.state.position.x + this.state.radius;
+    return this.state.position.x - this.state.radius;
 };
 
 FireBall.prototype.getRightBoundsFromPos = function() {

@@ -32,7 +32,7 @@ html, body {
     user-select: none;
     -webkit-user-select: none; /* Chrome/Safari */
     opacity : .5;
-    background-color: green;
+    background-color: #aaaaaa;
 }
 
 .Selected {
@@ -40,6 +40,10 @@ html, body {
 }
 .BadSelector {
     background-color: red;
+}
+
+.GoodSelector {
+    background-color: green;
 }
 
 .funcitonSelectors {
