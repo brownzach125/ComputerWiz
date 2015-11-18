@@ -3,6 +3,9 @@ var Ready = false;
 var DEBUG = false;
 var LOOP_DELAY = 16;
 
+
+var identity = document.cookie;
+
 function loadGame() {
     attemptToStartGame();
 }
@@ -44,15 +47,22 @@ function redraw() {
 var Socket = io.connect(document.URL);
 Socket.init = function() {
     this.on('connect', function(data) {
-
+        this.emit('identity' , {value: identity});
     });
+    this.on('identity', function(data) {
+       document.cookie = data.value;
+        var i = 0;
+    });
+    var count = 0;
     this.on('stateUpdate' , function(state) {
         Game.stateUpdate(state);
     });
     this.on('goToSpellCreationMode' , function(data) {
+        console.log("Ive been told to make spells");
         goToSpellCreationMode(data);
     });
     this.on('goToFightMode' , function(data) {
+        console.log("Ive been told to fight");
         goToFightMode(data);
     });
     this.on('spellCreation' , function(data) {
@@ -63,7 +73,7 @@ Socket.init = function() {
 function goToSpellCreationMode(data) {
     console.log("Going to spellcreation screen");
     document.getElementById('gameScreen').style.display = "none";
-    document.getElementById('gameCanvas').style.display = "none"
+    document.getElementById('gameCanvas').style.display = "none";
     document.getElementById('spellCreationScreen').style.display = 'block';
 
 }
@@ -85,4 +95,8 @@ function readyToFight() {
 function backToSpellCreation() {
     console.log("Told server that i need to go back to spell creation");
     Socket.emit('goToSpellCreationMode' , {});
+}
+
+function restart() {
+    Socket.emit('restart' , {});
 }

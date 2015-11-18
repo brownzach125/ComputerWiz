@@ -5,6 +5,36 @@ var WIZARD_SPEED = 2;
 var WIZARD_ACCEL = 0.5;
 var WIZARD_SPEED_FRICTION = 0.4;
 
+
+var HELPER = {};
+HELPER.castFireBallCheckParams = function(params) {
+    var speed = params.speed;
+    var radius = params.radius;
+    if ( Math.abs(speed) > 10 ) {
+        throw {message:"CastFireBall:Speed is too large"};
+    }
+    if ( Math.abs(radius) > 20) {
+        throw {message:"CastFireBall:Radius is too large"};
+    }
+};
+HELPER.castFireBallManaCacl = function(params) {
+    var speed = params.speed;
+    var radius = params.radius;
+    var manaCost = Math.abs(speed) + radius / 5;
+    return manaCost;
+};
+HELPER.castFireBallStartPosition = function(params , casterPosition , casterWidth , casterHeight) {
+    var direction = params.direction;
+    var radius    = params.radius;
+    var position = {
+        x : casterPosition.x + Math.sin(direction) * (casterWidth  + radius),
+        y : casterPosition.y + Math.cos(direction) * (casterHeight + radius),
+    };
+    return position;
+};
+
+
+
 function Wizard(x , y , game) {
     this.up = false;
     this.down = false;
@@ -36,29 +66,22 @@ function Wizard(x , y , game) {
     // Object presented to players for their 'spells'
     // Restricts access to variables
     var that = this;
+    var Helper = HELPER;
     function BASIC() {
         this.castFireBall = function(direction , speed , radius) {
-            // Check if parameters are legal
-            if ( Math.abs(speed) > 10 ) {
-                throw {message:"CastFireBall:Speed is too large"};
-            }
-            if ( Math.abs(radius) > 20) {
-                throw {message:"CastFireBall:Radius is too large"};
-            }
-
-            // Calculate manaCost if too large do nothing
-            var manaCost = Math.abs(speed) + radius / 5;
+            var arguments = {direction : direction,
+            speed: speed ,
+            radius: radius};
+            Helper.castFireBallCheckParams( arguments );
+            var manaCost = Helper.castFireBallManaCacl( arguments);
             if ( manaCost > that.state.mana ) {
                 return;
             }
             else {
                 that.state.mana -= manaCost;
             }
+            var position = Helper.castFireBallStartPosition( arguments , that.state.position , that.state.width , that.state.height);
             direction = direction * Math.PI  / 180;
-            var position = {
-                x : that.state.position.x + Math.sin(direction) * (that.state.width  + radius),
-                y : that.state.position.y + Math.cos(direction) * (that.state.height + radius),
-            };
             var fireball = new FireBall.FireBall(direction , speed , position , radius);
             that.game.addFireBall(fireball);
         }
@@ -68,16 +91,21 @@ function Wizard(x , y , game) {
         BASIC: this.basic,
     };
     this.context = vm.createContext(sandbox);
-
-    this.getX = function() {
-        return x;
-    }
 }
+
+Wizard.prototype.restart = function(pos) {
+    this.state.health = 100;
+    this.state.mana = 100;
+    this.state.position.x = pos.x;
+    this.state.position.y = pos.y;
+};
+
 
 Wizard.prototype.createSpell = function ( spell ) {
     console.log("Creating spell " + spell.slot);
     var slot = spell.slot;
     var code = spell.code;
+    console.log(code);
     var script = new vm.Script(code);
     var spell = this.analyzeSpell(script);
     this.scripts[slot] = script;
@@ -86,21 +114,23 @@ Wizard.prototype.createSpell = function ( spell ) {
     this.client.emit('spellCreation' , spell);
 };
 
+/*
+    To analyze the spell I essentiall run the spell, but i need to reset state...
+    its ugly
+ */
 Wizard.prototype.analyzeSpell = function(script) {
     // TODO Run the spell and check certain things to determine mana cost
     var startMana = this.state.mana;
-
     var spell = {
         mana : 1,
         problem : ''
     };
     try {
-        script.runInContext(this.context);
-        console.log("YAY good spell");
+        //vm.runInNewContext('var x = 1000; while(x > 0){ x--; console.log(x);}' , { console: console } , {timeout: 10});
+        script.runInContext(this.context , {timeout : 100});
     }
     catch( err ) {
         // TODO get more information to send
-        console.log("Bad spell");
         spell.problem = err.message;
         console.log(err);
     }
@@ -124,7 +154,6 @@ Wizard.prototype.update = function() {
     if ( this.state.mana < 100 ) {
         this.state.mana+=.1;
     }
-
 
     var moving = false;
     var vX = 0;

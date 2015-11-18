@@ -4,69 +4,78 @@ var FireBallGen = require('./FireBall.js');
 var Utils = require('./Utils.js');
 
 function Game(clients) {
+    this.running = true;
     this.clients = [];
     for ( var i =0; i < clients.length; i++) {
         this.clients.push( clients[i] );
     }
-    this.mode;
+    this.mode = 'spellCreationMode';
+}
+
+Game.prototype.reconnect = function(client) {
+    var wizard = client.wizardName;
+    console.log("This client thinks its " + wizard);
+    this.setupSocketHandler(client);
+    if ( this.mode == 'fightMode') {
+        client.emit('goToFightMode' , {});
+    }
 };
 
 Game.prototype.init = function() {
     this.fireBallList  = new FireBallGen.FireBallList(this);
-    this.redWizard  = new  Wizard( 420 , 60  , this );
-    this.blueWizard = new  Wizard( 50   , 60 , this );
-    this.setupSocketHandlers();
+    this.redWizard  = new  Wizard( 50 , 60  , this );
+    this.blueWizard = new  Wizard( 420   , 60 , this );
+    this.setupSocketHandler(this.clients[0]);
+    this.setupSocketHandler(this.clients[1]);
 };
 
-Game.prototype.setupSocketHandlers = function() {
+Game.prototype.setupSocketHandler = function(client) {
     var that = this;
-    for ( var i =0; i < this.clients.length; i++) {
-        var client = this.clients[i];
-        var wizard;
-        if ( i != 0) {
-            wizard = this.redWizard;
-        }
-        else {
-            wizard = this.blueWizard;
-        }
-        client.wizard = wizard;
-        wizard.client = client;
-        client.on('keyDown' , function(data) {
-            this.wizard.keyDown(data);
-        });
-        client.on('keyUp' , function(data) {
-            this.wizard.keyUp(data);
-        });
-        client.on('createSpell' , function(data) {
-            this.wizard.createSpell(data);
-        });
+    var wizard = this[client.wizardName];
 
-        client.on('goToFightMode' , function(data) {
-            that.startFight(data);
-        });
+    client.wizard = wizard;
+    wizard.client = client;
+    client.on('keyDown' , function(data) {
+        this.wizard.keyDown(data);
+    });
+    client.on('keyUp' , function(data) {
+        this.wizard.keyUp(data);
+    });
+    client.on('createSpell' , function(data) {
+        this.wizard.createSpell(data);
+    });
 
-        client.on('goToSpellCreationMode' , function(data) {
-            that.goToSpellCreation(data);
-        });
-    }
+    client.on('goToFightMode' , function(data) {
+        that.startFight(data);
+    });
+
+    client.on('goToSpellCreationMode' , function(data) {
+        that.goToSpellCreation(data);
+    });
+
+    client.on('restart' , function(data) {
+       that.restart(data);
+    });
+};
+
+Game.prototype.restart = function(data) {
+    this.fireBallList  = new FireBallGen.FireBallList(this);
+    this.redWizard.restart({x : 50 , y: 60});
+    this.blueWizard.restart({x : 420 , y: 60});
+    this.broadcast('goToSpellCreationMode' , {});
 };
 
 Game.prototype.startFight = function(data) {
-    if ( this.mode == 'fightMode') {
-        // Can't start the fight is already on going
-        return;
+    if ( this.mode != 'fightMode') {
+        this.intervalVar = setInterval( this.gameLoop , 16 , this);
     }
     this.mode = 'fightMode';
     console.log("Clients told to go to fight mode");
     this.broadcast('goToFightMode' , {});
-    this.intervalVar = setInterval( this.gameLoop , 16 , this);
+
 };
 
 Game.prototype.goToSpellCreation = function(data) {
-    if ( this.mode == 'spellCreationMode') {
-        // Can't go to spell creation mode we're already there
-        return;
-    }
     this.mode = 'spellCreationMode';
     clearInterval(this.intervalVar);
 
@@ -79,6 +88,8 @@ Game.prototype.start = function() {
     this.goToSpellCreation({});
 };
 
+
+var count = 0;
 Game.prototype.gameLoop = function(game) {
     game.blueWizard.update();
     game.redWizard.update();
@@ -136,9 +147,11 @@ Game.prototype.addFireBall = function(fireball) {
 };
 
 Game.prototype.broadcast = function(type , obj) {
-    for (var i =0; i < this.clients.length; i++) {
-        this.clients[i].emit(type , obj);
-    }
+    //for (var i =0; i < this.clients.length; i++) {
+    //    this.clients[i].emit(type , obj);
+    //}
+    this.redWizard.client.emit(type , obj);
+    this.blueWizard.client.emit(type , obj);
 };
 
 module.exports = Game;
