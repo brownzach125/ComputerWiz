@@ -100,15 +100,13 @@ Wizard.prototype.restart = function(pos) {
     this.state.position.y = pos.y;
 };
 
-
 Wizard.prototype.createSpell = function ( spell ) {
     console.log("Creating spell " + spell.slot);
     var slot = spell.slot;
     var code = spell.code;
-    console.log(code);
     var script = new vm.Script(code);
     var spell = this.analyzeSpell(script);
-    this.scripts[slot] = script;
+    this.scripts[slot] = code;
     spell.slot = slot;
     spell.code = code;
     this.client.emit('spellCreation' , spell);
@@ -118,6 +116,7 @@ Wizard.prototype.createSpell = function ( spell ) {
     To analyze the spell I essentiall run the spell, but i need to reset state...
     its ugly
  */
+var fork = require('child_process').fork;
 Wizard.prototype.analyzeSpell = function(script) {
     // TODO Run the spell and check certain things to determine mana cost
     var startMana = this.state.mana;
@@ -125,6 +124,7 @@ Wizard.prototype.analyzeSpell = function(script) {
         mana : 1,
         problem : ''
     };
+    /*
     try {
         //vm.runInNewContext('var x = 1000; while(x > 0){ x--; console.log(x);}' , { console: console } , {timeout: 10});
         script.runInContext(this.context , {timeout : 100});
@@ -139,13 +139,66 @@ Wizard.prototype.analyzeSpell = function(script) {
     this.state.mana= startMana;
     this.game.fireBallList.clear();
 
+
+    //spellProcess.kill();
+    */
     return spell;
 };
 
+Wizard.prototype.castFireBall = function(params) {
+    var Helper = HELPER;
+    var direction = params['0'];
+    var speed = params['1'];
+    var radius = params['2'];
+    var arguments = {direction : direction,
+        speed: speed ,
+        radius: radius};
+    Helper.castFireBallCheckParams( arguments );
+    var manaCost = Helper.castFireBallManaCacl( arguments);
+    if ( manaCost > this.state.mana ) {
+        return;
+    }
+    else {
+        this.state.mana -= manaCost;
+    }
+    var position = Helper.castFireBallStartPosition( arguments , this.state.position , this.state.width , this.state.height);
+    direction = direction * Math.PI  / 180;
+    var fireball = new FireBall.FireBall(direction , speed , position , radius);
+    this.game.addFireBall(fireball);
+};
+
+
 Wizard.prototype.castSpell = function(slot) {
-    console.log("Spell " + slot + " casted");
     if ( slot in this.scripts && this.scripts[slot]) {
-        this.scripts[slot].runInContext(this.context);
+        console.log("Spell " + slot + " casted");
+        var code = this.scripts[slot];
+        if ( this.spellProcess && this.spellProcess.myRunning ) {
+            this.spellProcess.kill();
+            console.log("I killed the spell");
+            return;
+        }
+        this.spellProcess = fork('./ComputerWiz/SpellProcess.js');
+        var that = this;
+        this.spellProcess.on('disconnect' , function(){
+            console.log("The spell stopped running");
+            if ( that.spellProcess  ) {
+                that.spellProcess.myRunning = false
+            };
+        });
+        this.spellProcess.on('message' , function(data) {
+            var type = data.type;
+            if ( type == 'request') {
+                var func = data.funcName;
+                var args = data.params;
+                var result = that[func](args);
+                that.spellProcess.send({type:'data' , value: result});
+            }
+            if ( type =='err') {
+
+            }
+        });
+        this.spellProcess.send({type: 'startSpell' , code: code});
+        this.spellProcess.myRunning = true;
     }
 };
 

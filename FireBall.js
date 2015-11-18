@@ -11,7 +11,6 @@ FireBallList.prototype.addFireBall = function(fireball) {
     this.fireBalls.push(fireball);
     this.state.fireBalls.push(fireball.state);
     fireball.list = this;
-    console.log("Fire ball added");
 };
 
 FireBallList.prototype.update = function() {
@@ -31,7 +30,7 @@ FireBallList.prototype.update = function() {
 FireBallList.prototype.clear = function() {
     this.fireBalls = [];
     this.state.fireBalls = [];
-}
+};
 
 function FireBall(direction , velocity , pos , radius) {
     this.state = {
@@ -44,9 +43,7 @@ function FireBall(direction , velocity , pos , radius) {
         radius: radius,
         width: radius,
         height: radius,
-
     };
-    console.log("Fireball created");
 }
 
 FireBall.prototype.update = function() {

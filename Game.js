@@ -54,7 +54,7 @@ Game.prototype.setupSocketHandler = function(client) {
     });
 
     client.on('restart' , function(data) {
-       that.restart(data);
+        that.restart(data);
     });
 };
 
@@ -100,17 +100,21 @@ Game.prototype.gameLoop = function(game) {
         blueWizard: game.blueWizard.state,
         fireBallList:  game.fireBallList.state,
     };
+    //if ( game.fireBallList.fireBalls.length )
+        //console.log(game.fireBallList.state);
     game.broadcast('stateUpdate' , game.state);
 };
 
 Game.prototype.canBeAt = function(pos , obj) {
     if ( obj != this.redWizard ) {
-        if ( Utils.intersects(pos , obj , this.redWizard))
+        if (Utils.intersects(pos , obj , this.redWizard)) {
             return false;
+        }
     }
     if ( obj != this.blueWizard ) {
-        if ( Utils.intersects(pos , obj , this.blueWizard))
+        if ( Utils.intersects(pos , obj , this.blueWizard)) {
             return false;
+        }
     }
 
     // Check fireballs?
@@ -147,9 +151,6 @@ Game.prototype.addFireBall = function(fireball) {
 };
 
 Game.prototype.broadcast = function(type , obj) {
-    //for (var i =0; i < this.clients.length; i++) {
-    //    this.clients[i].emit(type , obj);
-    //}
     this.redWizard.client.emit(type , obj);
     this.blueWizard.client.emit(type , obj);
 };
