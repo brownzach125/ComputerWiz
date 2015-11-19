@@ -55,6 +55,26 @@ Wizard.prototype.castFireBall = function(params) {
     this.game.addFireBall(fireball);
 };
 
+Wizard.prototype.getPOS = function(params) {
+    // TODO mana cost
+  return this.state.position;
+};
+
+Wizard.prototype.moveToPOS = function(params) {
+  var x = params['0'];
+    var y = params['1'];
+    if ( x && y ) {
+        // TODO prevent from leaving arean
+        this.state.position.x = x;
+        this.state.position.y = y;
+    }
+    return this.state.position;
+};
+
+Wizard.prototype.getFireBallsPOS = function(params) {
+    return this.game.fireBallList.state.fireBalls;
+};
+
 Wizard.prototype.createSpell = function ( spell ) {
     console.log("Creating spell " + spell.slot);
     var slot = spell.slot;

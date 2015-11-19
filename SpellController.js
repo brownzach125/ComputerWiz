@@ -100,8 +100,11 @@ SpellController.prototype.castSpell = function(slot) {
 SpellController.prototype.handleRequest = function(data) {
     var func = data.funcName;
     var args = data.params;
-    var result = this.wizard[func](args);
-    this.process.send({type:'data' , value: result});
+    if ( this.wizard[func] ) {
+        // TODO tell user about this
+        var result = this.wizard[func](args);
+        this.process.send({type: 'data', value: result});
+    }
 };
 
 SpellController.prototype.handleError = function(data) {

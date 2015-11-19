@@ -72,12 +72,21 @@ function sendRequest(funcName , params) {
 }
 
 function BASIC() {
+    this.console = console;
     this.getPOS = function() {
-        sendRequest('getPos' , arguments);
+        sendRequest('getPOS' , arguments);
         return location;
     };
     this.castFireBall = function() {
         sendRequest('castFireBall' , arguments);
+        return location;
+    };
+    this.getFireBallsPOS = function() {
+        sendRequest('getFireBallsPOS' , arguments);
+        return location;
+    };
+    this.moveToPOS = function() {
+        sendRequest('moveToPOS' , arguments);
         return location;
     }
 }
