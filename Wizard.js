@@ -1,40 +1,10 @@
 var vm = require('vm');
 var FireBall = require('./FireBall.js');
+var Helper = require('./Helper.js');
+var SpellController = require('./SpellController.js');
 
-var WIZARD_SPEED = 2;
 var WIZARD_ACCEL = 0.5;
 var WIZARD_SPEED_FRICTION = 0.4;
-
-
-var HELPER = {};
-HELPER.castFireBallCheckParams = function(params) {
-    var speed = params.speed;
-    var radius = params.radius;
-    if ( Math.abs(speed) > 10 ) {
-        throw {message:"CastFireBall:Speed is too large"};
-    }
-    if ( Math.abs(radius) > 20) {
-        throw {message:"CastFireBall:Radius is too large"};
-    }
-};
-HELPER.castFireBallManaCacl = function(params) {
-    var speed = params.speed;
-    var radius = params.radius;
-    var manaCost = Math.abs(speed) + radius / 5;
-    return manaCost;
-};
-HELPER.castFireBallStartPosition = function(params , casterPosition , casterWidth , casterHeight) {
-    var direction = params.direction;
-    var radius    = params.radius;
-    var position = {
-        x : casterPosition.x + Math.sin(direction) * (casterWidth  + radius),
-        y : casterPosition.y + Math.cos(direction) * (casterHeight + radius),
-    };
-    return position;
-};
-
-
-
 function Wizard(x , y , game) {
     this.up = false;
     this.down = false;
@@ -53,104 +23,23 @@ function Wizard(x , y , game) {
         height: 20,
         width: 20,
     };
-
-    this.x = 1;
-    this.scripts = {
-        1: null,
-        2: null,
-        3: null,
-        4: null,
-        5: null,
-    };
-
-    // Object presented to players for their 'spells'
-    // Restricts access to variables
-    var that = this;
-    var Helper = HELPER;
-    function BASIC() {
-        this.castFireBall = function(direction , speed , radius) {
-            var arguments = {direction : direction,
-            speed: speed ,
-            radius: radius};
-            Helper.castFireBallCheckParams( arguments );
-            var manaCost = Helper.castFireBallManaCacl( arguments);
-            if ( manaCost > that.state.mana ) {
-                return;
-            }
-            else {
-                that.state.mana -= manaCost;
-            }
-            var position = Helper.castFireBallStartPosition( arguments , that.state.position , that.state.width , that.state.height);
-            direction = direction * Math.PI  / 180;
-            var fireball = new FireBall.FireBall(direction , speed , position , radius);
-            that.game.addFireBall(fireball);
-        }
-    }
-    this.basic = new BASIC();
-    var sandbox = {
-        BASIC: this.basic,
-    };
-    this.context = vm.createContext(sandbox);
+    this.spellController = new SpellController(this);
 }
-
 Wizard.prototype.restart = function(pos) {
     this.state.health = 100;
     this.state.mana = 100;
     this.state.position.x = pos.x;
     this.state.position.y = pos.y;
-};
-
-Wizard.prototype.createSpell = function ( spell ) {
-    console.log("Creating spell " + spell.slot);
-    var slot = spell.slot;
-    var code = spell.code;
-    var script = new vm.Script(code);
-    var spell = this.analyzeSpell(script);
-    this.scripts[slot] = code;
-    spell.slot = slot;
-    spell.code = code;
-    this.client.emit('spellCreation' , spell);
-};
-
-/*
-    To analyze the spell I essentiall run the spell, but i need to reset state...
-    its ugly
- */
-var fork = require('child_process').fork;
-Wizard.prototype.analyzeSpell = function(script) {
-    // TODO Run the spell and check certain things to determine mana cost
-    var startMana = this.state.mana;
-    var spell = {
-        mana : 1,
-        problem : ''
-    };
-    /*
-    try {
-        //vm.runInNewContext('var x = 1000; while(x > 0){ x--; console.log(x);}' , { console: console } , {timeout: 10});
-        script.runInContext(this.context , {timeout : 100});
-    }
-    catch( err ) {
-        // TODO get more information to send
-        spell.problem = err.message;
-        console.log(err);
-    }
-
-    // TODO hack
-    this.state.mana= startMana;
-    this.game.fireBallList.clear();
-
-
-    //spellProcess.kill();
-    */
-    return spell;
+    this.spellController.reset();
 };
 
 Wizard.prototype.castFireBall = function(params) {
-    var Helper = HELPER;
     var direction = params['0'];
     var speed = params['1'];
     var radius = params['2'];
-    var arguments = {direction : direction,
+    direction = direction * Math.PI  / 180;
+    var arguments = {
+        direction : direction,
         speed: speed ,
         radius: radius};
     Helper.castFireBallCheckParams( arguments );
@@ -162,44 +51,23 @@ Wizard.prototype.castFireBall = function(params) {
         this.state.mana -= manaCost;
     }
     var position = Helper.castFireBallStartPosition( arguments , this.state.position , this.state.width , this.state.height);
-    direction = direction * Math.PI  / 180;
     var fireball = new FireBall.FireBall(direction , speed , position , radius);
     this.game.addFireBall(fireball);
 };
 
+Wizard.prototype.createSpell = function ( spell ) {
+    console.log("Creating spell " + spell.slot);
+    var slot = spell.slot;
+    var code = spell.code;
+    var spellInfo = this.spellController.createSpell(spell);
+    if ( spellInfo ) {
+        spell.problem = spellInfo.problem;
+    }
+    this.client.emit('spellCreation' , spell);
+};
 
 Wizard.prototype.castSpell = function(slot) {
-    if ( slot in this.scripts && this.scripts[slot]) {
-        console.log("Spell " + slot + " casted");
-        var code = this.scripts[slot];
-        if ( this.spellProcess && this.spellProcess.myRunning ) {
-            this.spellProcess.kill();
-            console.log("I killed the spell");
-            return;
-        }
-        this.spellProcess = fork('./ComputerWiz/SpellProcess.js');
-        var that = this;
-        this.spellProcess.on('disconnect' , function(){
-            console.log("The spell stopped running");
-            if ( that.spellProcess  ) {
-                that.spellProcess.myRunning = false
-            };
-        });
-        this.spellProcess.on('message' , function(data) {
-            var type = data.type;
-            if ( type == 'request') {
-                var func = data.funcName;
-                var args = data.params;
-                var result = that[func](args);
-                that.spellProcess.send({type:'data' , value: result});
-            }
-            if ( type =='err') {
-
-            }
-        });
-        this.spellProcess.send({type: 'startSpell' , code: code});
-        this.spellProcess.myRunning = true;
-    }
+    this.spellController.castSpell(slot);
 };
 
 Wizard.prototype.update = function() {
@@ -378,13 +246,5 @@ Wizard.prototype.getLeftBoundsFromPos = function(pos) {
 
 Wizard.prototype.getRightBoundsFromPos = function(pos) {
     return pos.x + this.state.width;
-};
-
-
-
-
-
-
-
-
+}
 module.exports = Wizard;

@@ -67,7 +67,10 @@ Game.prototype.restart = function(data) {
 
 Game.prototype.startFight = function(data) {
     if ( this.mode != 'fightMode') {
-        this.intervalVar = setInterval( this.gameLoop , 16 , this);
+        var that = this;
+        setTimeout(function () {
+            that.intervalVar = setInterval( that.gameLoop , 16 , that);
+        }, 1000);
     }
     this.mode = 'fightMode';
     console.log("Clients told to go to fight mode");

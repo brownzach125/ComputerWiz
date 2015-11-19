@@ -2,7 +2,7 @@ var EMBED = false;
 var Ready = false;
 var DEBUG = false;
 var LOOP_DELAY = 16;
-
+var intervalVar;
 
 var identity = document.cookie;
 
@@ -27,7 +27,7 @@ function setupGame() {
     window.onkeydown = KeyHandler.onKeyDown;
     window.onkeyup = KeyHandler.onKeyUp;
     Ready = true;
-    setInterval(gameLoop, LOOP_DELAY);
+    //intervalVar = setInterval(gameLoop, LOOP_DELAY);
 }
 
 function gameLoop() {
@@ -64,10 +64,15 @@ Socket.init = function() {
     this.on('goToFightMode' , function(data) {
         console.log("Ive been told to fight");
         goToFightMode(data);
+        intervalVar = setInterval(gameLoop, LOOP_DELAY);
     });
     this.on('spellCreation' , function(data) {
+        clearInterval(intervalVar);
         spellCreated(data);
     });
+    this.on('disconnect' , function() {
+        clearInterval(intervalVar);
+    })
 };
 
 function goToSpellCreationMode(data) {
