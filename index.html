@@ -12,16 +12,14 @@
     <script src="Arena.js"></script>
     <script src="HUD.js"></script>
     <script src="Main.js"></script>
-
+    <script src="/ace-builds/src/ace.js" type="text/javascript" charset="utf-8"></script>
     <link rel="stylesheet" type="text/css" href="styles/spellcreation.css">
 </head>
-<body onload = loadGame()>
+<body>
 <div id="spellCreationScreen">
     <h1> Function Input </h1>
     <div class="functionEditor">
-        <textarea id="function_input" type="text"></textarea>
-        <input type="submit" value="Check Spell" onclick="submitSpell()">
-        <input type="submit" value="Ready To Fight!" onclick="readyToFight()">
+        <div id="function_input"></div>
     </div>
     <div id="selectors">
         <div class="functionSelectors Selected"></div>
@@ -44,14 +42,25 @@
         <br>
         <div id="HelpSheet">
             <h1>Basic Spells</h1>
-            BASIC.castFireBall( direction , speed , radius); <br>
+            <h2>BASIC.castFireBall( direction , speed , radius);</h2>
             direction: Degrees from -y axis <br>
             speed: Max 10 <br>
             radius: Max 20 <br>
+            <h2>BASIC.getPOS();</h2>
+            <h2>{x: v , y : v} = BASIC.moveToPOS(x  , y); </h2>
+            <h2>[ { position : { x : v , y : v }} ] = BASIC.getFireBallsPOS();</h2>
         </div>
     </div>
+    <input type="submit" value="Check Spell" onclick="submitSpell()">
+    <input type="submit" value="Ready To Fight!" onclick="readyToFight()">
     <script>
         setUpSelectors();
+        window.onload = function() {
+           loadGame();
+        };
+        editor = ace.edit("function_input");
+        editor.setTheme("ace/theme/monokai");
+        editor.getSession().setMode("ace/mode/javascript");
     </script>
 </div>
 <div id ='gameScreen' style="display:none">

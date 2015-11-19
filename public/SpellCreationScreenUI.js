@@ -60,7 +60,7 @@ function selectSpell(slot) {
 }
 
 function submitSpell() {
-    var func = document.getElementById('function_input').value;
+    var func = editor.getValue();
     var slot = document.getElementsByClassName('functionSelectors Selected')[0].slotNum;
     var data = { slot: slot , code: func};
     spells[slot] = {

@@ -13,7 +13,7 @@ app.get('/', function(req, res,next) {
 
 app.get('');
 
-server.listen(4000 , '0.0.0.0');
+server.listen(4200 , '0.0.0.0');
 
 var waitingClients = [];
 var uuid = require('node-uuid');
