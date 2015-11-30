@@ -1,7 +1,7 @@
 var vm = require('vm');
 var Fiber = require('fibers');
 
-var fiber;// = Fiber(castSpell);
+var fiber;
 var p = process;
 location = {};
 
@@ -22,7 +22,8 @@ process.on('message' , function(data) {
         try {
             var script = new vm.Script(code);
             var sandbox = {
-                BASIC: basic
+                BASIC: basic,
+                sleep: sleep
             };
             var context = vm.createContext(sandbox);
             spells[slot] = {
@@ -38,7 +39,9 @@ process.on('message' , function(data) {
     // Message is the response to some request
     if ( type == 'data') {
         location = data.value;
-        fiber.run();
+        if ( fiber ) {
+            fiber.run();
+        }
     }
     if ( type =='die') {
         // Its time for this to end
@@ -47,17 +50,37 @@ process.on('message' , function(data) {
     if (type == 'end') {
         // Set flag so spell will end next time a baisc funciton is called
         needToEnd = true;
+        //console.log("Told to end the fiber");
     }
 });
 
 
-function sendRequest(funcName , params) {
-    if ( needToEnd ) {
-        // We need to stop!!
-        process.send({type: 'done'});
+function checkForEnd() {
+    if ( needToEnd) {
+        proces.send({type:'done'});
+        fiber = null;
         Fiber.yield();
         return;
     }
+}
+
+function sleep(time) {
+    var timeRemaining = time;
+    var fiber = Fiber.current;
+
+    while ( timeRemaining > 0) {
+        checkForEnd();
+        timeRemaining-= 200;
+        setTimeout( function() {
+            fiber.run();
+        } , 200);
+        //console.log("Waiting 100ms");
+        Fiber.yield();
+    }
+}
+
+function sendRequest(funcName , params) {
+    checkForEnd();
     var f = Fiber.current;
     process.send({
         type: 'request',
@@ -88,7 +111,11 @@ function BASIC() {
     this.moveToPOS = function() {
         sendRequest('moveToPOS' , arguments);
         return location;
-    }
+    };
+    this.getOpponentPOS = function() {
+        sendRequest('getOpponentPOS' , arguments);
+        return location;
+    };
 }
 
 var basic = new BASIC();

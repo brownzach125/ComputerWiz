@@ -15,58 +15,105 @@
     <script src="/ace-builds/src/ace.js" type="text/javascript" charset="utf-8"></script>
     <link rel="stylesheet" type="text/css" href="styles/spellcreation.css">
 </head>
+
 <body>
 <div id="spellCreationScreen">
-    <h1> Function Input </h1>
-    <div class="functionEditor">
-        <div id="function_input"></div>
-    </div>
-    <div id="selectors">
-        <div class="functionSelectors Selected"></div>
-        <br>
-        <div class="functionSelectors"></div>
-        <br>
-        <div class="functionSelectors"></div>
-        <br>
-        <div class="functionSelectors"></div>
-        <br>
-        <div class="functionSelectors"></div>
-        <br>
-        <div class="functionSelectors"></div>
-    </div>
-    <div id="spell_info_holder">
-        <h3>Spell Issues</h3>
-    <div id="spell_info">
-        "UnTested"
-    </div>
-        <br>
-        <div id="HelpSheet">
-            <h1>Basic Spells</h1>
-            <h2>BASIC.castFireBall( direction , speed , radius);</h2>
-            direction: Degrees from -y axis <br>
-            speed: Max 10 <br>
-            radius: Max 20 <br>
-            <h2>BASIC.getPOS();</h2>
-            <h2>{x: v , y : v} = BASIC.moveToPOS(x  , y); </h2>
-            <h2>[ { position : { x : v , y : v }} ] = BASIC.getFireBallsPOS();</h2>
+    <div id="leftColumn">
+        <div id="SpellCreationArea">
+            <h1> Function Input </h1>
+            <div id="TextArea">
+                <div class="functionEditor">
+                    <div id="function_input"></div>
+                </div>
+                <div id="selectors">
+                    <div class="functionSelectors Selected"></div>
+                    <br>
+                    <div class="functionSelectors"></div>
+                    <br>
+                    <div class="functionSelectors"></div>
+                    <br>
+                    <div class="functionSelectors"></div>
+                    <br>
+                    <div class="functionSelectors"></div>
+                    <br>
+                    <div class="functionSelectors"></div>
+                </div>
+            </div>
+            <div id="spell_info_holder">
+                <h3>Spell Issues</h3>
+                <div id="spell_info">
+                    "UnTested"
+                </div>
+            </div>
+            <div>
+                <input type="submit" value="Check Spell" onclick="submitSpell()">
+                <input type="submit" value="Ready To Fight!" onclick="readyToFight()">
+            </div>
         </div>
     </div>
-    <input type="submit" value="Check Spell" onclick="submitSpell()">
-    <input type="submit" value="Ready To Fight!" onclick="readyToFight()">
-    <script>
-        setUpSelectors();
-        window.onload = function() {
-           loadGame();
-        };
-        editor = ace.edit("function_input");
-        editor.setTheme("ace/theme/monokai");
-        editor.getSession().setMode("ace/mode/javascript");
-    </script>
+    <div id ='rightColumn'>
+        <div id="HelpSheet">
+            <h1>Basic Spells</h1>
+                <ul id="SpellList">
+                    <li>
+                        <div class="SpellTitle">BASIC.castFireBall(direcion , speed , radius)</div>
+                        <span class="SpellInfo">Lob a fireball <br>
+                                                Direction is degree from x axis
+                        </span>
+                    </li>
+                    <li>
+                        <div class="SpellTitle">BASIC.getPOS()</div>
+                        <span class="SpellInfo">Returns an object { x: xcoord , y: ycoord} <br>
+                                                that is the position of the wizard.
+                        </span>
+                    </li>
+                    <li>
+                        <div class="SpellTitle">BASIC.getOpponentPOS()</div>
+                        <span class="SpellInfo">Returns an object { x: xcoord , y: ycoord} <br>
+                                                that is the position of the opposing wizard.
+                        </span>
+                    </li>
+                    <li>
+                        <div class="SpellTitle">BASIC.moveToPOS(x , y )</div>
+                        <span class="SpellInfo">Move your wizard to x , y position <br>
+                        </span>
+                    </li>
+                    <li>
+                    <div class="SpellTitle">BASIC.getFireBallsPOS()</div>
+                        <span class="SpellInfo">Returns a list of objects { position : { x : x , y :y}} <br>
+                                                That are the positions of all fireballs on the map.
+                        </span>
+                    </li>
+
+                </ul>
+        </div>
+    </div>
 </div>
+
+
 <div id ='gameScreen' style="display:none">
     <input type="submit" value="BackToSpellCreation" style="display:inherit" onclick="backToSpellCreation()">
     <input type="submit" value="Restart" style="display:inherit" onclick="restart()">
     <canvas id="gameCanvas" style="display:none"></canvas>
 </div>
+
+
+<script>
+    setUpSelectors();
+    setUpSpellList();
+    window.onload = function() {
+        loadGame();
+    };
+    editor = ace.edit("function_input");
+    editor.setTheme("ace/theme/monokai");
+    editor.getSession().setMode("ace/mode/javascript");
+    editor.getSession().on('change', function(e) {
+        if( !editor.ignoreChange) {
+            inValidateSelectedSpell();
+        }
+    });
+</script>
+
+
 </body>
 </html>

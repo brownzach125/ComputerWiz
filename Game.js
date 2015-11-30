@@ -1,6 +1,5 @@
-var Wizard = require('./Wizard.js');
+var Wizard = require('./Wizard/Wizard.js');
 var FireBallGen = require('./FireBall.js');
-
 var Utils = require('./Utils.js');
 
 function Game(clients) {
@@ -13,12 +12,14 @@ function Game(clients) {
 }
 
 Game.prototype.reconnect = function(client) {
-    var wizard = client.wizardName;
-    console.log("This client thinks its " + wizard);
+    var wizardName = client.wizardName;
+    console.log("This client thinks its " + wizardName);
     this.setupSocketHandler(client);
     if ( this.mode == 'fightMode') {
         client.emit('goToFightMode' , {});
     }
+    // Send client its spell list
+    this[wizardName].sendClientSpellList();
 };
 
 Game.prototype.init = function() {
@@ -32,21 +33,20 @@ Game.prototype.init = function() {
 Game.prototype.setupSocketHandler = function(client) {
     var that = this;
     var wizard = this[client.wizardName];
-
     client.wizard = wizard;
     wizard.client = client;
     client.on('keyDown' , function(data) {
-        this.wizard.keyDown(data);
+        this.wizard.worldObject.keyDown(data);
     });
     client.on('keyUp' , function(data) {
-        this.wizard.keyUp(data);
+        this.wizard.worldObject.keyUp(data);
     });
     client.on('createSpell' , function(data) {
         this.wizard.createSpell(data);
     });
 
     client.on('goToFightMode' , function(data) {
-        that.startFight(data);
+        that.wizardReady(this);
     });
 
     client.on('goToSpellCreationMode' , function(data) {
@@ -56,6 +56,20 @@ Game.prototype.setupSocketHandler = function(client) {
     client.on('restart' , function(data) {
         that.restart(data);
     });
+};
+
+Game.prototype.wizardReady = function(client) {
+
+    var wizardName = client.wizardName + 'Ready';
+    this[wizardName] =true;
+    if ( this.blueWizardReady && this.redWizardReady ) {
+        this.startFight();
+        this.blueWizardReady = false;
+        this.redWizardReady  = false;
+    }
+    else {
+      client.emit('waitingOnOpponent' , {});
+    }
 };
 
 Game.prototype.restart = function(data) {
@@ -75,53 +89,48 @@ Game.prototype.startFight = function(data) {
     this.mode = 'fightMode';
     console.log("Clients told to go to fight mode");
     this.broadcast('goToFightMode' , {});
-
 };
 
 Game.prototype.goToSpellCreation = function(data) {
     this.mode = 'spellCreationMode';
     clearInterval(this.intervalVar);
-
     console.log("Clients told to go to spell creation mode");
+    this.redWizard.stopSpells();
+    this.blueWizard.stopSpells();
     this.broadcast('goToSpellCreationMode' , {});
 };
 
 Game.prototype.start = function() {
     console.log("Game started");
+    this.broadcast('gameStart' , {});
     this.goToSpellCreation({});
 };
 
-
-var count = 0;
 Game.prototype.gameLoop = function(game) {
-    game.blueWizard.update();
-    game.redWizard.update();
+    game.blueWizard.worldObject.update();
+    game.redWizard.worldObject.update();
     game.fireBallList.update();
     // Send new game state to clients
     game.state = {
-        redWizard:  game.redWizard.state,
-        blueWizard: game.blueWizard.state,
+        redWizard:     game.redWizard.worldObject.state,
+        blueWizard:    game.blueWizard.worldObject.state,
         fireBallList:  game.fireBallList.state,
     };
-    //if ( game.fireBallList.fireBalls.length )
-        //console.log(game.fireBallList.state);
     game.broadcast('stateUpdate' , game.state);
 };
 
 Game.prototype.canBeAt = function(pos , obj) {
-    if ( obj != this.redWizard ) {
-        if (Utils.intersects(pos , obj , this.redWizard)) {
+    if ( obj != this.redWizard.worldObject ) {
+        if (Utils.intersects(pos , obj , this.redWizard.worldObject)) {
             return false;
         }
     }
-    if ( obj != this.blueWizard ) {
-        if ( Utils.intersects(pos , obj , this.blueWizard)) {
+    if ( obj != this.blueWizard.worldObject ) {
+        if ( Utils.intersects(pos , obj , this.blueWizard.worldObject)) {
             return false;
         }
     }
-
     // Check fireballs?
-
     // Check if in arena.
     var height = obj.state.height;
     var width  = obj.state.width;
@@ -137,14 +146,14 @@ Game.prototype.canBeAt = function(pos , obj) {
 Game.prototype.hitWizard = function(projectile) {
     var obj = projectile;
     var pos = projectile.state.position;
-    if ( obj != this.redWizard ) {
-        if ( Utils.intersects(pos , obj , this.redWizard)) {
-            this.redWizard.takeHit(projectile);
+    if ( obj != this.redWizard.worldObject ) {
+        if ( Utils.intersects(pos , obj , this.redWizard.worldObject)) {
+            this.redWizard.worldObject.takeHit(projectile);
         }
     }
-    if ( obj != this.blueWizard ) {
-        if ( Utils.intersects(pos , obj , this.blueWizard)) {
-            this.blueWizard.takeHit(projectile);
+    if ( obj != this.blueWizard.worldObject ) {
+        if ( Utils.intersects(pos , obj , this.blueWizard.worldObject)) {
+            this.blueWizard.worldObject.takeHit(projectile);
         }
     }
 };

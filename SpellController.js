@@ -1,7 +1,7 @@
 var fork = require('child_process').fork;
 var vm = require('vm');
 function initProcess(controller) {
-    var spellProcess = fork('./ComputerWiz/SpellProcess.js');
+    var spellProcess = fork('./SpellProcess.js');
     spellProcess.on('disconnect' , function() {
         controller.handleDisconnect();
     });
@@ -75,16 +75,18 @@ SpellController.prototype.castSpell = function(slot) {
             setTimeout(function() {
                 if ( that.process.running ) {
                     that.process.kill();
-                    // TODO I need to send the client something to let them know about this
+                    that.wizard.client.emit('endSpell' , { slot : that.process.currentSpellSlot , kill: true});
                     that.reset();
                     if ( that.process.currentSpellSlot != slot) {
                         that.process.send({type: 'startSpell' , slot : slot});
                         that.process.running = true;
+                        that.wizard.client.emit('startSpell' , { slot :slot});
                     }
                 } else {
                     if ( that.process.currentSpellSlot != slot) {
                         that.process.send({type: 'startSpell' , slot : slot});
                         that.process.running = true;
+                        that.wizard.client.emit('startSpell' , { slot :slot});
                     }
                 }
             } , 100);
@@ -92,6 +94,7 @@ SpellController.prototype.castSpell = function(slot) {
         else {
             this.process.send({type: 'startSpell' , slot : slot});
             this.process.running = true;
+            this.wizard.client.emit('startSpell' , { slot :slot});
         }
     }
     this.process.currentSpellSlot = slot;
@@ -100,9 +103,9 @@ SpellController.prototype.castSpell = function(slot) {
 SpellController.prototype.handleRequest = function(data) {
     var func = data.funcName;
     var args = data.params;
-    if ( this.wizard[func] ) {
+    if ( this.wizard.spellBook[func] ) {
         // TODO tell user about this
-        var result = this.wizard[func](args);
+        var result = this.wizard.spellBook[func](args);
         this.process.send({type: 'data', value: result});
     }
 };
@@ -114,10 +117,12 @@ SpellController.prototype.handleError = function(data) {
 
 SpellController.prototype.handleDone = function(data) {
     this.process.running = false;
+    this.wizard.client.emit('endSpell' , { slot : this.process.currentSpellSlot});
 };
 
 SpellController.prototype.handleDisconnect = function() {
-    this.process.running = false
+    this.process.running = false;
+    console.log("Spell Process disconnected");
 };
 
 module.exports = SpellController;

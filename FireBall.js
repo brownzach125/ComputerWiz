@@ -48,8 +48,8 @@ function FireBall(direction , velocity , pos , radius) {
 
 FireBall.prototype.update = function() {
     var newPos = {
-        x: this.state.position.x + Math.sin(this.state.direction ) *  this.state.velocity,
-        y: this.state.position.y + Math.cos(this.state.direction ) *  this.state.velocity
+        x: this.state.position.x + Math.cos(this.state.direction ) *  this.state.velocity,
+        y: this.state.position.y + Math.sin(this.state.direction ) *  this.state.velocity
     };
     this.state.position = newPos;
     var nohit = this.list.game.canBeAt(newPos, this);

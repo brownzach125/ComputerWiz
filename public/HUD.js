@@ -1,64 +1,74 @@
 var HUD = {};
-
+currentSpell = null;
 HUD.init = function() {
 
 };
 
 HUD.draw = function() {
-    //HUD.drawHealth();
-    //HUD.drawScore();
+    HUD.drawNames();
     HUD.drawHealthBars();
+    HUD.drawManaBars();
+    HUD.drawSpellSlots();
 };
 
 HUD.drawHealthBars = function() {
 
-    // Draw redWizard Stats left side
-    Camera.context.font=(10*Camera.scale) + "px Georgia";
-    Camera.context.fillStyle= "white";
-    Camera.context.fillText("Red Wizard" , (10*Camera.scale), (10*Camera.scale) );
-    Camera.context.fillStyle= "red";
+    // Red Wizard
     var redWizard = Game.redWizard;
+    Camera.context.fillStyle= "red";
     Camera.context.fillRect( 10  * Camera.scale , 15  * Camera.scale , (redWizard.state.health*Camera.scale) , (10*Camera.scale) );
-    Camera.context.fillStyle= "blue";
-    Camera.context.fillRect( 10  * Camera.scale, 25  * Camera.scale, (redWizard.state.mana*Camera.scale) , (10*Camera.scale) );
 
-    // Draw blueWizard Stats
-    Camera.context.font=(10*Camera.scale) + "px Georgia";
-    Camera.context.fillStyle= "white"
-    Camera.context.fillText("Blue Wizard" , (370*Camera.scale), (10*Camera.scale) );
+    // Blue Wizard
     var blueWizard = Game.blueWizard;
     Camera.context.fillStyle= "red";
     Camera.context.fillRect( (470 - blueWizard.state.health) * Camera.scale , 15  * Camera.scale, (blueWizard.state.health*Camera.scale) , (10*Camera.scale) );
+};
+
+HUD.drawManaBars = function() {
+    // Red Wizard
+    var redWizard = Game.redWizard;
     Camera.context.fillStyle= "blue";
+    Camera.context.fillRect( 10  * Camera.scale, 25  * Camera.scale, (redWizard.state.mana*Camera.scale) , (10*Camera.scale) );
+
+    // Blue Wizard
+    var blueWizard = Game.blueWizard;
     Camera.context.fillRect( (470 - blueWizard.state.mana) * Camera.scale , 25  * Camera.scale , (blueWizard.state.mana*Camera.scale) , (10*Camera.scale) );
 };
 
-HUD.drawHealth = function() {
-    var x = 3;
-    for(var i = 0; i < player.health; i++) {
-        Camera.drawImage(HUD.heart, x + (i * 10), 3, 7, 8);
+HUD.drawNames = function() {
+    // Red Wizard
+    Camera.context.font=(10*Camera.scale) + "px Georgia";
+    Camera.context.fillStyle= "white";
+    Camera.context.fillText("Red Wizard" , (10*Camera.scale), (10*Camera.scale) );
+
+
+    // Blue Wizard
+    Camera.context.font=(10*Camera.scale) + "px Georgia";
+    Camera.context.fillStyle= "white";
+    Camera.context.fillText("Blue Wizard" , (370*Camera.scale), (10*Camera.scale) );
+
+};
+
+HUD.drawSpellSlots = function() {
+    var width  = 25 * Camera.scale;
+    var height = 25 * Camera.scale;
+    var startPointX = 235 * Camera.scale - width * 6 / 2;
+    for ( var i = 0; i < 6; i++) {
+        var xcoord = (startPointX + i * width);
+        var ycoord = ( 240 ) * Camera.scale;
+        Camera.context.fillStyle ='grey';
+        if ( currentSpell && currentSpell == (i + 1) ) {
+            Camera.context.fillStyle = 'green';
+        }
+        Camera.context.fillRect(xcoord , ycoord , width , height);
+        Camera.context.fillStyle = 'black';
+        Camera.context.rect(xcoord , ycoord , width , height);
+        Camera.context.stroke();
+        Camera.context.font=(height) + "px Georgia";
+        Camera.context.fillText(i + 1 , xcoord + width *.25 , ycoord + height *.75);
     }
 };
 
-HUD.drawScore = function() {
-    //console.log(score);
-    Camera.context.font=(10*Camera.scale) + "px Georgia";
-    Camera.context.fillStyle= "white";
-    Camera.context.fillText("Score: "+score , (400*Camera.scale), (20*Camera.scale));
-
-    var high = score;
-    if( localStorage["highScore"] != null)
-    {
-        if(score > localStorage["highScore"])
-            localStorage["highScore"] = score;
-        else
-            high = localStorage["highScore"];
-    }
-
-    Camera.context.font=(10*Camera.scale) + "px Georgia";
-    Camera.context.fillStyle= "white";
-    Camera.context.fillText("High Score: "+high , (400*Camera.scale), (10*Camera.scale));
-};
 
 
 HUD.drawMenu = function() {

@@ -1,14 +1,12 @@
-var WIZARD_SPEED = 2;
-var WIZARD_ACCEL = 0.5;
-var WIZARD_SPEED_FRICTION = 0.4;
 var TILE_LENGTH = 24;
 var WIZARD_LENGTH = 50;
-var DEFAULT_GUY_OFFSET_RIGHT  = WIZARD_LENGTH  *   .1;
-var DEFAULT_GUY_OFFSET_LEFT   = WIZARD_LENGTH  * -.2;
-var DEFAULT_GUY_OFFSET_TOP    = WIZARD_LENGTH  * -.3;
-var DEFAULT_GUY_OFFSET_BOTTOM = WIZARD_LENGTH  *  .2;
 
-var WIZARD_TURN_SPEED = 10;
+
+var leftBound = WIZARD_LENGTH*.2;
+var rightBound = WIZARD_LENGTH*.2;
+var topBound = WIZARD_LENGTH*.30;
+var bottomBound = WIZARD_LENGTH*.25;
+
 
 function Wizard(color) {
     this.state = {
@@ -73,33 +71,33 @@ Wizard.prototype.draw = function() {
 };
 
 Wizard.prototype.getTopBounds = function() {
-    return this.state.position.y + this.state.height
+    return this.state.position.y + topBound;
 };
 
 Wizard.prototype.getBottomBounds = function() {
-    return this.state.position.y - this.state.height;
+    return this.state.position.y - bottomBound;
 };
 
 Wizard.prototype.getLeftBounds = function() {
-    return this.state.position.x - this.state.width;
+    return this.state.position.x - leftBound;
 };
 
 Wizard.prototype.getRightBounds = function() {
-    return this.state.position.x + this.state.width;
+    return this.state.position.x + rightBound;
 };
 
 Wizard.prototype.getTopBoundsFromPos = function(pos) {
-    return pos.y + this.state.width;
+    return pos.y + topBound;
 };
 
 Wizard.prototype.getBottomBoundsFromPos = function(pos) {
-    return pos.y - this.state.height;
+    return pos.y - bottomBound;
 };
 
 Wizard.prototype.getLeftBoundsFromPos = function(pos) {
-    return pos.x - this.state.width;
+    return pos.x - leftBound;
 };
 
 Wizard.prototype.getRightBoundsFromPos = function(pos) {
-    return pos.x + this.state.width;
+    return pos.x + rightBound;
 };

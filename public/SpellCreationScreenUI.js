@@ -7,9 +7,9 @@ function setUpSelectors() {
         selectors[i].slotNum = (i+1);
         selectors[i].onclick = function() {
             selectSpell(this.slotNum);
-            var old = document.getElementsByClassName('functionSelectors Selected');
-                var index = selected.className.indexOf(' Selected');
-                selected.className = selected.className.substr(0 , index) + selected.className.substr(index + 9);
+            var old = selected;
+            var index = selected.className.indexOf(' Selected');
+            selected.className = selected.className.replace(' Selected' , '');
             this.className +=" Selected";
             selected = this;
         };
@@ -18,8 +18,9 @@ function setUpSelectors() {
                 // Remove bad if there
                 var index = this.className.indexOf(' BadSelector');
                 if ( index >= 0)
-                    this.className = this.className.substr( 0 , index) + this.className.substr(index + 12);
+                    this.className = this.className.replace(' BadSelector' , '');
                 this.className += " GoodSelector";
+                this.good = true;
             }
             else {
                 // Add bad if not already there
@@ -27,10 +28,41 @@ function setUpSelectors() {
                 if ( index < 0) {
                     this.className += " BadSelector";
                 }
+                this.good = false;
             }
         };
+
+        selectors[i].invalidate = function() {
+            var index = this.className.indexOf('Selected');
+            if ( index >= 0 ) {
+                this.className = 'functionSelectors Selected';
+            }
+            else {
+                this.className = 'functionSelectors';
+            }
+            this.good = false;
+        };
+
     }
     selected = selectors[0];
+}
+
+function setUpSpellList() {
+    //var spellListArea = document.getElementById('SpellList');
+    var spells = document.getElementById('SpellList').childNodes;
+    for ( var s = 0; s < spells.length; s++ ) {
+        var spell = spells[s];
+        spell.onclick = function() {
+            if ( !this.expanded) {
+                this.className += 'expanded';
+                this.expanded = true;
+            }else {
+                var index = this.className.indexOf('expanded');
+                this.className = this.className.substr(0 , index);
+                this.expanded = false;
+            }
+        }
+    }
 }
 
 var spells = {
@@ -39,8 +71,7 @@ var spells = {
 
 function selectSpell(slot) {
     // Save the spell from the current selection
-    var selected = document.getElementsByClassName('functionSelectors Selected')[0];
-    var code = document.getElementById('function_input').value;
+    var code = editor.getValue();
     var info = document.getElementById('spell_info').innerHTML;
     var spell = {
         code : code,
@@ -55,7 +86,14 @@ function selectSpell(slot) {
             code : '',
             info : '\"UnTested\"',
         };
-    document.getElementById('function_input').value = newSpell.code;
+    editor.ignoreChange = true;
+    if ( newSpell.code ) {
+        editor.setValue(newSpell.code);
+    }
+    else {
+        editor.setValue("");
+    }
+    editor.ignoreChange = false;
     document.getElementById('spell_info').innerHTML = newSpell.info;
 }
 
@@ -89,5 +127,50 @@ function spellCreated(data) {
     if ( selected.slotNum == slot) {
         // Update info
         document.getElementById('spell_info').innerHTML = JSON.stringify(spell.info);
+    }
+}
+
+function inValidateAllSpells() {
+    for ( var i = 0; i < selectors.length; i++ ) {
+        selectors[i].invalidate();
+    }
+    console.log("Invalidating spells");
+}
+function inValidateSelectedSpell() {
+    selected.invalidate();
+}
+
+// TODO
+function showWaitingForOpponent() {
+
+}
+
+function checkSpells() {
+    for ( var i =0; i < selectors.length; i++ ) {
+        if ( spells[selectors.slotNum] && spells[selectors.slotNum].code ) {
+            if ( !selectors[i].good ) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+function recieveSpellList(spellList) {
+    for ( var i in spellList) {
+        spells[spellList[i].slot] = spellList[i];
+        selectors[spellList[i].slot-1].makeGood(true);
+    }
+
+    var slot = selected.slotNum;
+    if ( spells[slot] ) {
+        editor.ignoreChange = true;
+        if ( spells[slot].code ) {
+            editor.setValue(spells[slot].code);
+        }
+        else {
+            editor.setValue("");
+        }
+        editor.ignoreChange = false;
     }
 }

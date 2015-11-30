@@ -3,7 +3,7 @@ var Ready = false;
 var DEBUG = false;
 var LOOP_DELAY = 16;
 var intervalVar;
-
+var gameState = '';
 var identity = document.cookie;
 
 function loadGame() {
@@ -46,7 +46,8 @@ function redraw() {
 
 var Socket = io.connect(document.URL);
 Socket.init = function() {
-    this.on('connect', function(data) {
+    this.emit('identity' , {value: identity});
+    this.on('connect' , function() {
         this.emit('identity' , {value: identity});
     });
     this.on('identity', function(data) {
@@ -72,7 +73,29 @@ Socket.init = function() {
     });
     this.on('disconnect' , function() {
         clearInterval(intervalVar);
-    })
+    });
+    this.on('gameStart' , function() {
+       inValidateAllSpells();
+    });
+
+    this.on('waitingOnOpponent' , function() {
+       showWaitingForOpponent();
+    });
+
+    this.on('spellList' , function(spells) {
+       recieveSpellList(spells);
+    });
+
+    this.on('startSpell' , function(data) {
+        var slot = data.slot;
+        currentSpell = slot;
+
+    });
+    this.on('endSpell' , function(data) {
+        var slot = data.slot;
+        currentSpell = null;
+    });
+
 };
 
 function goToSpellCreationMode(data) {
@@ -80,7 +103,6 @@ function goToSpellCreationMode(data) {
     document.getElementById('gameScreen').style.display = "none";
     document.getElementById('gameCanvas').style.display = "none";
     document.getElementById('spellCreationScreen').style.display = 'block';
-
 }
 
 function goToFightMode(data) {
@@ -93,8 +115,14 @@ function goToFightMode(data) {
 // Tell the server we are ready to fight
 // Let the user know they are waiting
 function readyToFight() {
-    console.log("Told server that im ready to fight");
-    Socket.emit('goToFightMode' , {});
+    var spellsReady = checkSpells();
+    if ( !spellsReady ) {
+        alert("You have unchecked spells");
+    }
+    else {
+        console.log("Told server that im ready to fight");
+        Socket.emit('goToFightMode' , {});
+    }
 }
 
 function backToSpellCreation() {

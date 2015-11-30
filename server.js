@@ -22,43 +22,61 @@ var games = [];
 io.on('connection', function(client) {
     console.log("Client connected");
     client.on('identity' , function(data) {
-        if ( data.value in clients ){
-            console.log("Old client");
-            // This client is already in a game
-            var oldClient = clients[data.value];
-            var game = oldClient.game;
-            var wizard = oldClient.wizardName;
-            client.wizardName = wizard;
-            client.game = game;
-            if ( game && game.running ) {
-                game.reconnect(client);
-                return;
+        var uuid = data.value;
+        if (! newClient(uuid) ) {
+            console.log("Old Client has sent identity");
+            var oldClient = clients[uuid];
+            clients[uuid] = this;
+            if (!reEnterGame(uuid , this , oldClient) ) {
+                enterNewGame(this);
             }
-            // Do what would have happened if new client
-            // since their game is over
-        }
-
-        // This client is new add to new game
-        client.uid = uuid.v1();
-        client.emit('identity' , {value : client.uid});
-        if ( waitingClients.length == 0) {
-            client.wizardName = 'redWizard';
-        }
-        if ( waitingClients.length == 1 ) {
-            client.wizardName ='blueWizard';
-        }
-        waitingClients.push(client);
-        clients[client.uid] = client;
-        console.log("uid " + client.uid);
-
-        if ( waitingClients.length == 2 ) {
-            var game = new Game(waitingClients);
-            waitingClients[0].game = game;
-            waitingClients[1].game = game;
-            game.init();
-            game.start();
-            games.push(game);
-            waitingClients = [];
+        } else {
+            enterNewGame(this);
         }
     });
 });
+
+function newClient(uuid) {
+    if ( uuid in clients ) {
+        return false;
+    } else {
+        return true;
+    }
+}
+
+function reEnterGame( uuid , client , oldClient ) {
+    client.wizardName = oldClient.wizardName;
+    client.game = oldClient.game;
+    if ( client.game && client.game.running ) {
+        client.game.reconnect(client);
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
+function enterNewGame(client) {
+    client.uid = uuid.v1();
+    client.emit('identity' , {value : client.uid});
+    clients[uuid] = client;
+    if ( waitingClients.length == 0) {
+        client.wizardName = 'redWizard';
+    }
+    if ( waitingClients.length == 1 ) {
+        client.wizardName ='blueWizard';
+    }
+    waitingClients.push(client);
+    clients[client.uid] = client;
+    console.log("uid " + client.uid);
+    if ( waitingClients.length == 2 ) {
+        var game = new Game(waitingClients);
+        waitingClients[0].game = game;
+        waitingClients[1].game = game;
+        game.init();
+        game.start();
+        games.push(game);
+        waitingClients = [];
+    }
+}
+

@@ -22,8 +22,8 @@ HELPER.castFireBallStartPosition = function(params , casterPosition , casterWidt
     //console.log(params);
     //console.log(arguments);
     var position = {
-        x : casterPosition.x + Math.sin(direction) * (casterWidth * 2  + radius),
-        y : casterPosition.y + Math.cos(direction) * (casterHeight * 2 + radius),
+        x : casterPosition.x + Math.cos(direction) * (casterWidth * 2  + radius),
+        y : casterPosition.y + Math.sin(direction) * (casterHeight * 2 + radius),
     };
     //console.log(position);
     return position;

@@ -1,7 +1,6 @@
 var Utils = {};
 
 Utils.intersects = function(pos, obj, staticObj) {
-
     if(obj.getRightBoundsFromPos(pos) <= staticObj.getLeftBounds()) {
         return false;
     }

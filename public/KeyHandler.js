@@ -7,6 +7,7 @@ KeyHandler.right = false;
 
 
 KeyHandler.onKeyDown = function(event) {
+    console.log("keyDown");
     Socket.emit('keyDown' , event.keyCode);
     switch(event.keyCode) {
         // W, Up Arrow
