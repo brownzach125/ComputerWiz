@@ -1,7 +1,7 @@
 var fork = require('child_process').fork;
 var vm = require('vm');
 function initProcess(controller) {
-    var spellProcess = fork('./SpellProcess.js');
+    var spellProcess = fork('./SpellProcess/SpellProcess.js');
     spellProcess.on('disconnect' , function() {
         controller.handleDisconnect();
     });
@@ -68,36 +68,56 @@ SpellController.prototype.createSpell = function(spell) {
 };
 
 SpellController.prototype.castSpell = function(slot) {
-    if ( slot in this.spellSafe && this.spellSafe[slot]) {
-        if ( this.process && this.process.running ) {
-            this.process.send({type:'end'});
-            var that = this;
-            setTimeout(function() {
-                if ( that.process.running ) {
-                    that.process.kill();
-                    that.wizard.client.emit('endSpell' , { slot : that.process.currentSpellSlot , kill: true});
-                    that.reset();
-                    if ( that.process.currentSpellSlot != slot) {
-                        that.process.send({type: 'startSpell' , slot : slot});
-                        that.process.running = true;
-                        that.wizard.client.emit('startSpell' , { slot :slot});
-                    }
-                } else {
-                    if ( that.process.currentSpellSlot != slot) {
-                        that.process.send({type: 'startSpell' , slot : slot});
-                        that.process.running = true;
-                        that.wizard.client.emit('startSpell' , { slot :slot});
-                    }
-                }
-            } , 100);
+    console.log("Spell Controller castSpell");
+    if ( (! slot in this.spellSafe) || (!this.spellSafe[slot] ) ) {
+        console.log("Spell Controller cast Spell called with invalid slot");
+        return;
+    }
+    if ( !this.process) {
+        console.log("Spell Controller cast Spell called with process undefined");
+        return;
+    }
+
+    function startSpell(that) {
+        that.process.send({type: 'startSpell' , slot : slot});
+        that.process.running = true;
+        that.wizard.client.emit('startSpell' , { slot :slot});
+        that.process.currentSpellSlot = slot;
+    }
+    function endSpell(that , callback) {
+        that.process.send({type:'end'});
+        // Wait for spell to end
+        setTimeout(function() {
+           if ( !that.process.running ) {
+               // Oh good it ended
+               console.log("Spell ended when asked");
+               callback();
+           }
+           else {
+               // Damn we need to kill it first
+               console.log("Killing old process");
+               that.process.kill();
+               that.wizard.client.emit('endSpell' , { slot : that.process.currentSpellSlot , kill: true});
+               that.reset();
+               callback();
+           }
+        } , 100);
+
+    }
+    var that = this;
+    function tryToStartSpell() {
+        if ( !that.process.running ) {
+            startSpell(that);
         }
         else {
-            this.process.send({type: 'startSpell' , slot : slot});
-            this.process.running = true;
-            this.wizard.client.emit('startSpell' , { slot :slot});
+            endSpell(that , function() {
+                if ( slot != that.process.currentSpellSlot) {
+                    startSpell(that);
+                }
+            });
         }
     }
-    this.process.currentSpellSlot = slot;
+    tryToStartSpell();
 };
 
 SpellController.prototype.handleRequest = function(data) {
