@@ -1,7 +1,11 @@
 var Fiber = require('fibers');
 
-var FiberController = {};
-FiberController.startFiber = function(funcName , input) {
+function FiberController() {
+    this.terminateOnNextResume = false;
+    this.terminationCallback = null;
+}
+
+FiberController.prototype.startFiber = function(funcName , input) {
     if ( this.fiber ) {
         console.log("Thre is already a fiber in execution");
         return;
@@ -10,7 +14,14 @@ FiberController.startFiber = function(funcName , input) {
     this.fiber.run(input);
 };
 
-FiberController.resume = function() {
+FiberController.prototype.resume = function() {
+    if ( this.terminateOnNextResume == true ) {
+        this.fiber = null;
+        this.terminateOnNextResume = false;
+        this.terminationCallback();
+        return;
+    }
+
     if ( this.fiber ) {
         this.fiber.run();
     }
@@ -19,13 +30,21 @@ FiberController.resume = function() {
     }
 };
 
-FiberController.terminate = function() {
+// Calling terminate will cause the next call to resume to destroy the fiber and end execution
+// then call the callback provider
+FiberController.prototype.terminate = function(callback) {
     console.log("Fiber Controller terminate");
-    this.fiber = null;
-    Fiber.yield();
+    if ( !this.fiber) {
+        console.log("Fiber Controller terminate called on null fiber");
+        return;
+    }
+    this.terminateOnNextResume = true;
+    this.terminationCallback = callback;
+    this.resume();
+
 };
 
-FiberController.pause = function() {
+FiberController.prototype.pause = function() {
     if ( !this.fiber ) {
         console.log("FiberController called when fiber is null");
         return;

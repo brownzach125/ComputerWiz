@@ -2,11 +2,11 @@ var vm = require('vm');
 
 var Spell = require('./Spell.js');
 var FiberController = require('./FiberController.js');
+FiberController = new FiberController();
 var p = process;
 location = {};
 
 var spells = {};
-var needToEnd = false;
 
 process.on('message' , function(data) {
     var type = data.type;
@@ -32,7 +32,9 @@ process.on('message' , function(data) {
     if (type == 'end') {
         // Set flag so spell will end next time a baisc funciton is called
         console.log("Recieved end");
-        needToEnd = true;
+        FiberController.terminate(function() {
+            process.send({type:'done'});
+        });
     }
 });
 
@@ -42,7 +44,6 @@ function processRequestResponse(data) {
 }
 
 function startSpell(data) {
-    needToEnd = false;
     var slot = data.slot;
     FiberController.startFiber( Spell.cast , spells[slot]);
 }
@@ -64,16 +65,7 @@ function createSpell(data){
     }
 }
 
-function checkForEnd() {
-    if ( needToEnd) {
-        process.send({type:'done'});
-        FiberController.terminate();
-        return;
-    }
-}
-
 function sendRequest(funcName , params) {
-    checkForEnd();
     process.send({
         type: 'request',
         funcName: funcName,
@@ -85,16 +77,10 @@ function sendRequest(funcName , params) {
 // Object that contains the magic
 function BASIC() {
     this.sleep = function(time) {
-        var timeRemaining = time;
-
-        while ( timeRemaining > 0) {
-            checkForEnd();
-            timeRemaining-= 10;
-            setTimeout( function() {
-                FiberController.resume();
-            } , 10);
-            FiberController.pause();
-        }
+        setTimeout( function() {
+            FiberController.resume();
+        } , time);
+        FiberController.pause();
     }
 }
 
