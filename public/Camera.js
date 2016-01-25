@@ -70,13 +70,27 @@ Camera.clear = function() {
 // Set by player
 Camera.center = { x : 0 ,y: 0 };
 
-Camera.drawImage = function(img, x, y, width, height) {
+Camera.drawImage = function(img, x, y, width, height, direction) {
     //draw canvas without smoothing
     Camera.context.imageSmoothingEnabled = false;
     Camera.context.mozImageSmoothingEnabled = false;
     Camera.context.oImageSmoothingEnabled = false;
     Camera.context.imageSmoothingEnabled = false;
-    Camera.context.drawImage(img, x*Camera.scale, y*Camera.scale, width*Camera.scale, height*Camera.scale);
+
+    //draw the object in the right direction. seems harder than it should be
+    if (direction){
+        Camera.context.save();
+        var imgWidth = width*Camera.scale;
+        var imgHeight = height*Camera.scale;
+        Camera.context.translate(x*Camera.scale + imgWidth/2, y*Camera.scale + imgHeight/2);        
+        Camera.context.rotate(direction);
+        Camera.context.translate(-imgWidth/2, -imgHeight/2);        
+        Camera.context.drawImage(img, 0, 0, imgWidth, imgHeight);
+        Camera.context.restore();
+    }
+    else {
+        Camera.context.drawImage(img, x*Camera.scale, y*Camera.scale, width*Camera.scale, height*Camera.scale);
+    }
 };
 
 Camera.drawImageSmooth = function(img, x, y, width, height) {

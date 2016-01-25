@@ -1,3 +1,5 @@
+/*jshint node: true*/ 
+
 var fork = require('child_process').fork;
 var vm = require('vm');
 function initProcess(controller) {

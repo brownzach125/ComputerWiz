@@ -1,3 +1,5 @@
+/*jshint node: true, devel: true*/ 
+
 var vm = require('vm');
 
 function Spell(process) {
@@ -19,7 +21,7 @@ Spell.prototype.init = function(code , sandbox ) {
 
 Spell.cast = function(spell) {
     try {
-        spell.script.runInContext( spell.context );
+        spell.script.runInContext( spell.context );        
         spell.process.send({type :'done'});
     }
     catch(err) {

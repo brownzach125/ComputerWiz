@@ -1,10 +1,12 @@
+/*jshint browser: true, devel: true*/ 
+
 var ResourceManager = {};
 
 ResourceManager.queue = [];
 
 ResourceManager.isGameLoaded = function() {
     var length = ResourceManager.queue.length;
-    if ( length == 0) {
+    if ( length === 0) {
         return true;
     }
     else {

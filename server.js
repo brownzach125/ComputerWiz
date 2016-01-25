@@ -1,3 +1,5 @@
+/*jshint node: true*/ 
+
 // server.js
 var express = require('express');
 var app = express();
@@ -60,7 +62,7 @@ function enterNewGame(client) {
     client.uid = uuid.v1();
     client.emit('identity' , {value : client.uid});
     clients[uuid] = client;
-    if ( waitingClients.length == 0) {
+    if ( waitingClients.length === 0) {
         client.wizardName = 'redWizard';
     }
     if ( waitingClients.length == 1 ) {

@@ -12,7 +12,8 @@ FireBallList.prototype.draw = function() {
         var position = state.position;
         var pos = state.position;
         var radius = state.radius;
-        Camera.drawImage(this.img , position.x - radius , position.y - radius , radius * 2 , radius * 2);
+        var dir = state.direction;
+        Camera.drawImage(this.img , position.x - radius , position.y - radius , radius * 2 , radius * 2, dir);
         if ( DEBUG) {
             Camera.drawLine("purple", this.getLeftBounds(pos , radius), this.getTopBounds(pos , radius), this.getRightBounds(pos , radius), this.getTopBounds(pos , radius));
             Camera.drawLine("purple", this.getRightBounds(pos , radius), this.getTopBounds(pos , radius), this.getRightBounds(pos , radius), this.getBottomBounds(pos , radius));
