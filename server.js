@@ -80,5 +80,6 @@ function enterNewGame(client) {
         games.push(game);
         waitingClients = [];
     }
+    console.log("Number of games " + games.length);
 }
 

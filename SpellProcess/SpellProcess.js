@@ -21,7 +21,7 @@ process.on('message' , function(data) {
     }
     // Message is the response to some request
     if ( type == 'data') {
-        console.log("Recieved response to request");
+        //console.log("Recieved response to request");
         processRequestResponse(data);
     }
     if ( type =='die') {

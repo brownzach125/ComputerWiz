@@ -99,15 +99,20 @@ html, body {
 .SpellTitle {
     text-decoration:underline;
 }
-#SpellList li {
-    height : 16px;
+#SpellList  {
     transition: height 1s;
     padding: 3px;
     overflow:hidden;
 }
 
-#SpellList li.expanded {
-    height : 100px;
+.SpellInfo {
+    -webkit-transition: 1s linear all;
+    transition: all linear 1s;
+    height: 16px;
+}
+
+.ng-hide {
+    height: 100px;
 }
 
 
