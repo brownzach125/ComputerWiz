@@ -13,7 +13,12 @@ function Wizard(x , y , game) {
     this.spellBook = new SpellBook(this);
     // Object that controlls the process that the wizards spells run in
     this.spellController = new SpellController(this);
+    // this.client - set elsewhere
 }
+
+Wizard.prototype.getUID = function() {
+    return this.client.uid;
+};
 
 Wizard.prototype.sendClientSpellList = function() {
   var spells = this.spellController.spellSafe;

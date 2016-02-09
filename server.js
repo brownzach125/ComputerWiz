@@ -49,6 +49,7 @@ function newClient(uuid) {
 function reEnterGame( uuid , client , oldClient ) {
     client.wizardName = oldClient.wizardName;
     client.game = oldClient.game;
+    client.uid = uuid;
     if ( client.game && client.game.running ) {
         client.game.reconnect(client);
         return true;

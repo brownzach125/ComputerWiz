@@ -42,6 +42,10 @@ function SpellController(wizard) {
     this.spellSafe = {};
 }
 
+SpellController.prototype.log = function(message) {
+    console.log("Spell Controller: UID: " + this.wizard.getUID() + " " + message );
+};
+
 SpellController.prototype.reset = function() {
     try {
         this.process.kill();
@@ -67,16 +71,20 @@ SpellController.prototype.createSpell = function(spell) {
     var slot = spell.slot;
     this.spellSafe[slot] = spell;
     this.process.send({type: 'createSpell' , code : code , slot: slot});
+    console.log("Spell made in slot")
 };
 
 SpellController.prototype.castSpell = function(slot) {
-    console.log("Spell Controller castSpell");
-    if ( (! slot in this.spellSafe) || (!this.spellSafe[slot] ) ) {
-        console.log("Spell Controller cast Spell called with invalid slot");
+    if (! slot in this.spellSafe) {
+        this.log("Slot " + slot + " Does not exist. Slot key not in spell safe");
+        return;
+    }
+    if ( !this.spellSafe[slot]  ) {
+        this.log("Slot " + slot + " Does not exist. Spell is null in spell safe");
         return;
     }
     if ( !this.process) {
-        console.log("Spell Controller cast Spell called with process undefined");
+        this.log("Process is null");
         return;
     }
 
