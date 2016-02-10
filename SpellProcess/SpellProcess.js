@@ -45,7 +45,10 @@ function processRequestResponse(data) {
 
 function startSpell(data) {
     var slot = data.slot;
-    FiberController.startFiber( Spell.cast , spells[slot]);
+    var that = FiberController;
+    FiberController.startFiber( Spell.cast , spells[slot], function() {
+        that.destroyFiber();
+    });
 }
 
 function createSpell(data){

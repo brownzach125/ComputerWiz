@@ -25,15 +25,14 @@ io.on('connection', function(client) {
     console.log("Client connected");
     client.on('identity' , function(data) {
         var uuid = data.value;
-        if (! newClient(uuid) ) {
-            console.log("Old Client has sent identity");
+        if ( newClient(uuid)) {
+            enterNewGame(this);
+        } else {
             var oldClient = clients[uuid];
             clients[uuid] = this;
-            if (!reEnterGame(uuid , this , oldClient) ) {
+            if ( !reEnterGame(uuid , this , oldClient)) {
                 enterNewGame(this);
             }
-        } else {
-            enterNewGame(this);
         }
     });
 });
@@ -63,7 +62,7 @@ function enterNewGame(client) {
     client.uid = uuid.v1();
     client.emit('identity' , {value : client.uid});
     clients[uuid] = client;
-    if ( waitingClients.length === 0) {
+    if ( waitingClients.length == 0) {
         client.wizardName = 'redWizard';
     }
     if ( waitingClients.length == 1 ) {

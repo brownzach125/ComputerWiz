@@ -5,19 +5,23 @@ function FiberController() {
     this.terminationCallback = null;
 }
 
-FiberController.prototype.startFiber = function(funcName , input) {
+FiberController.prototype.startFiber = function(funcName , input, callback) {
     if ( this.fiber ) {
-        console.log("Thre is already a fiber in execution");
+        console.log("There is already a fiber in execution");
         return;
     }
     this.fiber = new Fiber(funcName);
-    this.fiber.run(input);
+    this.fiber.run([input, callback]);
+};
+
+FiberController.prototype.destroyFiber = function() {
+    this.fiber = null;
+    this.terminateOnNextResume = false;
 };
 
 FiberController.prototype.resume = function() {
     if ( this.terminateOnNextResume == true ) {
-        this.fiber = null;
-        this.terminateOnNextResume = false;
+        this.destroyFiber();
         this.terminationCallback();
         return;
     }

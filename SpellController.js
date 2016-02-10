@@ -43,7 +43,7 @@ function SpellController(wizard) {
 }
 
 SpellController.prototype.log = function(message) {
-    console.log("Spell Controller: UID: " + this.wizard.getUID() + " " + message );
+    console.log("Spell Controller: UID: " + this.wizard.getUID() + "\n --- " + message );
 };
 
 SpellController.prototype.reset = function() {
@@ -71,7 +71,7 @@ SpellController.prototype.createSpell = function(spell) {
     var slot = spell.slot;
     this.spellSafe[slot] = spell;
     this.process.send({type: 'createSpell' , code : code , slot: slot});
-    console.log("Spell made in slot")
+    this.log("Spell made in slot " + slot);
 };
 
 SpellController.prototype.castSpell = function(slot) {
@@ -100,12 +100,12 @@ SpellController.prototype.castSpell = function(slot) {
         setTimeout(function() {
            if ( !that.process.running ) {
                // Oh good it ended
-               console.log("Spell ended when asked");
+               that.log("Spell ended when asked");
                callback();
            }
            else {
                // Damn we need to kill it first
-               console.log("Killing old process");
+               that.log("Killing old process");
                that.process.kill();
                that.wizard.client.emit('endSpell' , { slot : that.process.currentSpellSlot , kill: true});
                that.reset();
@@ -117,9 +117,11 @@ SpellController.prototype.castSpell = function(slot) {
     var that = this;
     function tryToStartSpell() {
         if ( !that.process.running ) {
+            that.log("Spell Process inactive starting spell");
             startSpell(that);
         }
         else {
+            that.log("Spell process was already active, asking to cancel");
             endSpell(that , function() {
                 if ( slot != that.process.currentSpellSlot) {
                     startSpell(that);
@@ -141,18 +143,19 @@ SpellController.prototype.handleRequest = function(data) {
 };
 
 SpellController.prototype.handleError = function(data) {
-    // TODO for gods sake do soemthing
+    // TODO for gods sake do something
     this.process.running = false;
 };
 
 SpellController.prototype.handleDone = function(data) {
+    this.log("Spell Process reported being done");
     this.process.running = false;
     this.wizard.client.emit('endSpell' , { slot : this.process.currentSpellSlot});
 };
 
 SpellController.prototype.handleDisconnect = function() {
     this.process.running = false;
-    console.log("Spell Process disconnected");
+    this.log("Spell Process disconnected");
 };
 
 module.exports = SpellController;
