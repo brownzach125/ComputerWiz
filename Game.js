@@ -28,6 +28,9 @@ Game.prototype.init = function() {
     this.blueWizard = new  Wizard( 420   , 60 , this );
     this.setupSocketHandler(this.clients[0]);
     this.setupSocketHandler(this.clients[1]);
+
+    console.log("Game initialized: UID: " + this.blueWizard.client.uid + " " + this.redWizard.client.uid);
+
 };
 
 Game.prototype.setupSocketHandler = function(client) {

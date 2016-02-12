@@ -2,39 +2,43 @@ var vm = require('vm');
 
 var Spell = require('./Spell.js');
 var FiberController = require('./FiberController.js');
-FiberController = new FiberController();
+
+// Fiber controller manages a single fiber that is initialized with this function
+FiberController = new FiberController(Spell.cast);
+
 var p = process;
 location = {};
 
 var spells = {};
-
+var wizardUID = "";
 process.on('message' , function(data) {
     var type = data.type;
     // Message is telling me to start the spell execution
+    if ( type == 'uid') {
+        wizardUID = data.value;
+    }
     if ( type == 'startSpell') {
-        console.log("Recieved startSpell");
+        log("Received startSpell");
         startSpell(data);
     }
     if ( type == 'createSpell') {
-        console.log("Recieved createSpell");
+        log("Received createSpell");
         createSpell(data);
     }
     // Message is the response to some request
     if ( type == 'data') {
-        console.log("Recieved response to request");
         processRequestResponse(data);
     }
     if ( type =='die') {
         // Its time for this to end
-        console.log("Recieved die");
+        log("Received die");
         process.exit();
     }
     if (type == 'end') {
-        // Set flag so spell will end next time a baisc funciton is called
-        console.log("Recieved end");
-        FiberController.terminate(function() {
-            process.send({type:'done'});
-        });
+        // Set flag so spell will end next time a basic function is called
+        log("Received end");
+        FiberController.terminate();
+        process.send({type:'done'});
     }
 });
 
@@ -43,9 +47,13 @@ function processRequestResponse(data) {
     FiberController.resume();
 }
 
+function log(message) {
+    console.log("Spell Process: UID: + " + wizardUID + "\n --- " + message);
+}
+
 function startSpell(data) {
     var slot = data.slot;
-    FiberController.startFiber( Spell.cast , spells[slot]);
+    FiberController.startFiber(spells[slot]);
 }
 
 function createSpell(data){

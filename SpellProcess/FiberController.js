@@ -1,52 +1,48 @@
 var Fiber = require('fibers');
 
-function FiberController() {
-    this.terminateOnNextResume = false;
-    this.terminationCallback = null;
+function FiberController(funcName) {
+    this.fiberIsRunning = false;
+    var that = this;
+    this.fiber = new Fiber(function(input) {
+	funcName(input)
+        that.fiberIsRunning = false; }
+    );
 }
 
-FiberController.prototype.startFiber = function(funcName , input) {
-    if ( this.fiber ) {
-        console.log("Thre is already a fiber in execution");
+FiberController.prototype.log = function(message){
+    console.log("Fiber Controller: " + message);
+};
+
+FiberController.prototype.startFiber = function(input) {
+    if ( this.fiberIsRunning ) {
+        this.log("The fiber is already running, can\'t start new one");
         return;
     }
-    this.fiber = new Fiber(funcName);
+    this.fiberIsRunning = true;
     this.fiber.run(input);
 };
 
 FiberController.prototype.resume = function() {
-    if ( this.terminateOnNextResume == true ) {
-        this.fiber = null;
-        this.terminateOnNextResume = false;
-        this.terminationCallback();
-        return;
-    }
-
-    if ( this.fiber ) {
+    if ( this.fiberIsRunning ) {
         this.fiber.run();
     }
-    else {
-        console.log("FiberController resume called when fiber is null");
-    }
+    // Don\t resume because it has been told to stop permanently
 };
 
 // Calling terminate will cause the next call to resume to destroy the fiber and end execution
 // then call the callback provider
-FiberController.prototype.terminate = function(callback) {
-    console.log("Fiber Controller terminate");
-    if ( !this.fiber) {
-        console.log("Fiber Controller terminate called on null fiber");
-        return;
-    }
-    this.terminateOnNextResume = true;
-    this.terminationCallback = callback;
-    this.resume();
-
+FiberController.prototype.terminate = function() {
+    this.fiberIsRunning = false;
+    this.fiber.reset();
 };
 
 FiberController.prototype.pause = function() {
     if ( !this.fiber ) {
-        console.log("FiberController called when fiber is null");
+        this.log("pause called when fiber is null");
+        return;
+    }
+    if ( !this.fiberIsRunning) {
+        this.log("pause called when the fiber is not running how?")
         return;
     }
     Fiber.yield();
