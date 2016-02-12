@@ -19,6 +19,7 @@ function initProcess(controller) {
             controller.handleDone(data);
         }
     });
+    //spellProcess.send({"type":"uid", "value":controller.wizard.getUID()});
     spellProcess.running = false;
     return spellProcess;
 }
