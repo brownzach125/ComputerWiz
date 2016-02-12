@@ -27,6 +27,10 @@ process.on('message' , function(data) {
     }
     // Message is the response to some request
     if ( type == 'data') {
+<<<<<<< HEAD
+=======
+        //console.log("Recieved response to request");
+>>>>>>> ceca363415857e86e2cc067af4a04694fa18235c
         processRequestResponse(data);
     }
     if ( type =='die') {
@@ -53,7 +57,14 @@ function log(message) {
 
 function startSpell(data) {
     var slot = data.slot;
+<<<<<<< HEAD
     FiberController.startFiber(spells[slot]);
+=======
+    var that = FiberController;
+    FiberController.startFiber( Spell.cast , spells[slot], function() {
+        that.destroyFiber();
+    });
+>>>>>>> ceca363415857e86e2cc067af4a04694fa18235c
 }
 
 function createSpell(data){

@@ -24,9 +24,8 @@ FiberController.prototype.startFiber = function(input) {
 
 FiberController.prototype.resume = function() {
     if ( this.fiberIsRunning ) {
-        this.fiber.run();
+        this.fiber.run()
     }
-    // Don\t resume because it has been told to stop permanently
 };
 
 // Calling terminate will cause the next call to resume to destroy the fiber and end execution

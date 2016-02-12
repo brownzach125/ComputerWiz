@@ -18,7 +18,9 @@ Spell.prototype.init = function(code , sandbox ) {
     }
 };
 
-Spell.cast = function(spell) {
+Spell.cast = function(param) {
+    spell = param[0];
+    callback = param[1];
     try {
         spell.script.runInContext( spell.context );        
         spell.process.send({type :'done'});
@@ -28,6 +30,7 @@ Spell.cast = function(spell) {
         //console.log(err);
         spell.process.send({type:'error',  err: err.message});
     }
+    callback();
 };
 
 module.exports = Spell;

@@ -47,7 +47,7 @@ function setUpSelectors() {
     selected = selectors[0];
 }
 
-function setUpSpellList() {
+function setUpSpellHelpList() {
     //var spellListArea = document.getElementById('SpellList');
     var spells = document.getElementById('SpellList').childNodes;
     for ( var s = 0; s < spells.length; s++ ) {
