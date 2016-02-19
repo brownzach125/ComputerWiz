@@ -1,3 +1,7 @@
+/* jshint browser:true */
+/* global EMBED, DEBUG, redraw, TILE_LENGTH */
+
+
 var CAMERA_NATIVE_WIDTH = 480;
 var CAMERA_NATIVE_HEIGHT = 270;
 
@@ -14,8 +18,8 @@ Camera.init = function() {
     Camera.canvas = document.getElementById('gameCanvas');
     Camera.context = Camera.canvas.getContext('2d');
 
-    Camera.canvas.width = Camera.width,
-        Camera.canvas.height = Camera.height;
+    Camera.canvas.width = Camera.width;
+    Camera.canvas.height = Camera.height;
 
     Camera.bestFitCamera();
 };
@@ -101,14 +105,13 @@ Camera.drawImageSmooth = function(img, x, y, width, height) {
     Camera.context.drawImage(img, x*Camera.scale, y*Camera.scale, width*Camera.scale, height*Camera.scale);
 };
 
-
 Camera.drawImageWorldPos = function(img , x , y , width , height) {
     Camera.context.imageSmoothingEnabled = false;
     Camera.context.mozImageSmoothingEnabled = false;
     Camera.context.oImageSmoothingEnabled = false;
     Camera.context.imageSmoothingEnabled = false;
     Camera.context.drawImage(img, (x - Camera.center.x)*Camera.scale, ( y - Camera.center.y )*Camera.scale, width*Camera.scale, height*Camera.scale);
-}
+};
 
 Camera.drawImageSmoothWorldPos = function(img, x, y, width, height) {
     Camera.context.imageSmoothingEnabled = true;
@@ -117,8 +120,6 @@ Camera.drawImageSmoothWorldPos = function(img, x, y, width, height) {
     Camera.context.imageSmoothingEnabled = true;
     Camera.context.drawImage(img, (x - Camera.center.x)*Camera.scale, ( y - Camera.center.y )*Camera.scale, width*Camera.scale, height*Camera.scale);
 };
-
-
 
 Camera.drawLine = function(color, x, y, dx, dy) {
     Camera.context.beginPath();

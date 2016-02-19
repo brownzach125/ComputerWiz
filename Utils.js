@@ -1,6 +1,9 @@
+/* jshint node:true */
+
 var Utils = {};
 
-Utils.intersects = function(pos, obj, staticObj) {
+Utils.intersects = function(pos, obj, staticObj){
+
     if(obj.getRightBoundsFromPos(pos) <= staticObj.getLeftBounds()) {
         return false;
     }
@@ -9,11 +12,11 @@ Utils.intersects = function(pos, obj, staticObj) {
         return false;
     }
 
-    if(obj.getBottomBoundsFromPos(pos) >= staticObj.getTopBounds()) {
+    if(obj.getBottomBoundsFromPos(pos) <= staticObj.getTopBounds()) {
         return false;
     }
 
-    if(obj.getTopBoundsFromPos(pos) <= staticObj.getBottomBounds()) {
+    if(obj.getTopBoundsFromPos(pos) >= staticObj.getBottomBounds()) {
         return false;
     }
 

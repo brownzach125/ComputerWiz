@@ -1,3 +1,5 @@
+/* jshint node:true */
+
 function FireBallList(game) {
     this.state = {
         // Holds the fireball states
@@ -60,6 +62,7 @@ FireBall.prototype.update = function() {
     return false;
 };
 
+//TODO uhhh move or fix or something. confusing
 FireBall.prototype.getTopBounds = function() {
     return this.state.position.y + this.state.radius;
 };
@@ -96,5 +99,3 @@ module.exports = {
     FireBallList : FireBallList,
     FireBall : FireBall
 };
-
-

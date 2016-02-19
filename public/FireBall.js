@@ -23,6 +23,7 @@ FireBallList.prototype.draw = function() {
     }
 };
 
+//TODO uhhh move or fix or something. confusing
 FireBallList.prototype.getTopBounds = function(position , radius) {
     return position.y + radius;
 };

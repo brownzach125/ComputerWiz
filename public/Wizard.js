@@ -1,12 +1,9 @@
+/* jshint browser:true */
+/* global ResourceManager, Camera, PosArea, DEBUG, Intersectable */
+
 var TILE_LENGTH = 24;
-var WIZARD_LENGTH = 50;
-
-
-var leftBound = WIZARD_LENGTH*.2;
-var rightBound = WIZARD_LENGTH*.2;
-var topBound = WIZARD_LENGTH*.30;
-var bottomBound = WIZARD_LENGTH*.25;
-
+var WIZARD_WIDTH = 30; //TODO this could be dynamic?
+var WIZARD_HEIGHT = 44;
 
 function Wizard(color) {
     this.state = {
@@ -16,8 +13,8 @@ function Wizard(color) {
         },
         health: 100,
         mana: 100,
-        height: 50,
-        width: 50,
+        height: WIZARD_HEIGHT,
+        width: WIZARD_WIDTH,
     };
     if ( color == 'red') {
         this.wizardImage   = ResourceManager.loadImage('./art/RedWizard.png');
@@ -27,16 +24,14 @@ function Wizard(color) {
     }
 }
 
-Wizard.prototype.init = function() {
-
-};
+Wizard.prototype = new Intersectable();
 
 Wizard.prototype.getHitBox = function() {
     var pos = {};
-    var hitBoxWidth  = WIZARD_LENGTH * .2;
-    var hitBoxHeight = WIZARD_LENGTH * .5;
-    pos.x = this.state.position.x - .5 * hitBoxWidth - 4;
-    pos.y = this.position.y - .5 * hitBoxHeight -4;
+    var hitBoxWidth  = WIZARD_WIDTH;
+    var hitBoxHeight = WIZARD_HEIGHT;
+    pos.x = this.state.position.x * hitBoxWidth;
+    pos.y = this.position.y * hitBoxHeight;
 
     var w = hitBoxWidth;
     var h = hitBoxHeight;
@@ -45,59 +40,17 @@ Wizard.prototype.getHitBox = function() {
 
 Wizard.prototype.draw = function() {
     var img = this.wizardImage;
-    Camera.drawImage(img , this.state.position.x -  this.state.width , this.state.position.y - this.state.height , this.state.width * 2 , this.state.height * 2);
+    Camera.drawImage(img , this.state.position.x, this.state.position.y, this.state.width, this.state.height);
     if(DEBUG) {
-        var dx = this.state.position.x +  9 - Math.sin(this.vector ) * this.velocity * 8;
-        var dy = this.state.position.y + 16 - Math.cos(this.vector ) * this.velocity * 8;
-
-        Camera.drawLine("blue", this.state.position.x + 9, this.state.position.y + 16, dx, dy);
-
-        var vx = this.state.position.x +  9 + Math.sin(this.vector ) * 6;
-        var vy = this.state.position.y + 16 + Math.cos(this.vector ) * 6;
-        Camera.drawLine("green", this.state.position.x + 9, this.state.position.y + 16, vx, vy);
-        var fx = this.state.position.x +  9 + 3;
-        if(this.facing == "left")
-            fx = this.state.position.x +  9 - 3;
-        var fy = this.state.position.y + 16 ;
-        Camera.drawLine("yellow", this.state.position.x + 9, this.state.position.y + 16, fx, fy);
-        //DrawBoundingBox(this , "purple");
+        // draw the bounding box
+        
+        //top
         Camera.drawLine("purple", this.getLeftBounds(), this.getTopBounds(), this.getRightBounds(), this.getTopBounds());
+        //right
         Camera.drawLine("purple", this.getRightBounds(), this.getTopBounds(), this.getRightBounds(), this.getBottomBounds());
+        //top
         Camera.drawLine("purple", this.getRightBounds(), this.getBottomBounds(), this.getLeftBounds(), this.getBottomBounds());
+        //left
         Camera.drawLine("purple", this.getLeftBounds(), this.getBottomBounds(), this.getLeftBounds(), this.getTopBounds());
-        //var box = this.getHitBox();
-        //DrawBoundingBox(box , "blue");
     }
-};
-
-Wizard.prototype.getTopBounds = function() {
-    return this.state.position.y + topBound;
-};
-
-Wizard.prototype.getBottomBounds = function() {
-    return this.state.position.y - bottomBound;
-};
-
-Wizard.prototype.getLeftBounds = function() {
-    return this.state.position.x - leftBound;
-};
-
-Wizard.prototype.getRightBounds = function() {
-    return this.state.position.x + rightBound;
-};
-
-Wizard.prototype.getTopBoundsFromPos = function(pos) {
-    return pos.y + topBound;
-};
-
-Wizard.prototype.getBottomBoundsFromPos = function(pos) {
-    return pos.y - bottomBound;
-};
-
-Wizard.prototype.getLeftBoundsFromPos = function(pos) {
-    return pos.x - leftBound;
-};
-
-Wizard.prototype.getRightBoundsFromPos = function(pos) {
-    return pos.x + rightBound;
 };

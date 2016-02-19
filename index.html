@@ -5,6 +5,7 @@
     <script src="KeyHandler.js"></script>
     <script src="ResourceManager.js"></script>
     <script src="SpellCreationScreenUI.js"></script>
+    <script src="Intersectable.js"></script>    
     <script src="Camera.js"></script>
     <script src="Wizard.js"></script>
     <script src="FireBall.js"></script>
@@ -56,19 +57,19 @@
             <h1>Basic Spells</h1>
                 <ul id="SpellList">
                     <li>
-                        <div class="SpellTitle">BASIC.castFireBall(direcion , speed , radius)</div>
+                        <div class="SpellTitle">MAGIC.castFireBall(direcion , speed , radius)</div>
                         <span class="SpellInfo">Lob a fireball <br>
                                                 Direction is degree from x axis
                         </span>
                     </li>
                     <li>
-                        <div class="SpellTitle">BASIC.getPOS()</div>
+                        <div class="SpellTitle">MAGIC.getPOS()</div>
                         <span class="SpellInfo">Returns an object { x: xcoord , y: ycoord} <br>
                                                 that is the position of the wizard.
                         </span>
                     </li>
                     <li>
-                        <div class="SpellTitle">BASIC.getOpponentPOS()</div>
+                        <div class="SpellTitle">MAGIC.getOpponentPOS()</div>
                         <span class="SpellInfo">Returns an object { x: xcoord , y: ycoord} <br>
                                                 that is the position of the opposing wizard.
                         </span>

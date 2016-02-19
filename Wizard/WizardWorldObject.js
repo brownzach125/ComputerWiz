@@ -1,11 +1,12 @@
+/* jshint node:true */
+
+var Intersectable = require('./../Intersectable.js');
+
 var WIZARD_ACCEL = 0.5;
 var WIZARD_SPEED_FRICTION = 0.4;
 
-var WIZARD_LENGTH = 50;
-var leftBound   = WIZARD_LENGTH*.2;
-var rightBound  = WIZARD_LENGTH*.2;
-var topBound    = WIZARD_LENGTH*.30;
-var bottomBound = WIZARD_LENGTH*.25;
+var WIZARD_WIDTH = 30; //TODO this could be dynamic?
+var WIZARD_HEIGHT = 44;
 
 function WizardWorldObject(x , y, wizard) {
     this.wizard = wizard;
@@ -23,10 +24,12 @@ function WizardWorldObject(x , y, wizard) {
         },
         health : 100,
         mana: 100,
-        height: 20,
-        width: 20,
+        height: WIZARD_HEIGHT,
+        width: WIZARD_WIDTH,
     };
 }
+
+WizardWorldObject.prototype = new Intersectable();
 
 WizardWorldObject.prototype.restart = function(pos) {
     this.state.health = 100;
@@ -38,7 +41,7 @@ WizardWorldObject.prototype.restart = function(pos) {
 WizardWorldObject.prototype.update = function() {
     // Regain some mana
     if ( this.state.mana < 100 ) {
-        this.state.mana+=.1;
+        this.state.mana += 0.1;
     }
 
     var moving = false;
@@ -97,7 +100,7 @@ WizardWorldObject.prototype.update = function() {
     if ( this.vector == Math.PI) {
         this.state.facing = "up";
     }
-    if ( this.vector == 0) {
+    if ( this.vector === 0) {
         this.facing = "down";
     }
 };
@@ -175,38 +178,5 @@ WizardWorldObject.prototype.keyUp = function(data) {
 
     }
 };
-
-WizardWorldObject.prototype.getTopBounds = function() {
-    return this.state.position.y + topBound;
-};
-
-WizardWorldObject.prototype.getBottomBounds = function() {
-    return this.state.position.y - bottomBound;
-};
-
-WizardWorldObject.prototype.getLeftBounds = function() {
-    return this.state.position.x - leftBound;
-};
-
-WizardWorldObject.prototype.getRightBounds = function() {
-    return this.state.position.x + rightBound;
-};
-
-WizardWorldObject.prototype.getTopBoundsFromPos = function(pos) {
-    return pos.y + topBound;
-};
-
-WizardWorldObject.prototype.getBottomBoundsFromPos = function(pos) {
-    return pos.y - bottomBound;
-};
-
-WizardWorldObject.prototype.getLeftBoundsFromPos = function(pos) {
-    return pos.x - leftBound;
-};
-
-WizardWorldObject.prototype.getRightBoundsFromPos = function(pos) {
-    return pos.x + rightBound;
-};
-
 
 module.exports = WizardWorldObject;
