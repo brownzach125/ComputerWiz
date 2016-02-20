@@ -1,3 +1,5 @@
+/* global module */
+
 function Intersectable(){}
 
 Intersectable.prototype.getTopBounds = function() {
@@ -31,3 +33,7 @@ Intersectable.prototype.getLeftBoundsFromPos = function(pos) {
 Intersectable.prototype.getRightBoundsFromPos = function(pos) {
     return pos.x + this.state.width;
 };
+
+if (typeof module !== 'undefined' && typeof module.exports !== 'undefined'){
+    module.exports = Intersectable;
+}

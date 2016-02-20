@@ -1,6 +1,6 @@
 /* jshint node:true */
 
-var Intersectable = require('./../Intersectable.js');
+var Intersectable = require('./../public/Intersectable.js');
 
 var WIZARD_ACCEL = 0.5;
 var WIZARD_SPEED_FRICTION = 0.4;

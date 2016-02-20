@@ -1,5 +1,10 @@
 /* jshint node:true */
 
+var Intersectable = require('./public/Intersectable.js');
+
+var FIREBALL_WIDTH = 46; 
+var FIREBALL_HEIGHT = 27;
+
 function FireBallList(game) {
     this.state = {
         // Holds the fireball states
@@ -43,10 +48,14 @@ function FireBall(direction , velocity , pos , radius) {
             y: pos.y
         },
         radius: radius,
-        width: radius,
-        height: radius,
+        width: radius * FIREBALL_WIDTH / FIREBALL_HEIGHT,
+        height: radius  * FIREBALL_HEIGHT / FIREBALL_WIDTH
     };
+    console.log(this.state.width);
+    console.log(this.state.height);
 }
+
+FireBall.prototype = new Intersectable();
 
 FireBall.prototype.update = function() {
     var newPos = {
@@ -60,39 +69,6 @@ FireBall.prototype.update = function() {
         return true;
     }
     return false;
-};
-
-//TODO uhhh move or fix or something. confusing
-FireBall.prototype.getTopBounds = function() {
-    return this.state.position.y + this.state.radius;
-};
-
-FireBall.prototype.getBottomBounds = function() {
-    return this.state.position.y - this.state.radius;
-};
-
-FireBall.prototype.getLeftBounds = function() {
-    return this.state.position.x - this.state.radius;
-};
-
-FireBall.prototype.getRightBounds = function() {
-    return this.state.position.x + this.state.radius;
-};
-
-FireBall.prototype.getTopBoundsFromPos = function() {
-    return this.state.position.y + this.state.radius;
-};
-
-FireBall.prototype.getBottomBoundsFromPos = function() {
-    return this.state.position.y - this.state.radius;
-};
-
-FireBall.prototype.getLeftBoundsFromPos = function() {
-    return this.state.position.x - this.state.radius;
-};
-
-FireBall.prototype.getRightBoundsFromPos = function() {
-    return this.state.position.x + this.state.radius;
 };
 
 module.exports = {
