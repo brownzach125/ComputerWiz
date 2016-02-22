@@ -26,6 +26,16 @@ process.argv.forEach(function(val , index, array) {
 });
 server.listen(port, address);
 console.log("Server listening on " + address +":" + port);
+console.log("Press enter to shutdown the server");
+
+process.stdin.resume();
+process.stdin.setEncoding('utf8');
+var util = require('util');
+
+process.stdin.on('data', function (text) {
+    //console.log('received data:', util.inspect(text));
+    shutdown();
+});
 
 var waitingClients = [];
 var uuid = require('node-uuid');
@@ -102,8 +112,20 @@ process.on('SIGTERM',function() {
         clients[key].disconnect(true);
     }
     games.forEach(function(game) {
-       game.shutDown();
+        game.shutDown();
     });
     io.close();
     process.exit(0);
 });
+
+function shutdown() {
+    console.log("Asked to stop nicely");
+    for ( var key in clients) {
+        clients[key].disconnect(true);
+    }
+    games.forEach(function(game) {
+        game.shutDown();
+    });
+    io.close();
+    process.exit(0);
+}
