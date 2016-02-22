@@ -1,84 +1,29 @@
-var Wizard = require('./Wizard/Wizard.js');
-var FireBallGen = require('./FireBall.js');
-var Utils = require('./Utils.js');
+var Wizard = require('./../Wizard/Wizard.js');
+var FireBallGen = require('./../FireBall.js');
+var Utils = require('./../Utils.js');
+var GameCommunicator = require('./GameCommunication.js');
+
 
 function Game(clients) {
     this.running = true;
-    this.clients = [];
-    for ( var i =0; i < clients.length; i++) {
-        this.clients.push( clients[i] );
-    }
+    this.clients = clients;
+    this.communicator = new GameCommunicator(this);
     this.mode = 'spellCreationMode';
 }
-
-Game.prototype.reconnect = function(client) {
-    var wizardName = client.wizardName;
-    console.log("This client thinks its " + wizardName);
-    this.setupSocketHandler(client);
-    if ( this.mode == 'fightMode') {
-        client.emit('goToFightMode' , {});
-    }
-    // Send client its spell list
-    this[wizardName].sendClientSpellList();
-};
 
 Game.prototype.init = function() {
     this.fireBallList  = new FireBallGen.FireBallList(this);
     this.redWizard  = new  Wizard( 50 , 60  , this );
     this.blueWizard = new  Wizard( 420   , 60 , this );
-    this.setupSocketHandler(this.clients[0]);
-    this.setupSocketHandler(this.clients[1]);
 
-    console.log("Game initialized: UID: " + this.blueWizard.client.uid + " " + this.redWizard.client.uid);
-};
+    this.communicator.init(this.clients);
+    console.log("Game initialized: UID: " + this.blueWizard.client.uid + " " + this.redWizard.client.uid);};
 
-Game.prototype.setupSocketHandler = function(client) {
-    var that = this;
-    var wizard = this[client.wizardName];
-    client.wizard = wizard;
-    wizard.client = client;
-    client.on('keyDown' , function(data) {
-        this.wizard.worldObject.keyDown(data);
-    });
-    client.on('keyUp' , function(data) {
-        this.wizard.worldObject.keyUp(data);
-    });
-    client.on('createSpell' , function(data) {
-        this.wizard.createSpell(data);
-    });
-
-    client.on('goToFightMode' , function(data) {
-        that.wizardReady(this);
-    });
-
-    client.on('goToSpellCreationMode' , function(data) {
-        that.goToSpellCreation(data);
-    });
-
-    client.on('restart' , function(data) {
-        that.restart(data);
-    });
-};
-
-Game.prototype.wizardReady = function(client) {
-
-    var wizardName = client.wizardName + 'Ready';
-    this[wizardName] =true;
-    if ( this.blueWizardReady && this.redWizardReady ) {
-        this.startFight();
-        this.blueWizardReady = false;
-        this.redWizardReady  = false;
-    }
-    else {
-      client.emit('waitingOnOpponent' , {});
-    }
-};
-
-Game.prototype.restart = function(data) {
+Game.prototype.restart = function() {
     this.fireBallList  = new FireBallGen.FireBallList(this);
     this.redWizard.restart({x : 50 , y: 60});
     this.blueWizard.restart({x : 420 , y: 60});
-    this.broadcast('goToSpellCreationMode' , {});
+    this.communicator.restart();
 };
 
 Game.prototype.startFight = function(data) {
@@ -90,21 +35,21 @@ Game.prototype.startFight = function(data) {
     }
     this.mode = 'fightMode';
     console.log("Clients told to go to fight mode");
-    this.broadcast('goToFightMode' , {});
+    this.communicator.startFight();
 };
 
-Game.prototype.goToSpellCreation = function(data) {
+Game.prototype.goToSpellCreation = function() {
     this.mode = 'spellCreationMode';
     clearInterval(this.intervalVar);
     console.log("Clients told to go to spell creation mode");
     this.redWizard.stopSpells();
     this.blueWizard.stopSpells();
-    this.broadcast('goToSpellCreationMode' , {});
+    this.communicator.goToSpellCreation();
 };
 
 Game.prototype.start = function() {
     console.log("Game started");
-    this.broadcast('gameStart' , {});
+    this.communicator.start();
     this.goToSpellCreation({});
 };
 
@@ -116,9 +61,10 @@ Game.prototype.gameLoop = function(game) {
     game.state = {
         redWizard:     game.redWizard.worldObject.state,
         blueWizard:    game.blueWizard.worldObject.state,
-        fireBallList:  game.fireBallList.state,
+        fireBallList:  game.fireBallList.state
     };
-    game.broadcast('stateUpdate' , game.state);
+    game.communicator.stateUpdate(game.state);
+    //game.broadcast('stateUpdate' , game.state);
 };
 
 Game.prototype.canBeAt = function(pos , obj) {
@@ -164,10 +110,6 @@ Game.prototype.addFireBall = function(fireball) {
     this.fireBallList.addFireBall(fireball);
 };
 
-Game.prototype.broadcast = function(type , obj) {
-    this.redWizard.client.emit(type , obj);
-    this.blueWizard.client.emit(type , obj);
-};
 
 Game.prototype.shutDown = function() {
     if ( this.blueWizard) {
@@ -176,6 +118,10 @@ Game.prototype.shutDown = function() {
     if ( this.redWizard) {
         this.redWizard.shutDown();
     }
+};
+
+Game.prototype.reconnect = function(client) {
+    this.communicator.reconnect(client);
 };
 
 module.exports = Game;

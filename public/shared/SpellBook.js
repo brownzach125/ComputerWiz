@@ -11,7 +11,6 @@ else {
 }
 
 var SpellBook = {};
-
 SpellBook.castFireBall = {};
 SpellBook.castFireBall.code = function(game, wizard, direction ,speed , radius) {
     direction = direction * Math.PI  / 180;
