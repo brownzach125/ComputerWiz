@@ -14,8 +14,18 @@ app.get('/', function(req, res,next) {
 });
 
 app.get('');
-
-server.listen(4200 , '0.0.0.0');
+var address = '127.0.0.1';
+var port = 4200;
+process.argv.forEach(function(val , index, array) {
+    if (index == 2) {
+        address = val;
+    }
+    if (index == 3) {
+        port = val;
+    }
+});
+server.listen(port, address);
+console.log("Server listening on " + address +":" + port);
 
 var waitingClients = [];
 var uuid = require('node-uuid');
@@ -83,3 +93,17 @@ function enterNewGame(client) {
     console.log("Number of games " + games.length);
 }
 
+
+//TODO
+// Clean up all server resources.
+process.on('SIGTERM',function() {
+    console.log("Asked to stop nicely");
+    for ( var key in clients) {
+        clients[key].disconnect(true);
+    }
+    games.forEach(function(game) {
+       game.shutDown();
+    });
+    io.close();
+    process.exit(0);
+});

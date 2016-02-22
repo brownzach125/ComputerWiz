@@ -1,4 +1,5 @@
 var HELPER = {};
+
 HELPER.castFireBallCheckParams = function(params) {
     var speed = params.speed;
     var radius = params.radius;
@@ -27,6 +28,15 @@ HELPER.castFireBallStartPosition = function(params , casterPosition , casterWidt
     };
     //console.log(position);
     return position;
+};
+
+HELPER.checkAndSubtractMana = function(wizard, cost) {
+    if ( cost > wizard.worldObject.state.mana) {
+        return false;
+    }  else {
+        wizard.worldObject.state.mana -= cost;
+        return true;
+    }
 };
 
 module.exports = HELPER;

@@ -30,7 +30,6 @@ Game.prototype.init = function() {
     this.setupSocketHandler(this.clients[1]);
 
     console.log("Game initialized: UID: " + this.blueWizard.client.uid + " " + this.redWizard.client.uid);
-
 };
 
 Game.prototype.setupSocketHandler = function(client) {
@@ -168,6 +167,15 @@ Game.prototype.addFireBall = function(fireball) {
 Game.prototype.broadcast = function(type , obj) {
     this.redWizard.client.emit(type , obj);
     this.blueWizard.client.emit(type , obj);
+};
+
+Game.prototype.shutDown = function() {
+    if ( this.blueWizard) {
+        this.blueWizard.shutDown();
+    }
+    if ( this.redWizard) {
+        this.redWizard.shutDown();
+    }
 };
 
 module.exports = Game;

@@ -1,5 +1,6 @@
-from pyvirtualdisplay import Display
+#from pyvirtualdisplay import Display
 
+numGame = 20
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 
@@ -27,7 +28,7 @@ class playerThread(Thread):
         self.gameBarrier = gB
 
     def run(self):
-        driver = webdriver.Chrome("./chromedriver")
+        driver = webdriver.PhantomJS()
         driver.get("http://www.computerwizforcoding.com:4200")
         #assert "Python" in driver.title
 
@@ -55,11 +56,10 @@ class playerThread(Thread):
 terminate = False
 barrier = Barrier(2)
 
-display = Display(visible=0, size=(800,600))
-display.start()
+#display = Display(visible=0, size=(800,600))
+#display.start()
 
 threads = []
-numGame = 2
 for i in range(1,numGame + 1):
     barrier = Barrier(2)
     p1 = playerThread(barrier)
@@ -69,13 +69,13 @@ for i in range(1,numGame + 1):
     threads.append(p1)
     threads.append(p2)
 
-# infinite loop
-while(1):
-    pass
-time.sleep(120)
+print("Press enter to stop threads")
+raw_input();
+
+
 terminate = True
 
 for thread in threads:
     Thread.join(thread)
 
-display.stop()
+#display.stop()

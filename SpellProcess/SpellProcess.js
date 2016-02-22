@@ -6,6 +6,9 @@ var FiberController = require('./FiberController.js');
 // Fiber controller manages a single fiber that is initialized with this function
 FiberController = new FiberController(Spell.cast);
 
+var SpellBook = require('../public/shared/SpellBook.js');
+
+
 var p = process;
 location = {};
 
@@ -74,10 +77,14 @@ function createSpell(data){
 }
 
 function sendRequest(funcName , params) {
+    var arrayParams = [];
+    for ( var key in params) {
+        arrayParams.push( params[key]);
+    }
     process.send({
         type: 'request',
         funcName: funcName,
-        params:  params
+        params:  arrayParams
     });
     FiberController.pause();
 }
@@ -91,7 +98,7 @@ function BASIC() {
         FiberController.pause();
     }
 }
-
+/*
 function MAGIC() {
     this.getPOS = function() {
         sendRequest('getPOS' , arguments);
@@ -114,5 +121,19 @@ function MAGIC() {
         return location;
     };
 }
+*/
+
+function MAGIC() {
+    for  (var index in SpellBook ) {
+        this[index] = function() {
+            console.log(index);
+            sendRequest(index, arguments);
+            return location;
+        }
+    }
+}
+
+
+
 var basicObj = new BASIC();
 var magicObj = new MAGIC();

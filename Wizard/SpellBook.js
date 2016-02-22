@@ -1,15 +1,20 @@
 /*
-      This is where the basic spell components are defined.
+      Every wizard has a personal spellbook object. Right now they are all just copies of the spell book object
+      in shared/spellbook, but one day they could be different.
+
  */
-var FireBall = require('../FireBall.js');
-var Helper = require('../Helper.js');
+var masterSpellBook = require('../public/shared/SpellBook.js');
 
 function SpellBook(wizard) {
     this.wizard = wizard;
     this.game = wizard.game;
     this.state = wizard.worldObject.state;
-}
 
+    for (var obj in masterSpellBook) {
+        this[obj] = masterSpellBook[obj].code;
+    }
+}
+/*
 SpellBook.prototype.castFireBall = function(params) {
     var direction = params['0'];
     var speed = params['1'];
@@ -87,15 +92,6 @@ SpellBook.prototype.getOpponentPOS = function(params) {
         return this.game.blueWizard.worldObject.state.position;
     }
 };
-
-// Helper Functions
-SpellBook.prototype.checkAndSubtractMana = function(cost) {
-    if ( cost > this.state.mana) {
-        return false;
-    }  else {
-       this.state.mana -= cost;
-        return true;
-    }
-};
+*/
 
 module.exports = SpellBook;
