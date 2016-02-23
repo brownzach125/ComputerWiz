@@ -19,15 +19,13 @@ Spell.prototype.init = function(code , sandbox ) {
 };
 
 Spell.cast = function(spell) {
-    try {
-        spell.script.runInContext( spell.context );        
-        spell.process.send({type :'done'});
-    }
-    catch(err) {
+    spell.script.runInContext( spell.context );
+    spell.process.send({type :'done'});
+    //catch(err) {
         //console.log("Spell Failure");
         //console.log(err);
-        spell.process.send({type:'error',  err: err.message});
-    }
+    //    spell.process.send({type:'error',  err: err.message});
+    //}
 };
 
 module.exports = Spell;

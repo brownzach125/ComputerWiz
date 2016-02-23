@@ -15,7 +15,6 @@ location = {};
 var spells = {};
 var wizardUID = "";
 process.on('message' , function(data) {
-    console.log("HI");
     var type = data.type;
     // Message is telling me to start the spell execution
     if ( type == 'uid') {
@@ -63,10 +62,7 @@ function startSpell(data) {
 function createSpell(data){
     var code = data.code;
     var slot = data.slot;
-    var sandbox = {
-        MAGIC : magicObj,
-        BASIC : basicObj,
-    };
+    var sandbox = new spellBookSandbox();
     var spell = new Spell(process);
     var result = spell.init(code , sandbox);
     if ( !result ) {
@@ -90,50 +86,28 @@ function sendRequest(funcName , params) {
     FiberController.pause();
 }
 
-// Object that contains the magic
-function BASIC() {
+function spellBookSandbox() {
     this.sleep = function(time) {
         setTimeout( function() {
             FiberController.resume();
         } , time);
         FiberController.pause();
-    }
-}
-/*
-function MAGIC() {
-    this.getPOS = function() {
-        sendRequest('getPOS' , arguments);
-        return location;
     };
-    this.castFireBall = function() {
-        sendRequest('castFireBall' , arguments);
-        return location;
-    };
-    this.getFireBallsPOS = function() {
-        sendRequest('getFireBallsPOS' , arguments);
-        return location;
-    };
-    this.moveToPOS = function() {
-        sendRequest('moveToPOS' , arguments);
-        return location;
-    };
-    this.getOpponentPOS = function() {
-        sendRequest('getOpponentPOS' , arguments);
-        return location;
-    };
-}
-*/
 
-function MAGIC() {
+    // Add functions from spell book
     for  (var index in SpellBook ) {
-        this[index] = function() {
-            sendRequest(index, arguments);
-            return location;
+        if ( SpellBook[index].code != null) {
+            var funcName = index;
+            this[funcName] = function () {
+                sendRequest(funcName, arguments);
+                return location;
+            }
+        } else {
+            console.log(index + " was speical spell");
+            // This must be a special spell that can only be implemented at this level
+            if ( !this[index] ) {
+                console.log("Hey dummy there is a special spell that hasnt been implemented");
+            }
         }
     }
 }
-
-
-
-var basicObj = new BASIC();
-var magicObj = new MAGIC();

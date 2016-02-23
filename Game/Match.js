@@ -5,7 +5,7 @@
  */
 var FireBallGen = require("./FireBall");
 var Wizard = require("./Wizard");
-var Utils = require("../Utils.js");
+var Utils = require("../public/shared/Utils.js");
 
 function Match(game) {
     this.game = game;

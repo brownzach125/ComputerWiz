@@ -1,6 +1,6 @@
 /* jshint node:true */
 
-var Intersectable = require('./../public/Intersectable.js');
+var Intersectable = require('./../public/shared/Intersectable.js');
 
 var FIREBALL_WIDTH = 46; 
 var FIREBALL_HEIGHT = 27;
@@ -52,8 +52,6 @@ function FireBall(direction, velocity, radius, pos) {
         width: radius * FIREBALL_WIDTH / FIREBALL_HEIGHT,
         height: radius  * FIREBALL_HEIGHT / FIREBALL_WIDTH
     };
-    console.log(this.state.width);
-    console.log(this.state.height);
 }
 
 FireBall.prototype = new Intersectable();
