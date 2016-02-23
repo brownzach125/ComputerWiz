@@ -1,20 +1,21 @@
 /* jshint node:true */
 
-var Intersectable = require('./public/Intersectable.js');
+var Intersectable = require('./../public/Intersectable.js');
 
 var FIREBALL_WIDTH = 46; 
 var FIREBALL_HEIGHT = 27;
 
-function FireBallList(game) {
+function FireBallList(match) {
     this.state = {
         // Holds the fireball states
         fireBalls: []
     };
     this.fireBalls = [];
-    this.game = game;
+    this.match = match;
 }
 
-FireBallList.prototype.addFireBall = function(fireball) {
+FireBallList.prototype.addFireBall = function(direction, speed, radius, position) {
+    var fireball = new FireBall(direction, speed, radius, position);
     this.fireBalls.push(fireball);
     this.state.fireBalls.push(fireball.state);
     fireball.list = this;
@@ -39,7 +40,7 @@ FireBallList.prototype.clear = function() {
     this.state.fireBalls = [];
 };
 
-function FireBall(direction , velocity , pos , radius) {
+function FireBall(direction, velocity, radius, pos) {
     this.state = {
         direction: direction,
         velocity: velocity,
@@ -63,8 +64,8 @@ FireBall.prototype.update = function() {
         y: this.state.position.y + Math.sin(this.state.direction ) *  this.state.velocity
     };
     this.state.position = newPos;
-    var nohit = this.list.game.canBeAt(newPos, this);
-    this.list.game.hitWizard(this);
+    var nohit = this.list.match.canBeAt(newPos, this);
+    this.list.match.hitWizard(this);
     if ( !nohit) {
         return true;
     }

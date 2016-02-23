@@ -1,22 +1,18 @@
-/* jshint node:true */
-
 var Intersectable = require('./../public/Intersectable.js');
-
 var WIZARD_ACCEL = 0.5;
 var WIZARD_SPEED_FRICTION = 0.4;
 
 var WIZARD_WIDTH = 30; //TODO this could be dynamic?
 var WIZARD_HEIGHT = 44;
 
-function WizardWorldObject(x , y, wizard) {
-    this.wizard = wizard;
+function Wizard(x, y, match) {
+    this.match = match;
     this.up = false;
     this.down = false;
     this.right = false;
     this.left = false;
     this.vector   = 0;
     this.velocity = 0;
-    this.game = wizard.game;
     this.state =  {
         position: {
             x: x,
@@ -27,18 +23,11 @@ function WizardWorldObject(x , y, wizard) {
         height: WIZARD_HEIGHT,
         width: WIZARD_WIDTH,
     };
-}
-
-WizardWorldObject.prototype = new Intersectable();
-
-WizardWorldObject.prototype.restart = function(pos) {
-    this.state.health = 100;
-    this.state.mana = 100;
-    this.state.position.x = pos.x;
-    this.state.position.y = pos.y;
 };
 
-WizardWorldObject.prototype.update = function() {
+Wizard.prototype = new Intersectable();
+
+Wizard.prototype.update = function() {
     // Regain some mana
     if ( this.state.mana < 100 ) {
         this.state.mana += 0.1;
@@ -73,21 +62,22 @@ WizardWorldObject.prototype.update = function() {
         y: this.state.position.y + Math.cos(this.vector ) *  this.velocity
     };
 
-    if(this.game.canBeAt({x: newPos.x, y: this.state.position.y}, this)) {
+
+    if(this.match.canBeAt({x: newPos.x, y: this.state.position.y}, this)) {
         this.state.position.x = newPos.x;
     }
     else { // try to move a smaller amount
         newPos.x = this.state.position.x + Math.sin(this.vector ) * this.velocity / 2;
-        if(this.game.canBeAt({x: newPos.x, y: this.state.position.y}, this))
+        if(this.match.canBeAt({x: newPos.x, y: this.state.position.y}, this))
             this.state.position.x = newPos.x;
     }
 
-    if(this.game.canBeAt({x: this.state.position.x, y: newPos.y}, this)) {
+    if(this.match.canBeAt({x: this.state.position.x, y: newPos.y}, this)) {
         this.state.position.y = newPos.y;
     }
     else { // try to move a smaller amount
         newPos.y = this.state.position.y + Math.cos(this.vector ) *  this.velocity / 2;
-        if(this.game.canBeAt({x: this.state.position.x, y: newPos.y}, this))
+        if(this.match.canBeAt({x: this.state.position.x, y: newPos.y}, this))
             this.state.position.y = newPos.y;
     }
     this.velocity -= this.velocity * WIZARD_SPEED_FRICTION;
@@ -105,11 +95,11 @@ WizardWorldObject.prototype.update = function() {
     }
 };
 
-WizardWorldObject.prototype.takeHit = function(projectile) {
-    this.state.health-=10;
+Wizard.prototype.takeHit = function(projectile) {
+   this.state.health-=10;
 };
 
-WizardWorldObject.prototype.keyDown = function(data) {
+Wizard.prototype.keyDown = function(data) {
     switch (data) {
         // W, Up Arrow
         case 87:
@@ -130,34 +120,10 @@ WizardWorldObject.prototype.keyDown = function(data) {
         case 68:
         case 39: 	this.right = true;
             break;
-        // 1
-        case 49:
-            this.wizard.castSpell(1);
-            break;
-        // 2
-        case 50:
-            this.wizard.castSpell(2);
-            break;
-        // 3
-        case 51:
-            this.wizard.castSpell(3);
-            break;
-        // 4
-        case 52:
-            this.wizard.castSpell(4);
-            break;
-        // 5
-        case 53:
-            this.wizard.castSpell(5);
-            break;
-        // 6
-        case 54:
-            this.wizard.castSpell(6);
-            break;
     }
 };
 
-WizardWorldObject.prototype.keyUp = function(data) {
+Wizard.prototype.keyUp = function(data) {
     switch (data) {
         // W, Up Arrow
         case 87:
@@ -179,4 +145,4 @@ WizardWorldObject.prototype.keyUp = function(data) {
     }
 };
 
-module.exports = WizardWorldObject;
+module.exports = Wizard;

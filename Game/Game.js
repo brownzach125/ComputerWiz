@@ -1,116 +1,78 @@
-var Wizard = require('./../Wizard/Wizard.js');
-var FireBallGen = require('./../FireBall.js');
-var Utils = require('./../Utils.js');
-var GameCommunicator = require('./GameCommunication.js');
+var Player = require('../Player/Player.js');
+var Match = require('./Match.js');
 
+GameStates = {};
+GameStates.SpellCreation = 0;
+GameStates.Match = 1;
 
 function Game(clients) {
-    this.running = true;
-    this.clients = clients;
-    this.communicator = new GameCommunicator(this);
-    this.mode = 'spellCreationMode';
+    this.redWizard  = new Player(this, clients[0], 'redWizard');
+    this.blueWizard = new Player(this, clients[1], 'blueWizard');
+    this.changeState(GameStates.SpellCreation);
 }
 
-Game.prototype.init = function() {
-    this.fireBallList  = new FireBallGen.FireBallList(this);
-    this.redWizard  = new  Wizard( 50 , 60  , this );
-    this.blueWizard = new  Wizard( 420   , 60 , this );
-
-    this.communicator.init(this.clients);
-    console.log("Game initialized: UID: " + this.blueWizard.client.uid + " " + this.redWizard.client.uid);};
-
-Game.prototype.restart = function() {
-    this.fireBallList  = new FireBallGen.FireBallList(this);
-    this.redWizard.restart({x : 50 , y: 60});
-    this.blueWizard.restart({x : 420 , y: 60});
-    this.communicator.restart();
+Game.prototype.changeState = function(state) {
+    this.state = state;
+    this.redWizard.changeState(state);
+    this.blueWizard.changeState(state);
 };
 
-Game.prototype.startFight = function(data) {
-    if ( this.mode != 'fightMode') {
-        var that = this;
-        setTimeout(function () {
-            that.intervalVar = setInterval( that.gameLoop , 16 , that);
-        }, 1000);
+//------------------------
+// Functions that tell the game that a player wants to do some state change
+//------------------------
+Game.prototype.playerIsReadyToFight = function() {
+    if ( this.redWizard.state  == PlayerStates.ReadyToFight &&
+        this.blueWizard.state == PlayerStates.ReadyToFight ) {
+        this.startMatch();
+        this.changeState(GameStates.Match);
     }
-    this.mode = 'fightMode';
-    console.log("Clients told to go to fight mode");
-    this.communicator.startFight();
 };
 
-Game.prototype.goToSpellCreation = function() {
-    this.mode = 'spellCreationMode';
-    clearInterval(this.intervalVar);
-    console.log("Clients told to go to spell creation mode");
+Game.prototype.playerWantsToRestart = function() {
+    // Right now just go ahead and end match and go back to spellcreation
+    this.stopMatch();
+    this.changeState(GameStates.SpellCreation);
+};
+
+Game.prototype.playerPutKeyDown = function(wizardName, data) {
+    if ( this.match ) {
+        this.match.playerPutKeyDown(wizardName, data);
+    }
+};
+
+Game.prototype.playerPutKeyUp = function(wizardName, data) {
+    if ( this.match) {
+        this.match.playerPutKeyUp(wizardName, data);
+    }
+};
+
+//-------------------------
+// Functions that control the match object of a game
+//-------------------------
+Game.prototype.startMatch = function() {
+    this.match = new Match(this);
+    this.match.start();
+};
+
+Game.prototype.stopMatch = function() {
     this.redWizard.stopSpells();
     this.blueWizard.stopSpells();
-    this.communicator.goToSpellCreation();
+    this.match.stop();
+    this.match = null;
 };
 
-Game.prototype.start = function() {
-    console.log("Game started");
-    this.communicator.start();
-    this.goToSpellCreation({});
-};
-
-Game.prototype.gameLoop = function(game) {
-    game.blueWizard.worldObject.update();
-    game.redWizard.worldObject.update();
-    game.fireBallList.update();
-    // Send new game state to clients
-    game.state = {
-        redWizard:     game.redWizard.worldObject.state,
-        blueWizard:    game.blueWizard.worldObject.state,
-        fireBallList:  game.fireBallList.state
-    };
-    game.communicator.stateUpdate(game.state);
-    //game.broadcast('stateUpdate' , game.state);
-};
-
-Game.prototype.canBeAt = function(pos , obj) {
-    if ( obj != this.redWizard.worldObject ) {
-        if (Utils.intersects(pos , obj , this.redWizard.worldObject)) {
-            return false;
-        }
-    }
-    if ( obj != this.blueWizard.worldObject ) {
-        if ( Utils.intersects(pos , obj , this.blueWizard.worldObject)) {
-            return false;
-        }
-    }
-    // Check fireballs?
-    // Check if in arena.
-    var height = obj.state.height;
-    var width  = obj.state.width;
-    if ( pos.x - width < 0 || pos.x+ width > 480 ) {
-        return false;
-    }
-    if ( pos.y - height < 0 || pos.y + height > 240) {
-        return false;
-    }
-    return true;
-};
-
-Game.prototype.hitWizard = function(projectile) {
-    var obj = projectile;
-    var pos = projectile.state.position;
-    if ( obj != this.redWizard.worldObject ) {
-        if ( Utils.intersects(pos , obj , this.redWizard.worldObject)) {
-            this.redWizard.worldObject.takeHit(projectile);
-        }
-    }
-    if ( obj != this.blueWizard.worldObject ) {
-        if ( Utils.intersects(pos , obj , this.blueWizard.worldObject)) {
-            this.blueWizard.worldObject.takeHit(projectile);
-        }
+//--------------------------
+//  Functions for altering the match state
+//--------------------------
+Game.prototype.createFireBall = function(wizardName, direction, speed, radius) {
+    if ( this.match ) {
+        this.match.createFireBall(wizardName, direction, speed, radius);
     }
 };
 
-Game.prototype.addFireBall = function(fireball) {
-    this.fireBallList.addFireBall(fireball);
-};
-
-
+//-------------------------
+// Functions used by the server to manage a game
+//------------------------------
 Game.prototype.shutDown = function() {
     if ( this.blueWizard) {
         this.blueWizard.shutDown();
@@ -121,7 +83,10 @@ Game.prototype.shutDown = function() {
 };
 
 Game.prototype.reconnect = function(client) {
-    this.communicator.reconnect(client);
+    var wizardName = client.wizardName;
+    this[wizardName].newSocket(client);
+    this[wizardName].sendPlayerSpellList();
+    this[wizardName].changeState(this.state);
 };
 
 module.exports = Game;

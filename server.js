@@ -69,7 +69,7 @@ function reEnterGame( uuid , client , oldClient ) {
     client.wizardName = oldClient.wizardName;
     client.game = oldClient.game;
     client.uid = uuid;
-    if ( client.game && client.game.running ) {
+    if ( client.game ) {
         client.game.reconnect(client);
         return true;
     }
@@ -82,12 +82,7 @@ function enterNewGame(client) {
     client.uid = uuid.v1();
     client.emit('identity' , {value : client.uid});
     clients[uuid] = client;
-    if ( waitingClients.length == 0) {
-        client.wizardName = 'redWizard';
-    }
-    if ( waitingClients.length == 1 ) {
-        client.wizardName ='blueWizard';
-    }
+
     waitingClients.push(client);
     clients[client.uid] = client;
     console.log("uid " + client.uid);
@@ -95,8 +90,6 @@ function enterNewGame(client) {
         var game = new Game(waitingClients);
         waitingClients[0].game = game;
         waitingClients[1].game = game;
-        game.init();
-        game.start();
         games.push(game);
         waitingClients = [];
     }

@@ -15,6 +15,7 @@ location = {};
 var spells = {};
 var wizardUID = "";
 process.on('message' , function(data) {
+    console.log("HI");
     var type = data.type;
     // Message is telling me to start the spell execution
     if ( type == 'uid') {
@@ -126,7 +127,6 @@ function MAGIC() {
 function MAGIC() {
     for  (var index in SpellBook ) {
         this[index] = function() {
-            console.log(index);
             sendRequest(index, arguments);
             return location;
         }

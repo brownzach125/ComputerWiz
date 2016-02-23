@@ -13,39 +13,39 @@ HUD.draw = function() {
 
 HUD.drawHealthBars = function() {
 
-    // Red Wizard
+    // Red Player
     var redWizard = Game.redWizard;
     Camera.context.fillStyle= "red";
     Camera.context.fillRect( 10  * Camera.scale , 15  * Camera.scale , (redWizard.state.health*Camera.scale) , (10*Camera.scale) );
 
-    // Blue Wizard
+    // Blue Player
     var blueWizard = Game.blueWizard;
     Camera.context.fillStyle= "red";
     Camera.context.fillRect( (470 - blueWizard.state.health) * Camera.scale , 15  * Camera.scale, (blueWizard.state.health*Camera.scale) , (10*Camera.scale) );
 };
 
 HUD.drawManaBars = function() {
-    // Red Wizard
+    // Red Player
     var redWizard = Game.redWizard;
     Camera.context.fillStyle= "blue";
     Camera.context.fillRect( 10  * Camera.scale, 25  * Camera.scale, (redWizard.state.mana*Camera.scale) , (10*Camera.scale) );
 
-    // Blue Wizard
+    // Blue Player
     var blueWizard = Game.blueWizard;
     Camera.context.fillRect( (470 - blueWizard.state.mana) * Camera.scale , 25  * Camera.scale , (blueWizard.state.mana*Camera.scale) , (10*Camera.scale) );
 };
 
 HUD.drawNames = function() {
-    // Red Wizard
+    // Red Player
     Camera.context.font=(10*Camera.scale) + "px Georgia";
     Camera.context.fillStyle= "white";
-    Camera.context.fillText("Red Wizard" , (10*Camera.scale), (10*Camera.scale) );
+    Camera.context.fillText("Red Player" , (10*Camera.scale), (10*Camera.scale) );
 
 
-    // Blue Wizard
+    // Blue Player
     Camera.context.font=(10*Camera.scale) + "px Georgia";
     Camera.context.fillStyle= "white";
-    Camera.context.fillText("Blue Wizard" , (370*Camera.scale), (10*Camera.scale) );
+    Camera.context.fillText("Blue Player" , (370*Camera.scale), (10*Camera.scale) );
 
 };
 

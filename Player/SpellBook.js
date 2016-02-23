@@ -8,33 +8,13 @@ var masterSpellBook = require('../public/shared/SpellBook.js');
 function SpellBook(wizard) {
     this.wizard = wizard;
     this.game = wizard.game;
-    this.state = wizard.worldObject.state;
 
     for (var obj in masterSpellBook) {
         this[obj] = masterSpellBook[obj].code;
     }
 }
-/*
-SpellBook.prototype.castFireBall = function(params) {
-    var direction = params['0'];
-    var speed = params['1'];
-    var radius = params['2'];
-    direction = direction * Math.PI  / 180;
-    var arguments = {
-        direction : direction,
-        speed: speed ,
-        radius: radius};
-    Helper.castFireBallCheckParams( arguments );
-    var manaCost = Helper.castFireBallManaCacl( arguments);
-    if ( !this.checkAndSubtractMana(manaCost)) {
-        // Don't do anything not enough mana for that
-        return;
-    }
-    var position = Helper.castFireBallStartPosition( arguments , this.state.position , this.state.width , this.state.height);
-    var fireball = new FireBall.FireBall(direction , speed , position , radius);
-    this.game.addFireBall(fireball);
-};
 
+/*
 
 SpellBook.prototype.getPOS = function(params) {
     // This one is free

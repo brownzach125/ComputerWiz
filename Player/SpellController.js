@@ -45,7 +45,7 @@ function SpellController(wizard) {
 }
 
 SpellController.prototype.log = function(message) {
-    console.log("Spell Controller: UID: " + this.wizard.getUID() + "\n --- " + message );
+    //console.log("Spell Controller: UID: " + this.wizard.getUID() + "\n --- " + message );
 };
 
 SpellController.prototype.reset = function() {
@@ -93,7 +93,7 @@ SpellController.prototype.castSpell = function(slot) {
     function startSpell(that) {
         that.process.send({type: 'startSpell' , slot : slot});
         that.process.running = true;
-        that.wizard.client.emit('startSpell' , { slot :slot});
+        that.wizard.socket.emit('startSpell' , { slot :slot});
         that.process.currentSpellSlot = slot;
     }
     function endSpell(that , callback) {
@@ -109,7 +109,7 @@ SpellController.prototype.castSpell = function(slot) {
                // Damn we need to kill it first
                that.log("Killing old process");
                that.process.kill();
-               that.wizard.client.emit('endSpell' , { slot : that.process.currentSpellSlot , kill: true});
+               that.wizard.socket.emit('endSpell' , { slot : that.process.currentSpellSlot , kill: true});
                that.reset();
                callback();
            }
@@ -141,9 +141,8 @@ SpellController.prototype.handleRequest = function(data) {
     var args = data.params;
     if ( this.wizard.spellBook[func] ) {
         // TODO tell user about this result
-        var arguments = [ this.wizard.game, this.wizard].concat(args);
+        var arguments = [ this.wizard.game, this.wizard.name].concat(args);
         var result = this.wizard.spellBook[func].apply(this.wizard.spellBook, arguments);
-        //var result = this.wizard.spellBook[func](this.wizard.game, this.wizard, args);
         this.process.send({type: 'data', value: result});
     }
 };
@@ -156,7 +155,7 @@ SpellController.prototype.handleError = function(data) {
 SpellController.prototype.handleDone = function(data) {
     this.log("Spell Process reported being done");
     this.process.running = false;
-    this.wizard.client.emit('endSpell' , { slot : this.process.currentSpellSlot});
+    this.wizard.socket.emit('endSpell' , { slot : this.process.currentSpellSlot});
 };
 
 SpellController.prototype.handleDisconnect = function() {
