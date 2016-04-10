@@ -1,0 +1,54 @@
+#function_input {
+    top:0;
+    right:0;
+    left: 0;
+    bottom:0;
+    width : 100%;
+    height : 100%;
+}
+.ace_editor {
+    width :100%;
+    height : 100%;
+}
+
+#function_selectors {
+    float:left;
+    width:25%;
+    max-width:25%;
+}
+
+.function_selector {
+    border-style:solid;
+    border-color:black;
+    border-width:1px;
+    user-select: none;
+    -webkit-user-select: none; /* Chrome/Safari */
+    opacity : .5;
+    background-color: #aaaaaa;
+    border:#aaaaaa;
+}
+
+.function_selector.selected {
+    opacity : 1;
+}
+
+.function_selector.saved {
+    background-color: #008800;
+    border:#008800;
+}
+.function_selector.unsaved {
+    background-color: #aaaaaa;
+    border:#aaaaaa;
+}
+
+.function_selector .title_tag {
+    display: inline-block;
+    background-color:inherit;
+    border:inherit;
+}
+
+#function_editor {
+    float: left;
+    width: 75%;
+    height: 100%;
+}

@@ -4,13 +4,21 @@
 require('rootpath')();
 var express = require('express');
 var app = express();
+var server = require('http').createServer(app);
+var io = require('socket.io')(server);
 var session = require('express-session');
 var bodyParser = require('body-parser');
 var expressJwt = require('express-jwt');
 var mongoose = require('mongoose');
 var config = require('config.json');
 
-mongoose.connect(config.database);
+
+var gameService  = require('./services/game.service');
+gameService.initService(io.of('/game'));
+var lobbyService = require('./services/lobby.service');
+lobbyService.initService(io.of('/lobby'), gameService.games);
+
+mongoose.connect(config.database, {user:config.user, pass:config.pass});
 
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
@@ -35,6 +43,6 @@ app.get('/', function (req, res) {
 });
 
 // start server
-var server = app.listen(3000, function () {
+server.listen(3000, function () {
     console.log('Server listening at http://' + server.address().address + ':' + server.address().port);
 });

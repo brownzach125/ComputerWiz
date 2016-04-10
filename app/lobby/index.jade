@@ -1,0 +1,16 @@
+h1 Lobby
+ul(class="list-group")
+    li(class="list-group-item"
+       ng-repeat="game in vm.games") Host: {{ game.host }}
+        button(ng-if ="game.host == vm.user.username"
+               class="btn btn-default btn-xs"
+               style="float:right"
+               ng-click="vm.cancelGame($index)") Cancel
+        button(ng-if ="game.host != vm.user.username"
+               class="btn btn-default btn-xs"
+               style="float:right"
+               ng-click="vm.joinGame($index)") Join
+div.form-group
+    button(class="btn btn-primary"
+           ng-class="{ active : !vm.isHosting, disabled: vm.isHosting }"
+           ng-click="vm.hostGame()") Host Game

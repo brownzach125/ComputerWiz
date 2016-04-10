@@ -1,0 +1,9 @@
+﻿{
+    "connectionString": "localhost:27017/mean-stack-registration-login-example",
+    "apiUrl":  "http://localhost:3000/api",
+    "secret": "ilovescotchyscotch",
+    "databaselocal": "mongodb://127.0.0.1:27017/dev",
+    "database": "mongodb://computerwizforcoding.com:27017/computerwizdev",
+    "user": "solevi",
+    "pass": "FranklinTheTurtle1"
+}

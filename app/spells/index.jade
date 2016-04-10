@@ -1,0 +1,14 @@
+h1 Your spell book
+h2 CurrentSpell: {{ vm.activeSpell.name }}
+div(style="width: 100%; height:50%")
+    div#function_editor
+        div(ui-ace="vm.aceOptions")
+    div#function_selectors
+        div.function_selector(ng-click="vm.selectSpell($index)" ng-repeat="spell in vm.spells"
+                              ng-class= "{ selected : spell==vm.activeSpell, saved : spell.saved == true , unsaved : spell.saved == false}")
+                div(style="float:left; display:inline-block") {{ $index + 1 }} :
+                input.title_tag(ng-model="spell.name")
+        div.function_selector.newSlot(ng-click="vm.createNewSpell()" ng-if="vm.spells.length<6")
+            | +
+div.form-group
+    button(class="btn btn-primary" ng-click="vm.saveSpell()") Save Spell

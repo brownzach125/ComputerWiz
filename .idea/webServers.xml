@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="81a03dc8-902a-4fde-8676-65414b8dc61b" name="computerwiz" url="http://computerwizforcoding.com">
+        <fileTransfer host="computerwizforcoding.com" port="10002" rootFolder="/home/solevi" accessType="SFTP" password="dfecdfd8dfcbdfc4dfc1dfc6dfc3dfc4dffedfc2dfcfdffedfdfdfd8dfdedfc6dfcfdf9b" username="solevi">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

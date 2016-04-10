@@ -1,10 +1,5 @@
-# ComputerWiz
-The great wizards redWizard and blueWizard duel violently.
-To defeat the other they are constantly crafting new spells using 
-the basic building blocks their master JavaScraft game taught them.
+# mean-stack-registration-login-example
 
+MEAN Stack User Registration and Login Example Application
 
-## Bragging Point / Mile Stone
-castFireBall, moveToPOS, getPOS and getFireBallsPOS
-exist in at least some prototypal form and using them
-a spell can be writen that checks for incoming fireballs and hops away.
+To see a demo and further details go to http://jasonwatmore.com/post/2015/12/09/MEAN-Stack-User-Registration-and-Login-Example.aspx
