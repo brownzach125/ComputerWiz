@@ -98,6 +98,10 @@ Wizard.prototype.takeHit = function(projectile) {
    this.state.health-=10;
 };
 
+Wizard.prototype.isDead = function() {
+    return this.state.health <= 0
+};
+
 Wizard.prototype.keyDown = function(data) {
     switch (data) {
         // W, Up Arrow

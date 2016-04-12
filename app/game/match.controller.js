@@ -22,8 +22,9 @@ LOOP_DELAY = 16;
         $scope.$on("$destroy", function() {
             console.log("Match controller destroyed");
             if (vm.intervalVar) {
-                clearInterval(vm.intervalVar);
+                window.cancelAnimationFrame(vm.intervalVar);
             }
+            socket.emit('quit_game', {username:vm.user.username});
         });
 
         function initMatch() {
@@ -33,10 +34,11 @@ LOOP_DELAY = 16;
             window.onresize = resizeHandler;
             window.onkeydown = KeyHandler.onKeyDown;
             window.onkeyup   = KeyHandler.onKeyUp;
-            vm.intervalVar = setInterval(gameLoop, LOOP_DELAY);
+            vm.intervalVar = window.requestAnimationFrame(gameLoop);
         }
         function gameLoop() {
             Game.draw();
+            vm.intervalVar = window.requestAnimationFrame(gameLoop);
         }
         function resizeHandler(event) {
             Camera.bestFitCamera();

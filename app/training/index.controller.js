@@ -20,7 +20,7 @@
 
 
         $scope.$on('$destroy' , function() {
-            socket.emit('quit_training', {username:vm.username});
+            socket.emit('quit_game', {username:vm.user.username});
         });
 
         function initController() {
@@ -88,7 +88,7 @@
         };
         socketCallbacks.game_over = function() {
             window.localStorage.setItem('gameUID',"");
-            $state.go('lobby');
+            //$state.go('lobby');
         }
     }
 })();

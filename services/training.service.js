@@ -20,12 +20,13 @@ function initService(io) {
             service.games[username].claim(this, username);
             callback(null,"Success");
         });
-        socket.on('quit_training', function(gameInfo) {
+        socket.on('quit_game', function(gameInfo) {
             var gameUID = gameInfo.gameUID;
             var username = gameInfo.username;
             if ( service.games[username]) {
                 service.games[username].quit(username);
             }
+            service.games[username] = null;
         });
     });
     io.on('disconnect', function() {

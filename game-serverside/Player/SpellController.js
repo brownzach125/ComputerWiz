@@ -13,7 +13,7 @@ function initProcess(controller) {
     spellProcess.on('message' , function(data) {
         var type = data.type;
         if ( type == 'request') {
-            console.log("Message recieved!!!");
+            //console.log("Message recieved!!!");
             controller.handleRequest(data);
         }
         if ( type =='err') {
@@ -64,7 +64,7 @@ SpellController.prototype.loadSpells = function() {
 };
 
 SpellController.prototype.log = function(message) {
-    console.log(message);
+    //console.log(message);
 };
 
 SpellController.prototype.reset = function() {
@@ -86,14 +86,14 @@ SpellController.prototype.createSpell = function(spell) {
     var problem = badSpell(spell.code);
     if ( problem ) {
         // TODO I can do this on the spell process, but I can also do it now more directly....
-        console.log("Hey there is problem");
+        //console.log("Hey there is problem");
         return problem;
     }
     var code = spell.code;
     var slot = spell.slot;
     this.spellSafe[slot] = spell;
     this.process.send({type: 'createSpell' , code : code , slot: slot});
-    console.log("Spell made in slot " + slot);
+    //console.log("Spell made in slot " + slot);
 };
 
 SpellController.prototype.castSpell = function(slot) {
@@ -166,7 +166,7 @@ SpellController.prototype.handleRequest = function(data) {
         this.process.send({type: 'data', value: result});
     }
     else {
-        console.log("Function " + func + " doenst exits");
+        //console.log("Function " + func + " doenst exits");
     }
 };
 

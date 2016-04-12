@@ -51,7 +51,7 @@ function processRequestResponse(data) {
 }
 
 function log(message) {
-    console.log("Spell Process: UID: + " + wizardUID + "\n --- " + message);
+    //console.log("Spell Process: UID: + " + wizardUID + "\n --- " + message);
 }
 
 function startSpell(data) {
@@ -77,7 +77,7 @@ function sendRequest(funcName , params) {
     for ( var key in params) {
         arrayParams.push( params[key]);
     }
-    console.log("sendRequest: " + funcName);
+    //console.log("sendRequest: " + funcName);
     process.send({
         type: 'request',
         funcName: funcName,
@@ -103,10 +103,10 @@ function spellBookSandbox() {
                 return location;
             }
         } else {
-            console.log(index + " was speical spell");
+            //console.log(index + " was speical spell");
             // This must be a special spell that can only be implemented at this level
             if ( !this[index] ) {
-                console.log("Hey dummy there is a special spell that hasnt been implemented");
+                //console.log("Hey dummy there is a special spell that hasnt been implemented");
             }
         }
     }

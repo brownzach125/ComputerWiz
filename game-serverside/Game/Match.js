@@ -10,6 +10,7 @@ var Utils = require("../shared/Utils.js");
 function Match(data) {
     this.redWizardPlayer = data.redWizard;
     this.blueWizardPlayer = data.blueWizard;
+    this.game = this.redWizardPlayer.game;
     this.fireBallList  = new FireBallGen.FireBallList(this);
     this.redWizard  = new Wizard(100 , 100, this);
     this.blueWizard = new Wizard(200, 100, this);
@@ -33,6 +34,18 @@ Match.matchLoop = function(match) {
     match.fireBallList.update();
     match.blueWizard.update();
     match.redWizard.update();
+
+    // Check for dead wizards
+    var blueDead = match.redWizard.isDead();
+    var redDead  = match.blueWizard.isDead();
+    if (blueDead || redDead) {
+        // Match is over!
+        var results = {blueDead:blueDead, redDead:redDead};
+        match.game.matchFinished(results);
+    }
+
+
+
     var that = this;
     match.state = {
         redWizard:     match.redWizard.state,
