@@ -17,6 +17,8 @@ var gameService  = require('./services/game.service');
 gameService.initService(io.of('/game'));
 var lobbyService = require('./services/lobby.service');
 lobbyService.initService(io.of('/lobby'), gameService.games);
+var trainingService = require('./services/training.service');
+trainingService.initService(io.of('/training'));
 
 mongoose.connect(config.database, {user:config.user, pass:config.pass});
 

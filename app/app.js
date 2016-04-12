@@ -39,6 +39,27 @@
                 controllerAs: 'vm',
                 data: {activeTab: 'spells'}
             })
+            .state('training', {
+                url: '/training',
+                templateUrl: 'training/index.html',
+                controller: "Training.IndexController",
+                controllerAs: 'vm',
+                data: {activeTab:'training'}
+            })
+            .state('training.spells', {
+                url: '/spells',
+                templateUrl: 'spells/index.html',
+                controller: "Spells.IndexController",
+                controllerAs: 'vm',
+                data: {activeTab:'training'}
+            })
+            .state('training.match', {
+                url: '/match',
+                templateUrl: 'game/match.html',
+                controller: "Game.MatchController",
+                controllerAs: 'vm',
+                data: {activeTab:'training'}
+            })
             .state('game', {
                 url: '/game',
                 templateUrl: 'game/index.html',

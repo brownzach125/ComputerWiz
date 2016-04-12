@@ -16,6 +16,7 @@
             <li ng-class="{active: activeTab === 'account'}"><a ui-sref="account">Account</a></li>
             <li ng-class="{active: activeTab === 'lobby'}"><a ui-sref="lobby">Lobby</a></li>
             <li ng-class="{active: activeTab === 'spells'}"><a ui-sref="spells">Spells</a></li>
+            <li ng-class="{active: activeTab === 'training'}"><a ui-sref="training">Training Room</a></li>
             <li><a href="/login" target="_self">Logout</a></li>
         </ul>
         <div class="flash-message" ng-if="flash">
@@ -37,6 +38,11 @@
     <script src="app-content/ace-builds/ui-ace.js" type="text/javascript" charset="utf-8"></script>
     <script src="app-content/ace-builds/src/ace.js" type="text/javascript" charset="utf-8"></script>
 
+
+    <!-- shared -->
+    <script src="shared/Intersectable.js"></script>
+    <script src="shared/GameStates.js"></script>
+
     <!-- application scripts -->
     <script src="app-directives/contenteditable.js"></script>
     <script src="app.js"></script>
@@ -51,9 +57,9 @@
     <script src="spells/index.controller.js"></script>
     <script src="game/index.controller.js"></script>
     <script src="game/match.controller.js"></script>
+    <script src="training/index.controller.js"></script>
 
     <!-- gameplace scripts -->
-    <script src="shared/Intersectable.js"></script>
     <script src="app-content/javascript/ResourceManager.js"></script>
     <script src="app-content/javascript/Camera.js"></script>
     <script src="app-content/javascript/Arena.js"></script>

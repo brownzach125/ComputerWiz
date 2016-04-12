@@ -39,8 +39,10 @@ Match.matchLoop = function(match) {
         blueWizard:    match.blueWizard.state,
         fireBallList:  match.fireBallList.state
     };
-    match.redWizardPlayer.matchUpdate(match.state);
-    match.blueWizardPlayer.matchUpdate(match.state);
+    if (match.redWizardPlayer)
+        match.redWizardPlayer.matchUpdate(match.state);
+    if (match.blueWizardPlayer)
+        match.blueWizardPlayer.matchUpdate(match.state);
 };
 
 Match.prototype.canBeAt = function(pos , obj) {

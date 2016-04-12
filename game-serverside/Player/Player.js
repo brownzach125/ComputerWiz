@@ -37,6 +37,7 @@ Player.prototype.reconnect = function(socket) {
     this.socket = socket;
     this.socket.wizardName = this.name;
     this.setupSocketHandler(socket);
+    this.changeState(this.game.state);
 };
 
 Player.prototype.changeState = function(state) {
