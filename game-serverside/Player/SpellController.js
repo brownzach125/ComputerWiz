@@ -46,10 +46,13 @@ function SpellController(wizard) {
     this.spellSafe = {};
     this.username = wizard.username;
 
+    this.loadSpells();
+}
+
+SpellController.prototype.loadSpells = function() {
     var that = this;
     Spell.getByUsername(this.username)
         .then(function(spells) {
-            console.log("SUPPPP");
             for (var i =0; i < spells.length; i++) {
                 that.spellSafe[spells[i].slot] = {code:spells[i].code, name:spells[i].name, slot:spells[i].slot};
                 that.createSpell(that.spellSafe[spells[i].slot]);
@@ -58,7 +61,7 @@ function SpellController(wizard) {
         .catch(function(err) {
 
         });
-}
+};
 
 SpellController.prototype.log = function(message) {
     console.log(message);

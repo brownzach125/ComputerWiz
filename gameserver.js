@@ -46,3 +46,30 @@ app.get('/', function (req, res) {
 server.listen(3000, function () {
     console.log('Server listening at http://' + server.address().address + ':' + server.address().port);
 });
+
+
+/*
+process.on('SIGTERM',function() {
+    console.log("Asked to stop nicely");
+    for ( var key in clients) {
+        clients[key].disconnect(true);
+    }
+    games.forEach(function(game) {
+        game.shutDown();
+    });
+    io.close();
+    process.exit(0);
+});
+
+function shutdown() {
+    console.log("Asked to stop nicely");
+    for ( var key in clients) {
+        clients[key].disconnect(true);
+    }
+    games.forEach(function(game) {
+        game.shutDown();
+    });
+    io.close();
+    process.exit(0);
+}
+    */

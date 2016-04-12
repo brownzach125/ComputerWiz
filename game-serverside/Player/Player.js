@@ -1,3 +1,4 @@
+var GameStates = require('../shared/GameStates.js');
 var SpellController = require('./SpellController.js');
 var SpellBook = require('./SpellBook');
 function Player(game, socket, name, username) {
@@ -7,12 +8,10 @@ function Player(game, socket, name, username) {
     this.socket.wizardName = name;
     this.name = name;
     this.setupSocketHandler(socket);
-    //this.state = PlayerStates.CreatingSpells;
     // Object that handles the calls to basic spells
     this.spellBook = new SpellBook(this);
     // Object that controls the process that the wizards spells run in
     this.spellController = new SpellController(this);
-    // this.client - set elsewhere
     this.changeState(this.game.state);
 }
 
@@ -41,6 +40,10 @@ Player.prototype.reconnect = function(socket) {
 };
 
 Player.prototype.changeState = function(state) {
+    switch(state) {
+        case GameStates.match:
+            this.spellController.loadSpells();
+    }
     this.socket.emit("game_state", { state:state});
 };
 

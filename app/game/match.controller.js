@@ -11,7 +11,7 @@ LOOP_DELAY = 16;
         .module('app')
         .controller('Game.MatchController', Controller);
 
-    function Controller(UserService, SpellService, socket) {
+    function Controller(UserService, SpellService, socket, $scope) {
         var vm = this;
         vm.user = null;
         vm.spells = null;
@@ -19,6 +19,12 @@ LOOP_DELAY = 16;
         initController();
         // public functions
 
+        $scope.$on("$destroy", function() {
+            console.log("Match controller destroyed");
+            if (vm.intervalVar) {
+                clearInterval(vm.intervalVar);
+            }
+        });
 
         function initMatch() {
             KeyHandler.init(socket);

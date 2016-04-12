@@ -23,6 +23,7 @@
         vm.saveSpell = saveSpell;
         vm.createNewSpell = createNewSpell;
         vm.selectSpell = selectSpell;
+        vm.quitGame = quitGame;
 
         function onAceLoad(_editor) {
             vm.editor = _editor;
@@ -51,18 +52,20 @@
                         });
                         vm.editSessions.push(  editSession );
                     });
-                    if ( vm.spells.length > 0)
+                    if ( vm.spells.length == 0) {
+                        createNewSpell();
+                    }
                         selectSpell(0);
                 });
             });
         }
 
         function invalidateActiveSpell(slotIndex) {
-            // ugh I hate this hack
-            setTimeout(function() {
-                vm.spells[slotIndex].saved = false;
-                $scope.$apply();
-            },100);
+                // ugh I hate this hack
+                setTimeout(function () {
+                    vm.spells[slotIndex].saved = false;
+                    $scope.$apply();
+                }, 100);
         }
         function saveSpell() {
             var spell = vm.activeSpell;
@@ -80,7 +83,13 @@
         }
         function createNewSpell() {
             var slot = vm.spells.length +1;
-            vm.spells.push({slot:slot, code:"", name:"Spell in slot " + slot, saved:false});
+            var editSession = new ace.EditSession("", "javascript");
+            editSession.slotIndex = slot - 1;
+            editSession.on('change', function() {
+                invalidateActiveSpell(editSession.slotIndex);
+            });
+            vm.spells.push({slot:slot, code:editSession.getValue(), name:"Spell in slot " + slot, saved:false});
+            vm.editSessions.push(  editSession );
             selectSpell(slot-1);
         }
         function selectSpell(slotIndex) {
@@ -91,7 +100,6 @@
             vm.editor.setSession(vm.editSessions[slotIndex]);
             vm.activeSpell = vm.spells[slotIndex];
         }
-        vm.quitGame = quitGame;
         function quitGame() {
             console.log("FUCK this");
         }

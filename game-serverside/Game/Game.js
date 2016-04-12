@@ -48,6 +48,8 @@ Game.prototype.quit = function(username) {
     for (var k in this.users) {
         this.users[k].socket.emit("game_over");
     }
+    // Stop the match
+    this.stopMatch();
 };
 
 Game.prototype.requestState = function(player, state) {
@@ -72,11 +74,6 @@ Game.prototype.stopMatch = function() {
     if (this.match)
         this.match.stop();
 };
-
-
-
-
-
 
 Game.prototype.playerKeyDown = function(name, data) {
     if (this.match) {

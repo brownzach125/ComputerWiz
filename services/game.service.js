@@ -12,6 +12,7 @@ function initService(io) {
         socket.on('enter_game', function(gameInfo, callback) {
             var gameUID = gameInfo.gameUID;
             var username = gameInfo.username;
+            console.log("Player " + username + " entered game");
             if ( !service.games[gameUID] ) {
                 if ( typeof(callback) === 'function' ) {
                     callback("No such game");
@@ -27,8 +28,9 @@ function initService(io) {
         socket.on('quit_game', function(gameInfo) {
            var gameUID = gameInfo.gameUID;
            var username = gameInfo.username;
-           if ( service.games[gameUID])
-                service.games[gameUID].quit(username);
+           if ( service.games[gameUID]) {
+               service.games[gameUID].quit(username);
+           }
         });
     });
     io.on('disconnect', function() {
