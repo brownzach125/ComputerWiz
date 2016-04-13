@@ -83,15 +83,15 @@ Player.prototype.handleKeyDown = function(data) {
 Player.prototype.castSpell = function(slot) {
     this.spellController.castSpell(slot);
 };
-//    Functions in response to match sending messages
-/*
-Player.prototype.stopSpells = function() {
-    this.spellController.reset();
-};
 
-// This used when the game has been told to shutdown, so now the wizard must shut down
 Player.prototype.shutDown = function() {
+  if (this.spellController)
     this.spellController.shutDown();
 };
-*/
+
+Player.prototype.stopSpells = function() {
+    if (this.spellController)
+        this.spellController.reset();
+};
+
 module.exports = Player;

@@ -59,6 +59,21 @@ Game.prototype.quit = function(username) {
     }
     // Stop the match
     this.stopMatch();
+    this.shutDown();
+};
+
+Game.prototype.quitMatch = function() {
+    for (var k in this.users) {
+        this.users[k].socket.emit("match_over");
+    }
+
+    this.stopMatch();
+    if ( this.blueWizard ) {
+        this.blueWizard.stopSpells();
+    }
+    if ( this.redWizard ) {
+        this.redWizard.stopSpells();
+    }
 };
 
 Game.prototype.requestState = function(player, state) {
@@ -100,6 +115,15 @@ Game.prototype.createFireBall = function(wizardName, direction, speed, radius) {
     if ( this.match ) {
         this.match.createFireBall(wizardName, direction, speed, radius);
     }
+};
+
+Game.prototype.shutDown = function() {
+  if (this.blueWizard) {
+      this.blueWizard.shutDown();
+  }
+  if (this.redWizard) {
+      this.redWizard.shutDown();
+  }
 };
 
 /*

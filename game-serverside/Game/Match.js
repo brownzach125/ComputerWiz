@@ -29,7 +29,20 @@ Match.prototype.stop = function() {
 };
 
 // Match loop, what must be done each tick of a match
+var count = 0;
+var startTime = null;
 Match.matchLoop = function(match) {
+    // Rate calculation
+    count++;
+    if(!startTime)
+        startTime = new Date().getTime();
+
+    if ( new Date().getTime() - startTime >= 1000) {
+        //console.log(count * 60);
+        count = 0;
+        starTime = new Date().getTime();
+    }
+
     // update state
     match.fireBallList.update();
     match.blueWizard.update();

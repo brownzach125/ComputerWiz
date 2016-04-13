@@ -5,7 +5,7 @@
         .module('app')
         .controller('Game.IndexController', Controller);
 
-    function Controller(UserService, SpellService, socket, $state) {
+    function Controller(UserService, SpellService, socket, $state, $scope) {
         var vm = this;
         vm.user = null;
         vm.spells = null;
@@ -21,6 +21,10 @@
         vm.goToMatch = goToMatch;
         vm.goToSpell = goToSpell;
         vm.quitGame = quitGame;
+        $scope.$on("$destroy", function(){
+            socket.emit('quit_game', {gameUID:vm.gameUID, username:vm.user.username});
+        });
+
 
         function initController() {
             vm.gameUID = window.localStorage.getItem('gameUID');

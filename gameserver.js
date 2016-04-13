@@ -17,10 +17,10 @@ var gameService  = require('./services/game.service');
 gameService.initService(io.of('/game'));
 var lobbyService = require('./services/lobby.service');
 lobbyService.initService(io.of('/lobby'), gameService.games);
-var trainingService = require('./services/training.service');
-trainingService.initService(io.of('/training'));
+
 
 mongoose.connect(config.database, {user:config.user, pass:config.pass});
+//mongoose.connect(config.database);
 
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
@@ -50,19 +50,18 @@ server.listen(3000, function () {
 });
 
 
-/*
+
 process.on('SIGTERM',function() {
     console.log("Asked to stop nicely");
     for ( var key in clients) {
-        clients[key].disconnect(true);
+        io.sockets.disconnect();
     }
-    games.forEach(function(game) {
-        game.shutDown();
-    });
+    gameService.shutDown();
     io.close();
     process.exit(0);
 });
 
+/*
 function shutdown() {
     console.log("Asked to stop nicely");
     for ( var key in clients) {
@@ -74,4 +73,4 @@ function shutdown() {
     io.close();
     process.exit(0);
 }
-    */
+*/

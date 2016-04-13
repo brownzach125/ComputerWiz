@@ -20,11 +20,10 @@
 
 
         $scope.$on('$destroy' , function() {
-            socket.emit('quit_game', {username:vm.user.username});
+            socket.emit('quit_game', {username:vm.user.username, training:true });
         });
 
         function initController() {
-            //vm.gameUID = window.localStorage.getItem('gameUID');
             UserService.GetCurrent().then(function (user) {
                 vm.user = user;
                 SpellService.GetUserSpells(vm.user._id).then(function(spells) {
@@ -35,7 +34,7 @@
         }
 
         function setupSocket() {
-            socket.connect('/training');
+            socket.connect('/game');
             for ( var key in socketCallbacks) {
                 socket.on(key, socketCallbacks[key]);
             }
@@ -65,7 +64,7 @@
 
         var socketCallbacks =  {};
         socketCallbacks.connect = function() {
-            socket.emit('enter_training', {gameUID: vm.gameUID, username:vm.user.username}, function(err, message) {
+            socket.emit('enter_game', {gameUID: vm.gameUID, username:vm.user.username, training:true}, function(err, message) {
                 if (err ) {
                     $state.go("lobby");
                     return;
@@ -86,9 +85,9 @@
                 }
             }
         };
+
         socketCallbacks.game_over = function() {
             window.localStorage.setItem('gameUID',"");
-            //$state.go('lobby');
         }
     }
 })();
