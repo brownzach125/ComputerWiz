@@ -49,8 +49,8 @@ Match.matchLoop = function(match) {
     match.redWizard.update();
 
     // Check for dead wizards
-    var blueDead = match.redWizard.isDead();
-    var redDead  = match.blueWizard.isDead();
+    var blueDead = match.blueWizard.isDead();
+    var redDead  = match.redWizard.isDead();
     if (blueDead || redDead) {
         // Match is over!
         var results = {blueDead:blueDead, redDead:redDead};

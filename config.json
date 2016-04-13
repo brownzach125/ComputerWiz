@@ -1,8 +1,8 @@
 ﻿{
     "apiUrl":  "http://localhost:3000/api",
     "secret": "Theheartofhearts",
-    "databaselocal": "mongodb://127.0.0.1:27017/dev",
-    "database": "mongodb://computerwizforcoding.com:27017/computerwizdev",
+    "database": "mongodb://127.0.0.1:27017/dev",
+    "databaseremote": "mongodb://computerwizforcoding.com:27017/computerwizdev",
     "user": "solevi",
     "pass": "FranklinTheTurtle1"
 }

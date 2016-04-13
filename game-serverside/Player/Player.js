@@ -1,6 +1,7 @@
 var GameStates = require('../shared/GameStates.js');
 var SpellController = require('./SpellController.js');
 var SpellBook = require('./SpellBook');
+
 function Player(game, socket, name, username) {
     this.username = username;
     this.game = game;
@@ -92,6 +93,12 @@ Player.prototype.shutDown = function() {
 Player.prototype.stopSpells = function() {
     if (this.spellController)
         this.spellController.reset();
+};
+
+Player.prototype.matchFinished = function(results) {
+  if (this.spellController)
+    this.spellController.reset();
+  this.socket.emit("match_finished", results);
 };
 
 module.exports = Player;

@@ -19,8 +19,8 @@ var lobbyService = require('./services/lobby.service');
 lobbyService.initService(io.of('/lobby'), gameService.games);
 
 
-mongoose.connect(config.database, {user:config.user, pass:config.pass});
-//mongoose.connect(config.database);
+//mongoose.connect(config.database, {user:config.user, pass:config.pass});
+mongoose.connect(config.database);
 
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
@@ -50,7 +50,6 @@ server.listen(3000, function () {
 });
 
 
-
 process.on('SIGTERM',function() {
     console.log("Asked to stop nicely");
     for ( var key in clients) {
@@ -60,17 +59,3 @@ process.on('SIGTERM',function() {
     io.close();
     process.exit(0);
 });
-
-/*
-function shutdown() {
-    console.log("Asked to stop nicely");
-    for ( var key in clients) {
-        clients[key].disconnect(true);
-    }
-    games.forEach(function(game) {
-        game.shutDown();
-    });
-    io.close();
-    process.exit(0);
-}
-*/

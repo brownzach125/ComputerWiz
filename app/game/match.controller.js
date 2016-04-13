@@ -35,7 +35,6 @@ LOOP_DELAY = 16;
             window.onresize = resizeHandler;
             window.onkeydown = KeyHandler.onKeyDown;
             window.onkeyup   = KeyHandler.onKeyUp;
-            //vm.intervalVar = window.requestAnimationFrame(gameLoop);
             limitLoop(gameLoop,30);
         }
         function gameLoop() {
@@ -69,9 +68,9 @@ LOOP_DELAY = 16;
         socketCallbacks.match_state = function(state) {
             Game.stateUpdate(state);
         };
-
-
-
+        socketCallbacks.match_finished = function(results) {
+            console.log(results);
+        };
 
 
 

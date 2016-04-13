@@ -1,0 +1,13 @@
+//
+   Created by solevi on 4/13/16.
+
+
+div.modal-heard
+    h3 {{ modalOptions.headerText }}
+div.modal-body
+    p {{ modalOptions.bodyText }}
+div.modal-footer
+    button(type="button", class="btn" data-ng-click="modalOptions.close()")
+    |    {{ modalOptions.closeButtonText }}
+    button(class="btn btn-primary" data-ng-click="modalOptions.ok();")
+    | {{ modalOptions.actionButtonText }}

@@ -68,12 +68,6 @@ Game.prototype.quitMatch = function() {
     }
 
     this.stopMatch();
-    if ( this.blueWizard ) {
-        this.blueWizard.stopSpells();
-    }
-    if ( this.redWizard ) {
-        this.redWizard.stopSpells();
-    }
 };
 
 Game.prototype.requestState = function(player, state) {
@@ -97,6 +91,12 @@ Game.prototype.startMatch = function() {
 Game.prototype.stopMatch = function() {
     if (this.match)
         this.match.stop();
+    if ( this.blueWizard ) {
+        this.blueWizard.stopSpells();
+    }
+    if ( this.redWizard ) {
+        this.redWizard.stopSpells();
+    }
 };
 
 Game.prototype.playerKeyDown = function(name, data) {
@@ -126,38 +126,15 @@ Game.prototype.shutDown = function() {
   }
 };
 
-/*
- //-------------------------
- // Functions that control the match object of a game
- //-------------------------
- Game.prototype.startMatch = function() {
- this.match = new Match(this);
- this.match.start();
- };
-
- Game.prototype.stopMatch = function() {
- this.redWizard.stopSpells();
- this.blueWizard.stopSpells();
- this.match.stop();
- this.match = null;
- };
-
- //--------------------------
- //  Functions for altering the match state
- //--------------------------
-
- //-------------------------
- // Functions used by the gameserver.js to manage a game
- //------------------------------
- Game.prototype.shutDown = function() {
- if ( this.blueWizard) {
- this.blueWizard.shutDown();
- }
- if ( this.redWizard) {
- this.redWizard.shutDown();
- }
- };
-
- */
+Game.prototype.matchFinished = function(results) {
+    // Stop the match.
+    this.stopMatch();
+    if(this.redWizard) {
+        this.redWizard.matchFinished(results);
+    }
+    if(this.blueWizard) {
+        this.blueWizard.matchFinished(results);
+    }
+};
 
 module.exports = Game;

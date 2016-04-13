@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('app', ['ui.router', 'myDirectives', 'ui.ace'])
+        .module('app', ['ui.router', 'myDirectives', 'ui.ace', 'ui.bootstrap'])
         .config(config)
         .run(run);
 
