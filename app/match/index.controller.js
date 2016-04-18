@@ -9,24 +9,25 @@ LOOP_DELAY = 16;
 
     angular
         .module('app')
-        .controller('Game.MatchController', Controller);
+        .controller('Match.IndexController', Controller);
 
-    function Controller(UserService, SpellService, socket, $scope) {
+    function Controller(UserService, socket, $scope, $state) {
         var vm = this;
+        var vmParent = $scope.$parent.vm;
+        vm.wizardName = vmParent.wizardName;
+        vm.opponent = vmParent.opponent;
         vm.user = null;
-        vm.spells = null;
 
         initController();
         // public functions
 
-        $scope.$on("$destroy", function() {
-            console.log("Match controller destroyed");
-            if (vm.intervalVar) {
-                window.cancelAnimationFrame(vm.intervalVar);
-            }
-            vm.gameUID = window.localStorage.getItem('gameUID');
-            socket.emit('quit_match', {username:vm.user.username, gameUID:vm.gameUID});
-        });
+        function initController() {
+            UserService.GetCurrent().then(function (user) {
+                vm.user = user;
+                setupSocket();
+                initMatch();
+            });
+        }
 
         function initMatch() {
             KeyHandler.init(socket);
@@ -47,17 +48,6 @@ LOOP_DELAY = 16;
             Game.draw();
         }
 
-        function initController() {
-            UserService.GetCurrent().then(function (user) {
-                vm.user = user;
-                SpellService.GetUserSpells(vm.user._id).then(function(spells) {
-                    vm.spells = spells;
-                    setupSocket();
-                    initMatch();
-                });
-            });
-        }
-
         function setupSocket() {
             for ( var key in socketCallbacks) {
                 socket.on(key, socketCallbacks[key]);
@@ -68,11 +58,16 @@ LOOP_DELAY = 16;
         socketCallbacks.match_state = function(state) {
             Game.stateUpdate(state);
         };
-        socketCallbacks.match_finished = function(results) {
-            console.log(results);
-        };
 
 
+        $scope.$on("$destroy", function() {
+            console.log("Match controller destroyed");
+            if (vm.intervalVar) {
+                window.cancelAnimationFrame(vm.intervalVar);
+            }
+            vm.gameUID = window.localStorage.getItem('gameUID');
+            socket.emit('quit_match', {username:vm.user.username, gameUID:vm.gameUID});
+        });
 
         vm.intervalVar = null;
         var limitLoop = function (fn, fps) {

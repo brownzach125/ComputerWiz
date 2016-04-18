@@ -23,6 +23,26 @@ Training.prototype.claim = function(socket, username) {
         this.redWizard.reconnect(socket);
         this.users[username].socket = socket;
     }
+    if (this.redWizard) {
+        var gameInfo = {
+            wizardName: "redWizard",
+            opponent : {
+                username: this.blueWizard ? this.blueWizard.username : "",
+                wizardName: 'blueWizard'
+            }
+        };
+        this.redWizard.socket.emit('game_info',gameInfo)
+    }
+    if (this.blueWizard) {
+        var gameInfo = {
+            wizardName: "blueWizard",
+            opponent : {
+                username: this.redWizard ? this.redWizard.username : "",
+                wizardName: 'redWizard'
+            }
+        };
+        this.blueWizard.socket.emit('game_info',gameInfo)
+    }
 };
 
 Training.prototype.requestState = function(player, state) {

@@ -6,8 +6,6 @@
 /*
 
  */
-
-
 var GameStates = require('../shared/GameStates.js');
 var Player = require('../Player/Player.js');
 var Match = require('./Match.js');
@@ -31,6 +29,27 @@ Game.prototype.claim = function(socket, username) {
         }
     } else {
         this[this.users[username].wizardName].reconnect(socket);
+    }
+
+    if (this.redWizard) {
+        var gameInfo = {
+            wizardName: "redWizard",
+            opponent : {
+                username: this.blueWizard ? this.blueWizard.username : "",
+                wizardName: 'blueWizard'
+            }
+        };
+        this.redWizard.socket.emit('game_info',gameInfo)
+    }
+    if (this.blueWizard) {
+        var gameInfo = {
+            wizardName: "blueWizard",
+            opponent : {
+                username: this.redWizard ? this.redWizard.username : "",
+                wizardName: 'redWizard'
+            }
+        };
+        this.blueWizard.socket.emit('game_info',gameInfo)
     }
 };
 

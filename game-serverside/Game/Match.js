@@ -53,7 +53,7 @@ Match.matchLoop = function(match) {
     var redDead  = match.redWizard.isDead();
     if (blueDead || redDead) {
         // Match is over!
-        var results = {blueDead:blueDead, redDead:redDead};
+        var results = { winner: redDead? "blueWizard" : "redWizard"};
         match.game.matchFinished(results);
     }
 
@@ -96,6 +96,7 @@ Match.prototype.canBeAt = function(pos , obj) {
 };
 
 Match.prototype.playerKeyDown = function(wizardName, data) {
+
     this[wizardName].keyDown(data);
 };
 

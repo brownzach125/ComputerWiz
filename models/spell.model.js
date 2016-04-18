@@ -26,7 +26,14 @@ Spell.statics.getByUsername = function(username) {
     var deferred = Q.defer();
     var that = this;
     User.findOne({username:username} , function(err, user) {
-        if (err) deferred.reject(err);
+        if (err) {
+            deferred.reject(err);
+            return;
+        }
+        if (!user) {
+            deferred.reject(err);
+            return;
+        }
 
         that.find({userId:user._id}, function(err, spells) {
            if (err) deferred.reject(err);

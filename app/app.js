@@ -2,11 +2,21 @@
     'use strict';
 
     angular
-        .module('app', ['ui.router', 'myDirectives', 'ui.ace', 'ui.bootstrap'])
+        .module('app', ['ui.router', 'myDirectives', 'ui.ace', 'ngDialog'])
         .config(config)
         .run(run);
 
-    function config($stateProvider, $urlRouterProvider) {
+    function config($stateProvider, $urlRouterProvider,ngDialogProvider) {
+        ngDialogProvider.setDefaults({
+            className: 'ngdialog-theme-default',
+            plain: false,
+            showClose: false,
+            closeByDocument:false,
+            closeByEscape: false
+        });
+
+
+
         // default route
         $urlRouterProvider.otherwise("/");
 
@@ -55,8 +65,8 @@
             })
             .state('training.match', {
                 url: '/match',
-                templateUrl: 'game/match.html',
-                controller: "Game.MatchController",
+                templateUrl: 'match/match.html',
+                controller: "Match.IndexController",
                 controllerAs: 'vm',
                 data: {activeTab:'training'}
             })
@@ -69,8 +79,8 @@
             })
             .state('game.match', {
                 url: '/match',
-                templateUrl: 'game/match.html',
-                controller: 'Game.MatchController',
+                templateUrl: 'match/index.html',
+                controller: 'Match.IndexController',
                 controllerAs: 'vm',
                 data: {activeTab: 'game'}
             })

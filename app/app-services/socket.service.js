@@ -15,6 +15,11 @@
 
         function connect(namespace) {
             socket = io.connect(document.location.origin + namespace , {path:""});
+            console.log("Made A new connection");
+
+            socket.on("disconnect", function() {
+               console.log("Disconnection");
+            });
         }
 
         function on(eventName, callback) {

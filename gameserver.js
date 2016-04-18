@@ -19,8 +19,10 @@ var lobbyService = require('./services/lobby.service');
 lobbyService.initService(io.of('/lobby'), gameService.games);
 
 
-mongoose.connect(config.database, {user:config.user, pass:config.pass});
-//mongoose.connect(config.database);
+if ( config.useDataBase == "local")
+    mongoose.connect(config.database_local);
+else
+    mongoose.connect(config.database_remote, {user:config.user, pass:config.pass});
 
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');

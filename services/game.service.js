@@ -68,6 +68,7 @@ function joinTraining(socket, username,callback) {
         service.training[username] = new Training();
     }
     service.training[username].claim(socket, username);
+
     callback(null,"Success");
 }
 

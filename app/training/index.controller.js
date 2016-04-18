@@ -5,7 +5,7 @@
         .module('app')
         .controller('Training.IndexController', Controller);
 
-    function Controller(UserService, SpellService, socket, $state,$scope) {
+    function Controller(UserService, SpellService, socket, $state,$scope,ngDialog) {
         var vm = this;
         vm.user = null;
         vm.spells = null;
@@ -17,7 +17,6 @@
         vm.goToMatch = goToMatch;
         vm.goToSpell = goToSpell;
         vm.quitGame = quitGame;
-
 
         $scope.$on('$destroy' , function() {
             socket.emit('quit_game', {username:vm.user.username, training:true });
@@ -85,7 +84,6 @@
                 }
             }
         };
-
         socketCallbacks.game_over = function() {
             window.localStorage.setItem('gameUID',"");
         }
