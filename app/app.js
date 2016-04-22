@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('app', ['ui.router', 'myDirectives', 'ui.ace', 'ngDialog'])
+        .module('app', ['ui.router', 'myDirectives','ngDialog'])
         .config(config)
         .run(run);
 

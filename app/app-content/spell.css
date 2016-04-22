@@ -26,6 +26,8 @@
     opacity : .5;
     background-color: #aaaaaa;
     border:#aaaaaa;
+    max-height:25px;
+    overflow:hidden;
 }
 
 .function_selector.selected {
@@ -45,6 +47,7 @@
     display: inline-block;
     background-color:inherit;
     border:inherit;
+    max-width:75%;
 }
 
 #function_editor {

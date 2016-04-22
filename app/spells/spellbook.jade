@@ -1,0 +1,22 @@
+//
+   Created by solevi on 4/19/16.
+// Show the basic spells that are available for the user.
+div.container-fluid(ng-controller="Spells.SpellBookController as vm")
+    div.row
+        div.col-md-5
+            ul(class="list-group")
+                li(class="list-group-item" ng-repeat="spell in vm.SpellBook"
+                   ng-click="vm.selectSpell(spell)" ng-class="{active : spell == vm.selectedSpell}")
+                    h4(class="list-group-item-heading") {{ spell.name }}
+                    p(class="list-group-item-text") {{ spell.brief_description }}
+        div.col-md-7
+            div(ng-if="vm.selectedSpell")
+                div Usage:
+                div {{ "  " + vm.selectedSpell.name }} (
+                    span(ng-repeat="param in vm.selectedSpell.params") {{ param.name }} ,
+                    | )
+                div Description:
+                div#spellDescription {{ vm.selectedSpell.description }}
+                div Params:
+                    div(ng-repeat="param in vm.selectedSpell.params") {{ param.name  + ' : '}}
+                        div {{ param.description }}

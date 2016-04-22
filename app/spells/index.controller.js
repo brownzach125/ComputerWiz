@@ -11,12 +11,21 @@
         vm.spells = null;
         vm.activeSpell = null;
         vm.editSessions = [];
+        /*
         vm.aceOptions = {useWrapMode : true,
                          showGutter: true,
                          theme:'monokai',
                          mode: 'javascript',
                          onChange: invalidateActiveSpell,
-                         onLoad: onAceLoad};
+                         onLoad: onAceLoad,
+                         require: ['ace/ext/language_tools'],
+                         advanced: {
+                            enableSnippets: true,
+                            enableBasicAutocompletion: true,
+                            enableLiveAutocompletion: true
+                        }
+        };
+        */
 
 
         // public functions
@@ -25,6 +34,9 @@
         vm.selectSpell = selectSpell;
         vm.quitGame = quitGame;
 
+
+
+        /*
         function onAceLoad(_editor) {
             vm.editor = _editor;
             vm.editor.$blockScrolling = Infinity;
@@ -35,6 +47,22 @@
             });
             initController();
         }
+        */
+        function initEditor() {
+            var langTools = ace.require("ace/ext/language_tools");
+            var editor = ace.edit("editor_space");
+            editor.setOptions({
+                //enableSnippets: true,
+                enableBasicAutocompletion: true,
+                enableLiveAutocompletion: true,
+                theme: "ace/theme/monokai"
+            });
+            //editor.set
+
+            vm.editor = editor;
+            initController();
+        }
+        initEditor();
 
         function initController() {
             // get current user
@@ -45,7 +73,7 @@
                     //vm.editor.setValue(vm.spells[0].code);
                     vm.spells.forEach(function(spell, index) {
                         spell.saved = true;
-                        var editSession = new ace.EditSession( spell.code, "javascript");
+                        var editSession = new ace.EditSession( spell.code, "ace/mode/javascript");
                         editSession.slotIndex = index;
                         editSession.on('change', function() {
                             invalidateActiveSpell(editSession.slotIndex);
@@ -55,7 +83,7 @@
                     if ( vm.spells.length == 0) {
                         createNewSpell();
                     }
-                        selectSpell(0);
+                    selectSpell(0);
                 });
             });
         }

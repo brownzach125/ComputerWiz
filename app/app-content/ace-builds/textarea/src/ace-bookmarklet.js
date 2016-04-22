@@ -1,1 +1,0 @@
-alert("moved to https://ajaxorg.github.io/ace-builds/demo/bookmarklet/index.jade. Please update your bookmark")
