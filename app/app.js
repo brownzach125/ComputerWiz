@@ -65,7 +65,7 @@
             })
             .state('training.match', {
                 url: '/match',
-                templateUrl: 'match/match.html',
+                templateUrl: 'match/index.html',
                 controller: "Match.IndexController",
                 controllerAs: 'vm',
                 data: {activeTab:'training'}

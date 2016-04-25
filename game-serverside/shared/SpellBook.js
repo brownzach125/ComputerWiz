@@ -24,7 +24,7 @@ SpellBook.castFireBall = {
         },
         {
             name: "radius",
-            description: "Raidus of the fireball. min:1 max:10"
+            description: "Radius of the fireball. min:1 max:10"
         }
     ],
     returnValue: "void"
