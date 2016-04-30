@@ -15,6 +15,19 @@ div.container-fluid(style="height:100%")
                                 input.title_tag(ng-model="spell.name")
                         div.function_selector.newSlot(ng-click="vm.createNewSpell()" ng-if="vm.spells.length<6")
                             | +
+                        div.dropdown
+                            button(class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown") Code Tools
+
+                        //
+                          //  <div class="dropdown">
+                            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Dropdown Example
+                            <span class="caret"></span></button>
+                            <ul class="dropdown-menu">
+                            <li><a href="#">HTML</a></li>
+                            <li><a href="#">CSS</a></li>
+                            <li><a href="#">JavaScript</a></li>
+                            </ul>
+                            </div>
                 div.form-group
                     button(class="btn btn-primary" ng-click="vm.saveSpell()") Save Spell
         div.col-md-6

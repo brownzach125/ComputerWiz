@@ -36,9 +36,11 @@ LOOP_DELAY = 16;
             window.onresize = resizeHandler;
             window.onkeydown = KeyHandler.onKeyDown;
             window.onkeyup   = KeyHandler.onKeyUp;
-            limitLoop(gameLoop,30);
+            gameLoop();
+            //limitLoop(gameLoop,30);
         }
         function gameLoop() {
+            requestAnimationFrame(gameLoop);
             Game.draw();
         }
         function resizeHandler(event) {
@@ -69,7 +71,8 @@ LOOP_DELAY = 16;
             socket.emit('quit_match', {username:vm.user.username, gameUID:vm.gameUID});
         });
 
-        vm.intervalVar = null;
+        //vm.intervalVar = null;
+        /*
         var limitLoop = function (fn, fps) {
 
             // Use var then = Date.now(); if you
@@ -97,6 +100,6 @@ LOOP_DELAY = 16;
                     fn();
                 }
             }(0));
-        };
+        };*/
     }
 })();

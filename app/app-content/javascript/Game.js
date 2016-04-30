@@ -9,10 +9,10 @@ Game.init = function() {
 };
 
 Game.draw = function() {
-    Arena.draw();
-    Game.redWizard.draw();
-    Game.blueWizard.draw();
-    Game.fireBallList.draw();
+    //Arena.draw();
+    //Game.redWizard.draw();
+    //Game.blueWizard.draw();
+    //Game.fireBallList.draw();
     HUD.draw();
 };
 
