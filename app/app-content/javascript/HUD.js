@@ -8,7 +8,7 @@ HUD.draw = function() {
     HUD.drawNames();
     HUD.drawHealthBars();
     HUD.drawManaBars();
-    HUD.drawSpellSlots();
+    //HUD.drawSpellSlots();
 };
 
 HUD.drawHealthBars = function() {
