@@ -39,13 +39,16 @@ LOOP_DELAY = 16;
             gameLoop();
             //limitLoop(gameLoop,30);
         }
+        
         function gameLoop() {
             requestAnimationFrame(gameLoop);
             Game.draw();
         }
+        
         function resizeHandler(event) {
             Camera.bestFitCamera();
         }
+        
         function redraw() {
             Game.draw();
         }

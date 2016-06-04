@@ -1,5 +1,8 @@
+/* global Game, Camera, CAMERA_NATIVE_HEIGHT */
+
 var HUD = {};
-currentSpell = null;
+var currentSpell = null;
+
 HUD.init = function() {
 
 };
@@ -75,8 +78,6 @@ HUD.drawSpellSlots = function() {
         Camera.context.fillText(i + 1 , xcoord + width * 0.25 , ycoord + height * 0.8);
     }
 };
-
-
 
 HUD.drawMenu = function() {
     Camera.drawImage(HUD.menu, 0, 0, 480, 270);

@@ -5,5 +5,5 @@
     "database_remote": "mongodb://computerwizforcoding.com:27017/computerwizdev",
     "user": "solevi",
     "pass": "FranklinTheTurtle1",
-    "useDataBase": "remote"
+    "useDataBase": "local"
 }
