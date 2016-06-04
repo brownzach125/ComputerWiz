@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -17,8 +17,8 @@
             <li ng-class="{active: activeTab === 'lobby'}"><a ui-sref="lobby">Lobby</a></li>
             <li ng-class="{active: activeTab === 'spells'}"><a ui-sref="spells">Spells</a></li>
             <li ng-class="{active: activeTab === 'training'}"><a ui-sref="training">Training Room</a></li>
-            <li><a href="/login" target="_self">Logout</a></li>
         </ul>
+        <a class="logout-link" href="/login" target="_self">Logout</a>
         <div class="flash-message" ng-if="flash">
             <div class="{{'alert alert-' + flash.type}}" ng-bind="flash.message"></div>
         </div>

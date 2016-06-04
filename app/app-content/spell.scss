@@ -1,0 +1,97 @@
+$background: #080808;
+
+
+#function_input {
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.ace_editor {
+    width: 100%;
+    height: 100%;
+}
+
+#function_selectors {
+    float: left;
+    width: 25%;
+    max-width: 25%;
+}
+
+.function_selector {
+    border-style: solid;
+    border-color: black;
+    border-width: 1px;
+    user-select: none;
+    -webkit-user-select: none; /* Chrome/Safari */
+    opacity : .5;
+    background-color: #aaaaaa;
+    border: #aaaaaa;
+    max-height: 25px;
+    overflow: hidden;
+
+    &.selected {
+        opacity: 1;
+    }
+
+    &.saved {
+        background-color: #008800;
+        border: #008800;
+    }
+    
+    &.unsaved {
+        background-color: #aaaaaa;
+        border: #aaaaaa;
+    }
+
+    .title_tag {
+        display: inline-block;
+        background-color: inherit;
+        border: inherit;
+        max-width: 75%;
+    }
+}
+
+#function_editor {
+    float: left;
+    width: 75%;
+    height: 100%;
+}
+
+.save-btn {
+    margin: 10px 0 0 0;
+}
+
+.spell-select {
+    margin: 10px 0 0 0;
+    ul {
+        li {
+            display: inline-block;
+            cursor: pointer;
+        }
+    }
+}
+
+.spell-subtitle {
+    border-bottom: 1px solid white;
+    font-size: 16px;
+}
+
+.spell-sub-subtitle {
+    padding: 3px;
+    font-size: 16px;
+    background-color: #2d342d;
+    
+    div {
+        font-size: 14px;
+        padding: 3px;
+        background-color: $background;
+    }
+}
+
+.spell-text {
+    margin-left: 10px;
+}

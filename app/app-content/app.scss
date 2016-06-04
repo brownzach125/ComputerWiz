@@ -1,0 +1,228 @@
+// Palette
+
+$white: #FFF;
+$primary: #1cc71c;
+$info: #c31c1c;
+$default: #a7a7a7;
+$success: #5CB85C;
+$warning: #F0AD4E;
+$danger: #ff332d;
+$highlight: #c263fd;
+
+$background: #080808;
+
+/* ================================ Globals */
+
+html, body {
+    width: 100%;
+    height: 100%;
+    background-color: $background;
+    font-family: Consolas, monaco, "Courier New", Courier, monospace;
+    color: white;
+}
+
+body {
+    padding: 20px 0;
+    overflow: hidden;
+}
+
+.container {
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+.flash-message {
+    margin-top: 20px;
+}
+
+main {
+     height: 100%;
+     width: 100%;
+}
+
+header {
+    position: relative;
+}
+
+.logout-link {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+}
+
+.logout-link:hover {
+    text-decoration: underline;
+    color: $primary;
+}
+
+/* ================================ Bootstrap overrides */
+
+/* buttons */  
+
+.btn {
+    border-radius: 0;
+    font-size: 16px;
+    border-width: 2px;
+
+    &.btn-max {
+        display: inline-block;
+        width: 100%;
+        margin-bottom: 6px;
+    }
+    
+    &.btn-large {
+        font-size: 1.5em;
+    }
+
+    &.btn-primary {
+        color: $primary;
+        border-color: $primary;
+        background-color: $background;
+    }
+    
+    &.btn-primary:hover, &.btn-primary:active, &.btn-primary:focus {
+        background: $primary;
+        border-color: $primary;
+        color: $background;
+    }
+    
+    &.btn-default {
+        color: $default;
+        border-color: $default;
+        background-color: $background;
+    }
+    
+    &.btn-default:hover, &.btn-default:active, &.btn-default:focus {
+        background: $default;
+        border-color: $default;
+        color: $background;
+    }    
+    
+    &.btn-info { 
+        color: $info;
+        border-color: $info;
+        background-color: $background;
+    }
+    
+    &.btn-info:hover, &.btn-info:active, &.btn-info:focus {
+        background: $info;
+        border-color: $info;
+        color: $background;
+    }
+    
+    &.btn-success {  
+        color: $success; 
+        border-color: $success;
+        background-color: $background;
+    }
+    
+    &.btn-success:hover, &.btn-success:active, &.btn-success:focus {
+        background: $success;
+        border-color: $success;
+        color: $background;
+    }
+    
+    &.btn-warning {  
+        color: $warning; 
+        border-color: $warning;
+        background-color: $background;
+    }
+    
+    &.btn-warning:hover, &.btn-warning:active, &.btn-warning:focus {
+        background: $warning;
+        border-color: $warning;
+        color: $background;
+    }
+    
+    &.btn-danger {  
+        color: $danger; 
+        border-color: $danger;
+        background-color: $background;
+    }
+    
+    &.btn-danger:hover, &.btn-danger:active, &.btn-danger:focus {
+        background: $danger;
+        border-color: $danger;
+        color: $background;
+    }
+}
+
+/* input */  
+
+.form-control {
+    border-radius: 0;
+}
+
+/* links */  
+
+a {
+    color: $primary;
+}
+
+/* nav tabs */
+
+.nav-tabs {
+    border-bottom: 1px solid $primary;
+}
+
+.nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover {
+    color: $primary;
+    cursor: default;
+    background-color: $background;
+    border: 1px solid $primary;
+    border-bottom-color: transparent;    
+}
+
+.nav-tabs>li>a:hover {
+    border-color: $primary;
+    color: $background;
+}
+
+.nav>li>a:focus, .nav>li>a:hover {
+    text-decoration: none;
+    background-color: $primary;
+}
+
+/* list group */
+
+.list-group-item.active, .list-group-item.active:focus, .list-group-item.active:hover {
+    color: $background;
+    background-color: $white;
+    border-color: $white;
+}
+
+.list-group-item.active .list-group-item-text, .list-group-item.active:focus .list-group-item-text, .list-group-item.active:hover .list-group-item-text {
+    color: #3b3b3b;
+}
+
+.list-group-item {
+    padding: 10px 15px 10px 15px;
+    background-color: $background;
+    border: 1px solid #ddd;
+}
+
+.list-group-item:first-child, .list-group-item:last-child {
+    border-radius: 0;
+}
+
+/* ================================ Artisan, organic, non-gmo, small-batch styles */
+
+/* scroll bar */
+
+::-webkit-scrollbar {
+    width: 12px;
+}
+ 
+/* Track */
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: none; 
+    border-radius: 0;
+    background: $default; 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+    border-radius: 0px;
+    border-radius: 10px;
+    background: $highlight; 
+}

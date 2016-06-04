@@ -1,25 +1,194 @@
-﻿html {
-    width :100%;
-    height :100%;
-}
+/* ================================ Globals */
+/* line 16, /Users/kade/Desktop/ComputerWiz/app/app-content/app.scss */
+html, body {
+  width: 100%;
+  height: 100%;
+  background-color: #080808;
+  font-family: Consolas, monaco, "Courier New", Courier, monospace;
+  color: white; }
+
+/* line 24, /Users/kade/Desktop/ComputerWiz/app/app-content/app.scss */
 body {
-    width :100%;
-    height :100%;
-    padding: 20px 0;
-    overflow:hidden;
-}
+  padding: 20px 0;
+  overflow: hidden; }
 
-.flash-message {
-    margin-top: 20px;
-}
-
-main {
-     height :100%;
-     width:100%;
- }
-
+/* line 29, /Users/kade/Desktop/ComputerWiz/app/app-content/app.scss */
 .container {
-    padding-left: 0px;
-    padding-right: 0px;
-}
+  padding-left: 0px;
+  padding-right: 0px; }
 
+/* line 34, /Users/kade/Desktop/ComputerWiz/app/app-content/app.scss */
+.flash-message {
+  margin-top: 20px; }
+
+/* line 38, /Users/kade/Desktop/ComputerWiz/app/app-content/app.scss */
+main {
+  height: 100%;
+  width: 100%; }
+
+/* line 43, /Users/kade/Desktop/ComputerWiz/app/app-content/app.scss */
+header {
+  position: relative; }
+
+/* line 47, /Users/kade/Desktop/ComputerWiz/app/app-content/app.scss */
+.logout-link {
+  position: absolute;
+  right: 10px;
+  top: 10px; }
+
+/* line 53, /Users/kade/Desktop/ComputerWiz/app/app-content/app.scss */
+.logout-link:hover {
+  text-decoration: underline;
+  color: #1cc71c; }
+
+/* ================================ Bootstrap overrides */
+/* buttons */
+/* line 62, /Users/kade/Desktop/ComputerWiz/app/app-content/app.scss */
+.btn {
+  border-radius: 0;
+  font-size: 16px;
+  border-width: 2px; }
+  /* line 67, /Users/kade/Desktop/ComputerWiz/app/app-content/app.scss */
+  .btn.btn-max {
+    display: inline-block;
+    width: 100%;
+    margin-bottom: 6px; }
+  /* line 73, /Users/kade/Desktop/ComputerWiz/app/app-content/app.scss */
+  .btn.btn-large {
+    font-size: 1.5em; }
+  /* line 77, /Users/kade/Desktop/ComputerWiz/app/app-content/app.scss */
+  .btn.btn-primary {
+    color: #1cc71c;
+    border-color: #1cc71c;
+    background-color: #080808; }
+  /* line 83, /Users/kade/Desktop/ComputerWiz/app/app-content/app.scss */
+  .btn.btn-primary:hover, .btn.btn-primary:active, .btn.btn-primary:focus {
+    background: #1cc71c;
+    border-color: #1cc71c;
+    color: #080808; }
+  /* line 89, /Users/kade/Desktop/ComputerWiz/app/app-content/app.scss */
+  .btn.btn-default {
+    color: #a7a7a7;
+    border-color: #a7a7a7;
+    background-color: #080808; }
+  /* line 95, /Users/kade/Desktop/ComputerWiz/app/app-content/app.scss */
+  .btn.btn-default:hover, .btn.btn-default:active, .btn.btn-default:focus {
+    background: #a7a7a7;
+    border-color: #a7a7a7;
+    color: #080808; }
+  /* line 101, /Users/kade/Desktop/ComputerWiz/app/app-content/app.scss */
+  .btn.btn-info {
+    color: #c31c1c;
+    border-color: #c31c1c;
+    background-color: #080808; }
+  /* line 107, /Users/kade/Desktop/ComputerWiz/app/app-content/app.scss */
+  .btn.btn-info:hover, .btn.btn-info:active, .btn.btn-info:focus {
+    background: #c31c1c;
+    border-color: #c31c1c;
+    color: #080808; }
+  /* line 113, /Users/kade/Desktop/ComputerWiz/app/app-content/app.scss */
+  .btn.btn-success {
+    color: #5CB85C;
+    border-color: #5CB85C;
+    background-color: #080808; }
+  /* line 119, /Users/kade/Desktop/ComputerWiz/app/app-content/app.scss */
+  .btn.btn-success:hover, .btn.btn-success:active, .btn.btn-success:focus {
+    background: #5CB85C;
+    border-color: #5CB85C;
+    color: #080808; }
+  /* line 125, /Users/kade/Desktop/ComputerWiz/app/app-content/app.scss */
+  .btn.btn-warning {
+    color: #F0AD4E;
+    border-color: #F0AD4E;
+    background-color: #080808; }
+  /* line 131, /Users/kade/Desktop/ComputerWiz/app/app-content/app.scss */
+  .btn.btn-warning:hover, .btn.btn-warning:active, .btn.btn-warning:focus {
+    background: #F0AD4E;
+    border-color: #F0AD4E;
+    color: #080808; }
+  /* line 137, /Users/kade/Desktop/ComputerWiz/app/app-content/app.scss */
+  .btn.btn-danger {
+    color: #ff332d;
+    border-color: #ff332d;
+    background-color: #080808; }
+  /* line 143, /Users/kade/Desktop/ComputerWiz/app/app-content/app.scss */
+  .btn.btn-danger:hover, .btn.btn-danger:active, .btn.btn-danger:focus {
+    background: #ff332d;
+    border-color: #ff332d;
+    color: #080808; }
+
+/* input */
+/* line 152, /Users/kade/Desktop/ComputerWiz/app/app-content/app.scss */
+.form-control {
+  border-radius: 0; }
+
+/* links */
+/* line 158, /Users/kade/Desktop/ComputerWiz/app/app-content/app.scss */
+a {
+  color: #1cc71c; }
+
+/* nav tabs */
+/* line 164, /Users/kade/Desktop/ComputerWiz/app/app-content/app.scss */
+.nav-tabs {
+  border-bottom: 1px solid #1cc71c; }
+
+/* line 168, /Users/kade/Desktop/ComputerWiz/app/app-content/app.scss */
+.nav-tabs > li.active > a, .nav-tabs > li.active > a:focus, .nav-tabs > li.active > a:hover {
+  color: #1cc71c;
+  cursor: default;
+  background-color: #080808;
+  border: 1px solid #1cc71c;
+  border-bottom-color: transparent; }
+
+/* line 176, /Users/kade/Desktop/ComputerWiz/app/app-content/app.scss */
+.nav-tabs > li > a:hover {
+  border-color: #1cc71c;
+  color: #080808; }
+
+/* line 181, /Users/kade/Desktop/ComputerWiz/app/app-content/app.scss */
+.nav > li > a:focus, .nav > li > a:hover {
+  text-decoration: none;
+  background-color: #1cc71c; }
+
+/* list group */
+/* line 188, /Users/kade/Desktop/ComputerWiz/app/app-content/app.scss */
+.list-group-item.active, .list-group-item.active:focus, .list-group-item.active:hover {
+  color: #080808;
+  background-color: #FFF;
+  border-color: #FFF; }
+
+/* line 194, /Users/kade/Desktop/ComputerWiz/app/app-content/app.scss */
+.list-group-item.active .list-group-item-text, .list-group-item.active:focus .list-group-item-text, .list-group-item.active:hover .list-group-item-text {
+  color: #3b3b3b; }
+
+/* line 198, /Users/kade/Desktop/ComputerWiz/app/app-content/app.scss */
+.list-group-item {
+  padding: 10px 15px 10px 15px;
+  background-color: #080808;
+  border: 1px solid #ddd; }
+
+/* line 204, /Users/kade/Desktop/ComputerWiz/app/app-content/app.scss */
+.list-group-item:first-child, .list-group-item:last-child {
+  border-radius: 0; }
+
+/* ================================ Artisan, organic, non-gmo, small-batch styles */
+/* scroll bar */
+/* line 212, /Users/kade/Desktop/ComputerWiz/app/app-content/app.scss */
+::-webkit-scrollbar {
+  width: 12px; }
+
+/* Track */
+/* line 217, /Users/kade/Desktop/ComputerWiz/app/app-content/app.scss */
+::-webkit-scrollbar-track {
+  -webkit-box-shadow: none;
+  border-radius: 0;
+  background: #a7a7a7; }
+
+/* Handle */
+/* line 224, /Users/kade/Desktop/ComputerWiz/app/app-content/app.scss */
+::-webkit-scrollbar-thumb {
+  border-radius: 0px;
+  border-radius: 10px;
+  background: #c263fd; }
+
+/*# sourceMappingURL=app.css.map */

@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -7,18 +7,66 @@
     <style type="text/css">
         body {
             padding-top: 100px;
+            background-color: #080808;
+            color: white;
+            font-family: Consolas, monaco, "Courier New", Courier, monospace;
+            background-image: url("app/app-content/art/grid.png");
         }
 
+        h2 {
+            margin: 20px 0 30px 0;
+        }
+        
         .form-container {
             width: 400px;
             margin: auto;
         }
-
+        
+        .form-control {
+            border-radius: 0;
+        }
+        
+        .label {
+            text-align: left;
+        }
+        
+        /*
         .credits {
             border-top: 1px solid #ddd;
             margin-top: 40px;
             padding-top: 20px;
         }
+        */
+        
+        .btn.btn-primary {
+            border: 2px solid #1cc71c;
+            color: #1cc71c;
+            padding: 6px 15px 6px 15px;
+            background: #080808;
+            font-size: 20px;
+            border-radius: 0;
+        }
+        
+        .btn.btn-primary:hover, .btn.btn-primary:active, .btn.btn-primary:focus {
+            color: #080808;
+            background: #1cc71c;
+        } 
+        
+        .btn.btn-link {
+            float: right;
+            /* align in spite of padding */
+            margin-top: -6px;
+            margin-right: -12px;
+            color: #1cc71c;
+        }
+        
+.blinky { animation: blink 1s steps(5, start) infinite; }
+@keyframes blink {
+    to {
+        visibility: hidden;
+    }
+}
+        
     </style>
 </head>
 <body>
