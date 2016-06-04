@@ -11,7 +11,7 @@ HUD.draw = function() {
     HUD.drawNames();
     HUD.drawHealthBars();
     HUD.drawManaBars();
-    //HUD.drawSpellSlots();
+    HUD.drawSpellSlots();
 };
 
 HUD.drawHealthBars = function() {
@@ -58,23 +58,24 @@ HUD.drawSpellSlots = function() {
     var height = size * Camera.scale;
     var fontHeight = (size-3) * Camera.scale;
     var startPointX = 235 * Camera.scale - width * 6 / 2;
+ 
+    Camera.context.fillStyle ='#7e7e7e';
+    Camera.context.fillRect(startPointX, (CAMERA_NATIVE_HEIGHT - size + 1) * Camera.scale, width * 6, height);
+    Camera.context.strokeStyle = '#4a4a4a';
+    Camera.context.font = fontHeight + "px Sans-Serif";
     
     for ( var i = 0; i < 6; i++) {
         var xcoord = (startPointX + i * width);
         var ycoord = (CAMERA_NATIVE_HEIGHT - size + 1) * Camera.scale;
         
-        Camera.context.fillStyle ='#7e7e7e';
         if ( currentSpell && currentSpell == (i + 1) ) {
             Camera.context.fillStyle = 'green';
+            Camera.context.fillRect(xcoord , ycoord , width , height);
         }
-        Camera.context.fillRect(xcoord , ycoord , width , height);
         
-        Camera.context.strokeStyle = '#4a4a4a';
-        Camera.context.rect(xcoord , ycoord , width , height);
-        Camera.context.stroke();
+        Camera.context.strokeRect(xcoord, ycoord, width, height);
         
         Camera.context.fillStyle = '#262626';
-        Camera.context.font = fontHeight + "px Sans-Serif";
         Camera.context.fillText(i + 1 , xcoord + width * 0.25 , ycoord + height * 0.8);
     }
 };
