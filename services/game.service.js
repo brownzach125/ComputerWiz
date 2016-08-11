@@ -17,12 +17,15 @@ function initService(io) {
             var gameUID = gameInfo.gameUID;
             var username = gameInfo.username;
             var training = gameInfo.training;
+            var game;
             if (training) {
-                joinTraining(this, username, callback);
+                game = joinTraining(this, username, callback);
             }
             else {
-                joinGame(this, gameUID, username,callback);
+                game = joinGame(this, gameUID, username,callback);
             }
+            // Start game( will do nothing if already started)
+            game.startGame();
         });
         socket.on('quit_match', function(gameInfo) {
             var gameUID = gameInfo.gameUID;
@@ -68,8 +71,8 @@ function joinTraining(socket, username,callback) {
         service.training[username] = new Training();
     }
     service.training[username].claim(socket, username);
-
     callback(null,"Success");
+    return service.training[username];
 }
 
 function joinGame(socket, gameUID, username,callback) {
@@ -78,13 +81,14 @@ function joinGame(socket, gameUID, username,callback) {
         if ( typeof(callback) === 'function' ) {
             callback("No such game");
         }
-        return;
+        return null;
     }
     if (service.games[gameUID].holder ) {
         service.games[gameUID] = new Game();
     }
     service.games[gameUID].claim(socket, username);
     callback(null,"Success");
+    return service.games[gameUID];
 }
 
 function shutDown() {

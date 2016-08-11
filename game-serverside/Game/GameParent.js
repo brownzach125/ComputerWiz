@@ -17,6 +17,18 @@ function Game() {
     this.users = {};
 }
 
+Game.prototype.startGame = function() {
+    if (this._started)
+        return false;
+    else {
+        this._started = true;
+       return true;
+    }
+};
+
+/*
+ * A client is either connecting for the first time, or re-connecting with a new socket.
+ */
 Game.prototype.claim = function(socket, username) {
     if ( !this.users[username]) {
         // New username so assign him to null wizard

@@ -12,17 +12,20 @@ var expressJwt = require('express-jwt');
 var mongoose = require('mongoose');
 var config = require('config.json');
 
-
 var gameService  = require('./services/game.service');
 gameService.initService(io.of('/game'));
 var lobbyService = require('./services/lobby.service');
 lobbyService.initService(io.of('/lobby'), gameService.games);
 
-
 if ( config.useDataBase == "local")
     mongoose.connect(config.database_local);
 else
     mongoose.connect(config.database_remote, {user:config.user, pass:config.pass});
+var db = mongoose.connection;
+// TODO understand errors and catch them
+/*
+db.on('error', function(){ });
+*/
 
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');

@@ -1,5 +1,10 @@
 /**
  * Created by solevi on 4/12/16.
+ *
+ * Child Class of GameParent
+ *
+ * A Training is a version of a normal game, but there is only a match mode, no spell mode
+ *
  */
 var GameStates = require('../shared/GameStates.js');
 var Player = require('../Player/Player.js');
@@ -14,6 +19,11 @@ function Training() {
 Training.prototype = Object.create(GameParent.prototype);
 Training.prototype.constructor = Training;
 
+Training.prototype.startGame = function() {
+    // Training starts in match state
+    if (GameParent.prototype.startGame.call(this))
+        this.changeState(GameStates.match);
+};
 
 Training.prototype.claim = function(socket, username) {
     if ( !this.user) {
@@ -44,7 +54,7 @@ Training.prototype.claim = function(socket, username) {
         this.blueWizard.socket.emit('game_info',gameInfo)
     }
 };
-
+// TODO will this still be necessary? Are there any state changes in training session? Probs...
 Training.prototype.requestState = function(player, state) {
     player.requestedState = state;
     this.changeState(state);
