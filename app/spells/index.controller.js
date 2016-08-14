@@ -35,6 +35,10 @@
         }
         initEditor();
 
+        $scope.$on('$destroy' , function() {
+            socket.disconnect();
+        });
+
         function initController() {
             // get current user
             UserService.GetCurrent().then(function (user) {

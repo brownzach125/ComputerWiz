@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="10bd2a39-4254-45c8-a4d6-f531489558d9" name="Default" comment="">
+    <list default="true" id="10bd2a39-4254-45c8-a4d6-f531489558d9" name="Default" comment="Debugger now works on children processeds">
+      <change type="MOVED" beforePath="$PROJECT_DIR$/app/game/index.jade" afterPath="$PROJECT_DIR$/app/game/index.pug" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/app/lobby/index.jade" afterPath="$PROJECT_DIR$/app/lobby/index.pug" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/app/modals/matchOver.jade" afterPath="$PROJECT_DIR$/app/modals/matchOver.pug" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/app/modals/waitingOnOpponent.jade" afterPath="$PROJECT_DIR$/app/modals/waitingOnOpponent.pug" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/app/spells/index.jade" afterPath="$PROJECT_DIR$/app/spells/index.pug" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/app/spells/spellbook.jade" afterPath="$PROJECT_DIR$/app/spells/spellbook.pug" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/app-services/socket.service.js" afterPath="$PROJECT_DIR$/app/app-services/socket.service.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/game/index.controller.js" afterPath="$PROJECT_DIR$/app/game/index.controller.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/lobby/index.controller.js" afterPath="$PROJECT_DIR$/app/lobby/index.controller.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/spells/index.controller.js" afterPath="$PROJECT_DIR$/app/spells/index.controller.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/training/index.controller.js" afterPath="$PROJECT_DIR$/app/training/index.controller.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/game-serverside/Game/Game.js" afterPath="$PROJECT_DIR$/game-serverside/Game/Game.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/game-serverside/Game/GameParent.js" afterPath="$PROJECT_DIR$/game-serverside/Game/GameParent.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/game-serverside/Game/Training.js" afterPath="$PROJECT_DIR$/game-serverside/Game/Training.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/game-serverside/Player/Player.js" afterPath="$PROJECT_DIR$/game-serverside/Player/Player.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/game-serverside/Player/SpellController.js" afterPath="$PROJECT_DIR$/game-serverside/Player/SpellController.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/game-serverside/SpellProcess/Spell.js" afterPath="$PROJECT_DIR$/game-serverside/SpellProcess/Spell.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/game-serverside/SpellProcess/SpellProcess.js" afterPath="$PROJECT_DIR$/game-serverside/SpellProcess/SpellProcess.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/gameserver.js" afterPath="$PROJECT_DIR$/gameserver.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/models/spell.model.js" afterPath="$PROJECT_DIR$/models/spell.model.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/models/user.model.js" afterPath="$PROJECT_DIR$/models/user.model.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/services/game.service.js" afterPath="$PROJECT_DIR$/services/game.service.js" />
     </list>
     <ignored path="ComputerWiz.iws" />
@@ -35,61 +36,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="SpellProcess.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/game-serverside/SpellProcess/SpellProcess.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="143">
-              <caret line="64" column="3" selection-start-line="64" selection-start-column="3" selection-end-line="64" selection-end-column="3" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SpellController.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/game-serverside/Player/SpellController.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="326">
-              <caret line="223" column="2" selection-start-line="223" selection-start-column="2" selection-end-line="223" selection-end-column="2" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="FiberController.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/game-serverside/SpellProcess/FiberController.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-259">
-              <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="spell.model.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/models/spell.model.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-4">
-              <caret line="15" column="46" selection-start-line="15" selection-start-column="46" selection-end-line="15" selection-end-column="46" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="game.service.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/services/game.service.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="330">
-              <caret line="22" column="21" selection-start-line="22" selection-start-column="21" selection-end-line="22" selection-end-column="21" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Player.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/game-serverside/Player/Player.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="915">
-              <caret line="61" column="33" selection-start-line="61" selection-start-column="33" selection-end-line="61" selection-end-column="33" />
+            <state relative-caret-position="956">
+              <caret line="93" column="32" selection-start-line="93" selection-start-column="32" selection-end-line="93" selection-end-column="32" />
               <folding />
             </state>
           </provider>
@@ -117,11 +68,7 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/app/modals/modal.jade" />
-        <option value="$PROJECT_DIR$/app/modals/matchOver.controller.js" />
-        <option value="$PROJECT_DIR$/app/modals/matchOver.jade" />
         <option value="$PROJECT_DIR$/app/modals/waitingOnOpponent.jade" />
-        <option value="$PROJECT_DIR$/app/game/index.controller.js" />
         <option value="$PROJECT_DIR$/app/app-content/spell.css" />
         <option value="$PROJECT_DIR$/app/spells/spellbook.controller.js" />
         <option value="$PROJECT_DIR$/app/spells/spellbook.jade" />
@@ -137,7 +84,6 @@
         <option value="$PROJECT_DIR$/game-serverside/shared/SpellBook.js" />
         <option value="$PROJECT_DIR$/node_modules/tern/bin/computerwiz.js" />
         <option value="$PROJECT_DIR$/app/app-content/computerwizdef.json.js" />
-        <option value="$PROJECT_DIR$/app/spells/index.controller.js" />
         <option value="$PROJECT_DIR$/app/match/index.controller.js" />
         <option value="$PROJECT_DIR$/app/app-content/javascript/Game.js" />
         <option value="$PROJECT_DIR$/app/app-content/javascript/HUD.js" />
@@ -155,19 +101,24 @@
         <option value="$PROJECT_DIR$/package.json" />
         <option value="$PROJECT_DIR$/app/training/index.pug" />
         <option value="$PROJECT_DIR$/game-serverside/SpellProcess/Spell.js" />
-        <option value="$PROJECT_DIR$/app/training/index.controller.js" />
         <option value="$PROJECT_DIR$/app/app-services/socket.service.js" />
         <option value="$PROJECT_DIR$/game-serverside/Player/Player.js" />
         <option value="$PROJECT_DIR$/game-serverside/Game/Training.js" />
         <option value="$PROJECT_DIR$/game-serverside/Game/GameParent.js" />
-        <option value="$PROJECT_DIR$/game-serverside/Game/Game.js" />
-        <option value="$PROJECT_DIR$/services/game.service.js" />
         <option value="$PROJECT_DIR$/models/user.model.js" />
         <option value="$PROJECT_DIR$/gameserver.js" />
         <option value="$PROJECT_DIR$/controllers/api/spells.controller.js" />
         <option value="$PROJECT_DIR$/models/spell.model.js" />
+        <option value="$PROJECT_DIR$/app/training/index.controller.js" />
+        <option value="$PROJECT_DIR$/app/spells/index.controller.js" />
+        <option value="$PROJECT_DIR$/app/lobby/index.controller.js" />
+        <option value="$PROJECT_DIR$/app/modals/waitingOnOpponent.pug" />
+        <option value="$PROJECT_DIR$/app/modals/matchOver.pug" />
+        <option value="$PROJECT_DIR$/game-serverside/Game/Game.js" />
+        <option value="$PROJECT_DIR$/app/game/index.controller.js" />
         <option value="$PROJECT_DIR$/game-serverside/SpellProcess/SpellProcess.js" />
         <option value="$PROJECT_DIR$/game-serverside/Player/SpellController.js" />
+        <option value="$PROJECT_DIR$/services/game.service.js" />
       </list>
     </option>
   </component>
@@ -226,7 +177,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -255,12 +205,41 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="services" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ComputerWiz" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ComputerWiz" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="game-serverside" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ComputerWiz" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ComputerWiz" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="app" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scratches" />
       <pane id="Scope" />
     </panes>
   </component>
@@ -276,18 +255,18 @@
     <property name="nodejs_interpreter_path" value="/usr/bin/node" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/app/app-content" />
+      <recent name="$PROJECT_DIR$/app/modals" />
+      <recent name="$PROJECT_DIR$/app" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/app/app-content/ternjs" />
       <recent name="$PROJECT_DIR$/app/app-content/ternjs/tern/lib" />
       <recent name="$PROJECT_DIR$/app/app-content/ui-bootstrap" />
       <recent name="$PROJECT_DIR$/app/app-content/ngDialog" />
       <recent name="$PROJECT_DIR$/app/match" />
-    </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$" />
-      <recent name="$PROJECT_DIR$/app/app-content" />
-      <recent name="$PROJECT_DIR$/app/modals" />
-      <recent name="$PROJECT_DIR$/app" />
     </key>
   </component>
   <component name="RunManager" selected="Node.js.server.js">
@@ -412,6 +391,7 @@
       <workItem from="1471129153147" duration="611000" />
       <workItem from="1471129817894" duration="12230000" />
       <workItem from="1471195419590" duration="11045000" />
+      <workItem from="1471209904363" duration="5035000" />
     </task>
     <task id="LOCAL-00001" summary="Spells made during a game will now be available in match.&#10;Matches shutdown on server side if players quit game.&#10;Match loop is terminated when the match controller is destroyed">
       <created>1460479815449</created>
@@ -508,7 +488,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="50971000" />
+    <option name="totallyTimeSpent" value="56006000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -523,11 +503,10 @@
     <frame x="0" y="23" width="1280" height="773" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19547658" sideWeight="0.49237472" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1987076" sideWeight="0.49237472" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3274596" sideWeight="0.49353796" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="LuaJ" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32599118" sideWeight="0.5516963" order="10" side_tool="true" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32452276" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3274596" sideWeight="0.49815497" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33480176" sideWeight="0.53311795" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -541,6 +520,7 @@
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="File Transfer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.29918033" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32452276" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
@@ -599,7 +579,6 @@
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/game-serverside/Player/Player.js</url>
           <line>76</line>
-          <properties />
           <option name="timeStamp" value="336" />
         </line-breakpoint>
       </breakpoints>
@@ -615,16 +594,6 @@
     </watches-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/app-content/computerwizdef.json.js" />
-    <entry file="file://$PROJECT_DIR$/app/app-content/javascript/Game.js" />
-    <entry file="file://$PROJECT_DIR$/app/app-content/javascript/HUD.js" />
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="526">
-          <caret line="41" column="8" selection-start-line="41" selection-start-column="8" selection-end-line="41" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/node_modules/tungus/README.md" />
     <entry file="file://$PROJECT_DIR$/node_modules/tungus/driver/tingodb.js" />
     <entry file="file://$PROJECT_DIR$/node_modules/tungus/driver/objectid.js" />
@@ -699,7 +668,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -707,15 +675,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="255">
           <caret line="24" column="28" selection-start-line="24" selection-start-column="28" selection-end-line="24" selection-end-column="28" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/training/index.controller.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-330">
-          <caret line="22" column="32" selection-start-line="22" selection-start-column="32" selection-end-line="22" selection-end-column="32" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -723,7 +682,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-465">
           <caret line="20" column="3" selection-start-line="20" selection-start-column="3" selection-end-line="20" selection-end-column="3" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -731,7 +689,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="132">
           <caret line="15" column="43" selection-start-line="15" selection-start-column="43" selection-end-line="15" selection-end-column="43" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -739,15 +696,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="327">
           <caret line="160" column="37" selection-start-line="160" selection-start-column="37" selection-end-line="160" selection-end-column="37" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/game-serverside/Game/Game.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="12" column="0" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -755,7 +703,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="240">
           <caret line="16" column="17" selection-start-line="16" selection-start-column="17" selection-end-line="16" selection-end-column="17" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -785,7 +732,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="45">
           <caret line="3" column="0" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -807,15 +753,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="180">
           <caret line="18" column="42" selection-start-line="18" selection-start-column="42" selection-end-line="18" selection-end-column="42" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/spells/index.controller.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="900">
-          <caret line="90" column="21" selection-start-line="90" selection-start-column="21" selection-end-line="90" selection-end-column="21" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -823,7 +760,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-15">
           <caret line="22" column="17" selection-start-line="22" selection-start-column="17" selection-end-line="22" selection-end-column="17" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -843,25 +779,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/game-serverside/Player/Player.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="915">
-          <caret line="61" column="33" selection-start-line="61" selection-start-column="33" selection-end-line="61" selection-end-column="33" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/models/spell.model.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-4">
-          <caret line="15" column="46" selection-start-line="15" selection-start-column="46" selection-end-line="15" selection-end-column="46" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/game-serverside/SpellProcess/FiberController.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-259">
+        <state relative-caret-position="150">
           <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
           <folding />
         </state>
@@ -872,31 +792,103 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="n#!!doc" expanded="true" />
+            <element signature="n#!!doc" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/game-serverside/Player/Player.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="915">
+          <caret line="61" column="33" selection-start-line="61" selection-start-column="33" selection-end-line="61" selection-end-column="33" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/models/spell.model.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="28" column="27" selection-start-line="28" selection-start-column="27" selection-end-line="28" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/modals/matchOver.pug">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="6" column="18" selection-start-line="6" selection-start-column="18" selection-end-line="6" selection-end-column="18" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/modals/waitingOnOpponent.pug">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="4" column="51" selection-start-line="4" selection-start-column="51" selection-end-line="4" selection-end-column="51" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/training/index.controller.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15">
+          <caret line="1" column="8" selection-start-line="1" selection-start-column="8" selection-end-line="1" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/game-serverside/Game/Game.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="12" column="0" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/spells/index.controller.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="6" column="0" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/game/index.controller.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="24" column="24" selection-start-line="24" selection-start-column="24" selection-end-line="24" selection-end-column="24" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/game-serverside/Player/SpellController.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="326">
-          <caret line="223" column="2" selection-start-line="223" selection-start-column="2" selection-end-line="223" selection-end-column="2" />
+        <state relative-caret-position="195">
+          <caret line="13" column="45" selection-start-line="13" selection-start-column="45" selection-end-line="13" selection-end-column="45" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/game-serverside/SpellProcess/SpellProcess.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="143">
-          <caret line="64" column="3" selection-start-line="64" selection-start-column="3" selection-end-line="64" selection-end-column="3" />
+        <state relative-caret-position="120">
+          <caret line="8" column="0" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/lobby/index.controller.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="7" column="58" selection-start-line="7" selection-start-column="58" selection-end-line="7" selection-end-column="58" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/services/game.service.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
-          <caret line="22" column="21" selection-start-line="22" selection-start-column="21" selection-end-line="22" selection-end-column="21" />
+        <state relative-caret-position="956">
+          <caret line="93" column="32" selection-start-line="93" selection-start-column="32" selection-end-line="93" selection-end-column="32" />
           <folding />
         </state>
       </provider>

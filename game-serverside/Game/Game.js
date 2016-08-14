@@ -14,7 +14,7 @@ Game.prototype.constructor = Game;
 Game.prototype.startGame = function() {
     // Games start in the spell_creation mode
     if (GameParent.prototype.startGame.call(this))
-        this.changeState(GameState.spell_creation);
+        this.changeState(GameStates.spell_creation);
 };
 
 

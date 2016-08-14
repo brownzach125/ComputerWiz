@@ -12,20 +12,18 @@
         vm.gameUID = null;
         vm.socket = socket;
 
-        var GameStates = {};
-        GameStates.spell_creation = 0;
-        GameStates.match = 1;
-
         initController();
         // public functions
         vm.goToMatch = goToMatch;
         vm.goToSpell = goToSpell;
         vm.quitGame = quitGame;
+
+
         $scope.$on("$destroy", function(){
             socket.emit('quit_game', {gameUID:vm.gameUID, username:vm.user.username});
+            socket.disconnect();
             ngDialog.close();
         });
-
 
         function initController() {
             vm.gameUID = window.localStorage.getItem('gameUID');
@@ -109,8 +107,6 @@
             vm.game_state = GameStates.match_finsihed;
             openMatchOverDialog(results);
         };
-
-
 
         // Dialogs
         function openMatchOverDialog(results) {

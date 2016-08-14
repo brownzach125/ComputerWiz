@@ -1,12 +1,8 @@
 var vm = require('vm');
 var Spell = require('./Spell.js');
-var FiberController = new (require('./FiberController.js'))(Spell.cast);
-
 // Fiber controller manages a single fiber that is initialized with this function
-//FiberController = new FiberController(Spell.cast);
-
+var FiberController = new (require('./FiberController.js'))(Spell.cast);
 var SpellBook = require('../shared/SpellBook.js');
-
 
 var p = process;
 location = {};

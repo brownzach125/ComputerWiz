@@ -5,16 +5,15 @@ var vm = require('vm');
 var Spell = require('models/spell.model');
 var User  = require('models/user.model');
 
-var port = 52085;
+port = 52085;
 function initProcess(controller) {
     var spellProcess = fork(
         './game-serverside/SpellProcess/SpellProcess.js',
         [],
         {
-            execArgv: ["--debug-brk="+port]
+            execArgv: ["--debug-brk="+ ++port]
         }
     );
-    port++;
     spellProcess.on('disconnect' , function() {
         controller.handleDisconnect();
     });
@@ -165,7 +164,6 @@ SpellController.prototype.castSpell = function(slot) {
     tryToStartSpell();
 };
 
-
 // Receive a message from the spell process to cast a spell from the spell book,
 SpellController.prototype.handleRequest = function(data) {
     var func = data.funcName;
@@ -222,6 +220,5 @@ SpellController.prototype.sendMessageQueue = function() {
         this.processSend(this.messageQueue.shift());
     }
 };
-
 
 module.exports = SpellController;

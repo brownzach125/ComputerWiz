@@ -33,9 +33,11 @@ function initService(io) {
                 constructor = Training;
             }
 
-            var game = joinGame(this, gameUID, username, constructor, callback);
+            var game = joinOrCreateGame(this, gameUID, username, constructor, callback);
             // Start game( will do nothing if already started)
-            game.startGame();
+            if (game) {
+                game.startGame();
+            }
         });
 
         // TODO games should be repsonsible for this behavior
@@ -78,7 +80,7 @@ function initService(io) {
     });
 }
 
-function joinGame(socket, gameUID, username, Type, callback) {
+function joinOrCreateGame(socket, gameUID, username, Type, callback) {
     console.log("Player " + username + " entered game or training");
     if ( !service.games[gameUID] ) {
         if ( typeof(callback) === 'function' ) {

@@ -5,7 +5,7 @@
         .module('app')
         .controller('Lobby.IndexController', Controller);
 
-    function Controller(UserService, socket, $state) {
+    function Controller(UserService, socket, $state, $scope) {
         var vm = this;
 
         vm.user = null;
@@ -27,6 +27,11 @@
                 setupSocket();
             });
         }
+
+        $scope.$on('$destroy' , function() {
+            socket.disconnect();
+        });
+
         function hostGame() {
             socket.emit("host_game", {host:vm.user.username});
             vm.isHosting = true;

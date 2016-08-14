@@ -5,7 +5,7 @@
         .module('app')
         .controller('Training.IndexController', Controller);
 
-    function Controller(UserService, SpellService, socket, $state,$scope,ngDialog) {
+    function Controller(UserService, SpellService, socket, $state,$scope) {
         var vm = this;
         vm.user = null;
         vm.spells = null;
