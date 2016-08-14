@@ -5,15 +5,22 @@ var vm = require('vm');
 var Spell = require('models/spell.model');
 var User  = require('models/user.model');
 
+var port = 52085;
 function initProcess(controller) {
-    var spellProcess = fork('./game-serverside/SpellProcess/SpellProcess.js');
+    var spellProcess = fork(
+        './game-serverside/SpellProcess/SpellProcess.js',
+        [],
+        {
+            execArgv: ["--debug-brk="+port]
+        }
+    );
+    port++;
     spellProcess.on('disconnect' , function() {
         controller.handleDisconnect();
     });
     spellProcess.on('message' , function(data) {
         var type = data.type;
         if ( type == 'request') {
-            //console.log("Message recieved!!!");
             controller.handleRequest(data);
         }
         if ( type =='err') {
@@ -38,7 +45,6 @@ function badSpell(code) {
         return;
     return { problem : errors[0].raw + "\n" + errors[0].evidence , errorInfo : errors };
 }
-
 
 function SpellController(wizard) {
     this.wizard = wizard;

@@ -14,8 +14,8 @@
         <array />
       </option>
       <option name="outputFromStdout" value="false" />
-      <option name="program" value="$PROJECT_DIR$/node_modules/.bin/pug" />
-      <option name="scopeName" value="Project Files" />
+      <option name="program" value="$ExecutableByFileExt$" />
+      <option name="scopeName" value="Current File" />
       <option name="trackOnlyRoot" value="true" />
       <option name="workingDir" value="$FileDir$" />
       <envs />
