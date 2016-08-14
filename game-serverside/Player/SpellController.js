@@ -29,8 +29,13 @@ function initProcess(controller) {
         if ( type =='done') {
             controller.handleDone(data);
         }
+        if ( type =='alive') {
+            controller.spellProcessAlive = true;
+            controller.sendMessageQueue();
+        }
     });
-    spellProcess.running = false;
+
+    spellProcess.spellActive = false;
     return spellProcess;
 }
 
@@ -51,14 +56,14 @@ function SpellController(wizard) {
     this.process = initProcess(this);
     this.spellSafe = {};
     this.username = wizard.username;
-
-    this.loadSpells();
+    this.messageQueue = [];
 }
 
 SpellController.prototype.loadSpells = function() {
     var that = this;
     Spell.getByUsername(this.username)
         .then(function(spells) {
+            console.log("Spells loaded" + spells.length);
             for (var i =0; i < spells.length; i++) {
                 that.spellSafe[spells[i].slot] = {code:spells[i].code, name:spells[i].name, slot:spells[i].slot};
                 that.createSpell(that.spellSafe[spells[i].slot]);
@@ -98,7 +103,7 @@ SpellController.prototype.createSpell = function(spell) {
     var code = spell.code;
     var slot = spell.slot;
     this.spellSafe[slot] = spell;
-    this.process.send({type: 'createSpell' , code : code , slot: slot});
+    this.processSend({type: 'createSpell' , code : code , slot: slot});
     //console.log("Spell made in slot " + slot);
 };
 
@@ -117,16 +122,16 @@ SpellController.prototype.castSpell = function(slot) {
     }
 
     function startSpell(that) {
-        that.process.send({type: 'startSpell' , slot : slot});
-        that.process.running = true;
-        that.wizard.socket.emit('startSpell' , { slot :slot});
+        that.processSend({type: 'startSpell' , slot : slot});
+        that.process.spellActive = true;
+        that.wizard.socketEmit('startSpell' , { slot :slot});
         that.process.currentSpellSlot = slot;
     }
     function endSpell(that , callback) {
-        that.process.send({type:'end'});
+        that.processSend({type:'end'});
         // Wait for spell to end
         setTimeout(function() {
-           if ( !that.process.running ) {
+           if ( !that.process.spellActive ) {
                // Oh good it ended
                that.log("Spell ended when asked");
                callback();
@@ -135,7 +140,7 @@ SpellController.prototype.castSpell = function(slot) {
                // Damn we need to kill it first
                that.log("Killing old process");
                that.process.kill();
-               that.wizard.socket.emit('endSpell' , { slot : that.process.currentSpellSlot , kill: true});
+               that.wizard.socketEmit('endSpell' , { slot : that.process.currentSpellSlot , kill: true});
                that.reset();
                callback();
            }
@@ -144,7 +149,7 @@ SpellController.prototype.castSpell = function(slot) {
     }
     var that = this;
     function tryToStartSpell() {
-        if ( !that.process.running ) {
+        if ( !that.process.spellActive ) {
             that.log("Spell Process inactive starting spell");
             startSpell(that);
         }
@@ -169,7 +174,7 @@ SpellController.prototype.handleRequest = function(data) {
         // TODO tell user about this result
         var arguments = [ this.wizard.game, this.wizard.name].concat(args);
         var result = this.wizard.spellBook[func].apply(this.wizard.spellBook, arguments);
-        this.process.send({type: 'data', value: result});
+        this.processSend({type: 'data', value: result});
     }
     else {
         //console.log("Function " + func + " doenst exits");
@@ -178,17 +183,17 @@ SpellController.prototype.handleRequest = function(data) {
 
 SpellController.prototype.handleError = function(data) {
     // TODO for gods sake do something
-    this.process.running = false;
+    this.process.spellActive = false;
 };
 
 SpellController.prototype.handleDone = function(data) {
     this.log("Spell Process reported being done");
-    this.process.running = false;
-    this.wizard.socket.emit('endSpell' , { slot : this.process.currentSpellSlot});
+    this.process.spellActive = false;
+    this.wizard.socketEmit('endSpell' , { slot : this.process.currentSpellSlot});
 };
 
 SpellController.prototype.handleDisconnect = function() {
-    this.process.running = false;
+    this.process.spellActive = false;
     this.log("Spell Process disconnected");
 };
 
@@ -198,5 +203,25 @@ SpellController.prototype.shutDown  = function() {
         this.process.kill();
     }
 };
+
+SpellController.prototype.processSend = function(message) {
+    if (!this.spellProccessAlive) {
+        this.messageQueue.push(message);
+    }
+    if (this.process && this.process.connected) {
+        this.process.send(message);
+    } else {
+        console.log("Process is not running so no message sent");
+        console.log(message);
+    }
+};
+
+SpellController.prototype.sendMessageQueue = function() {
+    var length = this.messageQueue.length;
+    for ( var  i =0; i < length; i++) {
+        this.processSend(this.messageQueue.shift());
+    }
+};
+
 
 module.exports = SpellController;

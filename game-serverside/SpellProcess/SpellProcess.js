@@ -44,6 +44,9 @@ process.on('message' , function(data) {
     }
 });
 
+// Let my parent know I'm ready for messages
+process.send({type:'alive'});
+
 function processRequestResponse(data) {
     location = data.value;
     FiberController.resume();

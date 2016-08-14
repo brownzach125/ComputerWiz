@@ -1,5 +1,4 @@
 /*jshint node: true, devel: true*/ 
-
 var vm = require('vm');
 
 function Spell(process) {

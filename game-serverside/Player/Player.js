@@ -32,6 +32,21 @@ Player.prototype.setupSocketHandler = function(socket) {
         if (typeof callback === "function")
             callback(null, {ready:result});
     });
+
+    socket.on('disconnect', function() {
+       // The socket has been disconnect
+       // Any attempts to use it should be paused
+       // And maybe the game should be paused
+       console.log("Socket disconnected");
+        that.game.playerDisconnect(that);
+    });
+
+    socket.on('error', function(error){
+        console.log("Error occured");
+        // TODO do something useful.
+    });
+
+
 };
 
 Player.prototype.reconnect = function(socket) {
@@ -46,12 +61,23 @@ Player.prototype.changeState = function(state) {
         case GameStates.match:
             this.spellController.loadSpells();
     }
-    this.socket.emit("game_state", { state:state});
+    this.socketEmit("game_state", { state:state});
 };
 
 Player.prototype.matchUpdate = function(state) {
-    this.socket.emit("match_state", state);
+    this.socketEmit("match_state", state);
 };
+// Function that handles emit messages to client
+// Will only send messages if the socket is connected
+// TODO send feedback to caller?
+Player.prototype.socketEmit = function(type, message) {
+    if (this.socket && this.socket.connected) {
+        this.socket.emit(type, message);
+    } else {
+        console.log("Socket is not available");
+    }
+};
+
 
 Player.prototype.handleKeyDown = function(data) {
     switch(data) {
@@ -98,7 +124,7 @@ Player.prototype.stopSpells = function() {
 Player.prototype.matchFinished = function(results) {
   if (this.spellController)
     this.spellController.reset();
-  this.socket.emit("match_finished", results);
+  this.socketEmit("match_finished", results);
 };
 
 module.exports = Player;

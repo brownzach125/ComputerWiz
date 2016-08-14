@@ -1,5 +1,6 @@
 // get an instance of mongoose and mongoose.Schema
 var mongoose = require('mongoose');
+mongoose.Promise = require("bluebird");
 var Schema = mongoose.Schema;
 var Q = require('q');
 var User = require('./user.model');

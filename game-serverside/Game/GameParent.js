@@ -10,11 +10,13 @@ var GameStates = require('../shared/GameStates.js');
 var Player = require('../Player/Player.js');
 var Match = require('./Match.js');
 
-function Game() {
+function Game(gamedict, gameUID) {
     this.changeState(GameStates.spell_creation);
     this.redWizard = null;
     this.blueWizard = null;
     this.users = {};
+    this.gamedict = gamedict;
+    this.gameUID  = gameUID;
 }
 
 Game.prototype.startGame = function() {
@@ -115,6 +117,7 @@ Game.prototype.requestState = function(player, state) {
 Game.prototype.startMatch = function() {
     if(this.match)
         this.match.stop();
+    console.log("A new match was made");
     this.match = new Match({redWizard: this.redWizard, blueWizard: this.blueWizard});
     this.match.start();
 };
@@ -155,6 +158,7 @@ Game.prototype.shutDown = function() {
   if (this.redWizard) {
       this.redWizard.shutDown();
   }
+  this.gamedict[this.gameUID] = null;
 };
 
 Game.prototype.matchFinished = function(results) {
@@ -166,6 +170,10 @@ Game.prototype.matchFinished = function(results) {
     if(this.blueWizard) {
         this.blueWizard.matchFinished(results);
     }
+};
+
+Game.prototype.playerDisconnect = function(player) {
+    // TODO do something
 };
 
 module.exports = Game;

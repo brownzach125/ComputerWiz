@@ -4,8 +4,8 @@ var GameParent = require('./GameParent.js');
 var Player = require('../Player/Player.js');
 var Match = require('./Match.js');
 
-function Game() {
-    GameParent.call(this);
+function Game(gamedict, gameUID) {
+    GameParent.call(this, gamedict, gameUID);
 }
 
 Game.prototype = Object.create(GameParent.prototype);

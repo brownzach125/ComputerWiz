@@ -10,10 +10,20 @@
         service.connect = connect;
         service.on = on;
         service.emit = emit;
+        service.disconnect = disconnect;
 
         return service;
 
+        function disconnect() {
+            socket.disconnect();
+            socket = null;
+        }
+
         function connect(namespace) {
+            if (socket) {
+                console.log("Socket already connected!!!!!");
+                throw Error;
+            }
             socket = io.connect(document.location.origin + namespace , {path:""});
             console.log("Made A new connection");
 

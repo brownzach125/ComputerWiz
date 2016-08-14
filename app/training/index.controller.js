@@ -20,6 +20,7 @@
 
         $scope.$on('$destroy' , function() {
             socket.emit('quit_game', {username:vm.user.username, training:true });
+            socket.disconnect();
         });
 
         function initController() {

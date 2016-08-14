@@ -12,8 +12,8 @@ var Match = require('./Match.js');
 
 var GameParent = require('./GameParent');
 
-function Training() {
-    GameParent.call(this);
+function Training(gamedict, gameUID) {
+    GameParent.call(this, gamedict, gameUID);
 }
 
 Training.prototype = Object.create(GameParent.prototype);
@@ -58,6 +58,11 @@ Training.prototype.claim = function(socket, username) {
 Training.prototype.requestState = function(player, state) {
     player.requestedState = state;
     this.changeState(state);
+};
+
+Training.prototype.playerDisconnect = function(player) {
+    this.stopMatch();
+    this.shutDown();
 };
 
 module.exports = Training;

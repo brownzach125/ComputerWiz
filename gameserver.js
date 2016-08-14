@@ -10,6 +10,7 @@ var session = require('express-session');
 var bodyParser = require('body-parser');
 var expressJwt = require('express-jwt');
 var mongoose = require('mongoose');
+mongoose.Promise = require("bluebird");
 var config = require('config.json');
 
 var gameService  = require('./services/game.service');
