@@ -2,16 +2,18 @@ var computerwizdef = {
     "!name": "computerwiz.js",
     "castFireBall": {
         "!type": "fn(direction: number, speed: number, radius: number)",
-        "!span": "223[7:9]-235[7:21]",
-        "!doc": "Spawn a fireball\n" +
-                "@param {number} Direction Direction for the fireball to travel\n" +
-                "@param {number} Speed  Speed of fireball\n" +
-                "@param {number} Radius Radius fireball\n"
+        "!doc": "Hurls a fireball\n@param {number} direction The direction to lob the fireball in. Angle in degrees with 0 degrees being to the right of the wizard\n@param {number} speed The rate at which the fireball travels min:0 max:10\n@param {number} radius Radius of the fireball. min:1 max:10\n"
+    },
+    "teleport": {
+        "!type": "fn()",
+        "!doc": "Teleport Self to New Location\n"
     },
     "sleep": {
         "!type": "fn(time: number)",
-        "!doc": "Wait for some time" +
-                "@param {number} time time to wait in miliseconds"
+        "!doc": "Pauses the spell\n@param {number} time Amount of time to pause in milliseconds\n"
+    },
+    "hide": {
+        "!type": "fn()",
+        "!doc": "Hide away\n"
     }
 };
-

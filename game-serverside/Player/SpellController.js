@@ -5,13 +5,22 @@ var vm = require('vm');
 var Spell = require('models/spell.model');
 var User  = require('models/user.model');
 
-port = 52085;
+// port = 52086 Set in gam
+port = 60600;
+// TODO need clever way to pick a safe port.
+var debug = typeof v8debug === 'object';
+var execArgv = [];
+if (debug) {
+    execArgv = ["--debug-brk="+port];
+}
+port++;
+
 function initProcess(controller) {
     var spellProcess = fork(
         './game-serverside/SpellProcess/SpellProcess.js',
         [],
         {
-            execArgv: ["--debug-brk="+ ++port]
+            execArgv: execArgv
         }
     );
     spellProcess.on('disconnect' , function() {
