@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="10bd2a39-4254-45c8-a4d6-f531489558d9" name="Default" comment="Debugger now works on children processeds">
+    <list default="true" id="10bd2a39-4254-45c8-a4d6-f531489558d9" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/.gitattributes" afterPath="$PROJECT_DIR$/app/.gitattributes" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="ComputerWiz.iws" />
@@ -35,8 +36,8 @@
       <file leaf-file-name="index.pug" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/spells/index.pug">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="75">
-              <caret line="5" column="28" selection-start-line="5" selection-start-column="28" selection-end-line="5" selection-end-column="28" />
+            <state relative-caret-position="30">
+              <caret line="2" column="40" selection-start-line="2" selection-start-column="40" selection-end-line="2" selection-end-column="40" />
               <folding />
             </state>
           </provider>
@@ -410,7 +411,7 @@
       <workItem from="1471129817894" duration="12230000" />
       <workItem from="1471195419590" duration="11045000" />
       <workItem from="1471209904363" duration="5035000" />
-      <workItem from="1471220190530" duration="773000" />
+      <workItem from="1471220190530" duration="893000" />
     </task>
     <task id="LOCAL-00001" summary="Spells made during a game will now be available in match.&#10;Matches shutdown on server side if players quit game.&#10;Match loop is terminated when the match controller is destroyed">
       <created>1460479815449</created>
@@ -503,11 +504,18 @@
       <option name="project" value="LOCAL" />
       <updated>1471133034902</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="Treat .idea files as binary so they won't merge and hopefully won't show up in git diffs">
+      <created>1471221638831</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1471221638831</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="56779000" />
+    <option name="totallyTimeSpent" value="56899000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -608,7 +616,8 @@
     <MESSAGE value="Commit, so kade can get what I have. I added ace-build to repo" />
     <MESSAGE value="Found why fps slows, dont understand but its the part of the hud that draws the numbers, I guess its really expensive the way im doing it." />
     <MESSAGE value="Debugger now works on children processes." />
-    <option name="LAST_COMMIT_MESSAGE" value="Debugger now works on children processes." />
+    <MESSAGE value="Treat .idea files as binary so they won't merge and hopefully won't show up in git diffs" />
+    <option name="LAST_COMMIT_MESSAGE" value="Treat .idea files as binary so they won't merge and hopefully won't show up in git diffs" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -940,8 +949,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/spells/index.pug">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="5" column="28" selection-start-line="5" selection-start-column="28" selection-end-line="5" selection-end-column="28" />
+        <state relative-caret-position="30">
+          <caret line="2" column="40" selection-start-line="2" selection-start-column="40" selection-end-line="2" selection-end-column="40" />
           <folding />
         </state>
       </provider>
