@@ -85,6 +85,13 @@ function sendRequest(funcName , params) {
 }
 
 function spellBookSandbox() {
+    this.__addFunction = function(name) {
+        this[name] = function() {
+            sendRequest(name, arguments);
+            return location;
+        }
+    };
+
     this.sleep = function(time) {
         setTimeout( function() {
             FiberController.resume();
@@ -96,10 +103,13 @@ function spellBookSandbox() {
     for  (var index in SpellBook ) {
         if ( SpellBook[index].code != null) {
             var funcName = index;
+            this.__addFunction(funcName);
+            /*
             this[funcName] = function () {
-                sendRequest(funcName, arguments);
+                var name = funcName;
+                sendRequest(name, arguments);
                 return location;
-            }
+            }*/
         } else {
             //console.log(index + " was speical spell");
             // This must be a special spell that can only be implemented at this level

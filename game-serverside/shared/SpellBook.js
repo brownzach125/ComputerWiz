@@ -35,7 +35,7 @@ SpellBook.castFireBall = {
 SpellBook.teleport = {
     name: "teleport",
     code: function(game, wizardName) {
-
+        console.log("teleport");
     },
     brief_description: "Teleport Self to New Location",
     description: "Teleport Self to New Location Specified by x and y coordinate"
@@ -43,6 +43,9 @@ SpellBook.teleport = {
 
 SpellBook.hide = {
     name: "hide",
+    code: function(game,wizardName) {
+        console.log("Hide called");
+    },
     brief_description: "Hide away",
     description: "I wanna hide away",
 };
