@@ -8,12 +8,12 @@ var computerwizdef = {
         "!type": "fn()",
         "!doc": "Teleport Self to New Location\n"
     },
-    "sleep": {
-        "!type": "fn(time: number)",
-        "!doc": "Pauses the spell\n@param {number} time Amount of time to pause in milliseconds\n"
-    },
     "hide": {
         "!type": "fn()",
         "!doc": "Hide away\n"
+    },
+    "sleep": {
+        "!type": "fn(time: number)",
+        "!doc": "Pauses the spell\n@param {number} time Amount of time to pause in milliseconds\n"
     }
 };

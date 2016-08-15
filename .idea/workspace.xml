@@ -2,11 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="10bd2a39-4254-45c8-a4d6-f531489558d9" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/scripts/create_computerwizdef.js" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/app/app-content/computerwizdef.json.js" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/watcherTasks.xml" afterPath="$PROJECT_DIR$/.idea/watcherTasks.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/.gitattributes" afterPath="$PROJECT_DIR$/app/.gitattributes" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/game-serverside/Player/SpellController.js" afterPath="$PROJECT_DIR$/game-serverside/Player/SpellController.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/app-content/computerwizdef.json.js" afterPath="$PROJECT_DIR$/app/app-content/computerwizdef.json.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/game-serverside/shared/SpellBook.js" afterPath="$PROJECT_DIR$/game-serverside/shared/SpellBook.js" />
     </list>
     <ignored path="ComputerWiz.iws" />
@@ -30,8 +28,8 @@
       <file leaf-file-name="SpellBook.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/game-serverside/shared/SpellBook.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="360">
-              <caret line="64" column="0" selection-start-line="64" selection-start-column="0" selection-end-line="64" selection-end-column="0" />
+            <state relative-caret-position="60">
+              <caret line="4" column="0" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
               </folding>
@@ -110,8 +108,8 @@
         <option value="$PROJECT_DIR$/output.txt" />
         <option value="$PROJECT_DIR$/app/app-content/computerwizdef(new).json.js" />
         <option value="$PROJECT_DIR$/scripts/create_computerwizdef.js" />
-        <option value="$PROJECT_DIR$/game-serverside/shared/SpellBook.js" />
         <option value="$PROJECT_DIR$/app/app-content/computerwizdef.json.js" />
+        <option value="$PROJECT_DIR$/game-serverside/shared/SpellBook.js" />
       </list>
     </option>
   </component>
@@ -400,7 +398,7 @@
       <workItem from="1471129817894" duration="12230000" />
       <workItem from="1471195419590" duration="11045000" />
       <workItem from="1471209904363" duration="5035000" />
-      <workItem from="1471220190530" duration="8514000" />
+      <workItem from="1471220190530" duration="8898000" />
     </task>
     <task id="LOCAL-00001" summary="Spells made during a game will now be available in match.&#10;Matches shutdown on server side if players quit game.&#10;Match loop is terminated when the match controller is destroyed">
       <created>1460479815449</created>
@@ -507,11 +505,18 @@
       <option name="project" value="LOCAL" />
       <updated>1471221726016</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="Created a script that turns SpellBook.js into computerwizdef for tern. &#10;Now developers of new spells will only need to modify SpellBook.js when if comes to documentaiton.">
+      <created>1471229827771</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1471229827771</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="64520000" />
+    <option name="totallyTimeSpent" value="64904000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -524,9 +529,9 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1280" height="773" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.20193861" sideWeight="0.49237472" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.20193861" sideWeight="0.49237472" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3274596" sideWeight="0.49353796" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="LuaJ" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33480176" sideWeight="0.48303714" order="10" side_tool="true" content_ui="tabs" />
@@ -613,7 +618,8 @@
     <MESSAGE value="Found why fps slows, dont understand but its the part of the hud that draws the numbers, I guess its really expensive the way im doing it." />
     <MESSAGE value="Debugger now works on children processes." />
     <MESSAGE value="Treat .idea files as binary so they won't merge and hopefully won't show up in git diffs" />
-    <option name="LAST_COMMIT_MESSAGE" value="Treat .idea files as binary so they won't merge and hopefully won't show up in git diffs" />
+    <MESSAGE value="Created a script that turns SpellBook.js into computerwizdef for tern. &#10;Now developers of new spells will only need to modify SpellBook.js when if comes to documentaiton." />
+    <option name="LAST_COMMIT_MESSAGE" value="Created a script that turns SpellBook.js into computerwizdef for tern. &#10;Now developers of new spells will only need to modify SpellBook.js when if comes to documentaiton." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -981,8 +987,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/game-serverside/shared/SpellBook.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="64" column="0" selection-start-line="64" selection-start-column="0" selection-end-line="64" selection-end-column="0" />
+        <state relative-caret-position="60">
+          <caret line="4" column="0" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
           </folding>

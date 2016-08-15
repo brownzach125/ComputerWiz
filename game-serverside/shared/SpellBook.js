@@ -41,6 +41,11 @@ SpellBook.teleport = {
     description: "Teleport Self to New Location Specified by x and y coordinate"
 };
 
+SpellBook.hide = {
+    name: "hide",
+    brief_description: "Hide away",
+    description: "I wanna hide away",
+};
 //----------------------------------------------
 // Special Functions that  need to be implemented at spell Process level
 SpellBook.sleep  = {
@@ -57,11 +62,6 @@ SpellBook.sleep  = {
     code: null
 };
 
-SpellBook.hide = {
-    name: "hide",
-    brief_description: "Hide away",
-    description: "I wanna hide away",
-};
 
 if ( typeof window === 'undefined') {
     module.exports = SpellBook;
