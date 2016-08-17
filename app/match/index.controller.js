@@ -54,6 +54,7 @@ LOOP_DELAY = 16;
         }
 
         function setupSocket() {
+
             for ( var key in socketCallbacks) {
                 socket.on(key, socketCallbacks[key]);
             }
@@ -62,6 +63,9 @@ LOOP_DELAY = 16;
         var socketCallbacks =  {};
         socketCallbacks.match_state = function(state) {
             Game.stateUpdate(state);
+        };
+        socketCallbacks.spell_error = function(state) {
+            console.log("My spell was broken");
         };
 
 

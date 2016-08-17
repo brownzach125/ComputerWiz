@@ -18,9 +18,6 @@ gameService.initService(io.of('/game'));
 var lobbyService = require('./services/lobby.service');
 lobbyService.initService(io.of('/lobby'), gameService.games);
 
-child_process_debug_port = 0;
-
-
 if ( config.useDataBase == "local")
     mongoose.connect(config.database_local);
 else

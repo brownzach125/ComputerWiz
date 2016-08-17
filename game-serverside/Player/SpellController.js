@@ -4,18 +4,15 @@ var fork = require('child_process').fork;
 var vm = require('vm');
 var Spell = require('models/spell.model');
 var User  = require('models/user.model');
-
-// port = 52086 Set in gam
-port = 60600;
-// TODO need clever way to pick a safe port.
-var debug = typeof v8debug === 'object';
-var execArgv = [];
-if (debug) {
-    execArgv = ["--debug-brk="+port];
-}
-port++;
+var portService = require("../../services/port.service");
 
 function initProcess(controller) {
+     // TODO need clever way to pick a safe port.
+    var debug = typeof v8debug === 'object';
+    var execArgv = [];
+    if (debug) {
+         execArgv = ["--debug-brk="+ portService.getPort()];
+    }
     var spellProcess = fork(
         './game-serverside/SpellProcess/SpellProcess.js',
         [],
@@ -27,11 +24,13 @@ function initProcess(controller) {
         controller.handleDisconnect();
     });
     spellProcess.on('message' , function(data) {
+        console.log("Hi there");
         var type = data.type;
         if ( type == 'request') {
             controller.handleRequest(data);
         }
-        if ( type =='err') {
+        if ( type =='error') {
+            console.log("Got the error message");
             controller.handleError(data);
         }
         if ( type =='done') {
@@ -71,7 +70,7 @@ SpellController.prototype.loadSpells = function() {
     var that = this;
     Spell.getByUsername(this.username)
         .then(function(spells) {
-            console.log("Spells loaded" + spells.length);
+            //console.log("Spells loaded" + spells.length);
             for (var i =0; i < spells.length; i++) {
                 that.spellSafe[spells[i].slot] = {code:spells[i].code, name:spells[i].name, slot:spells[i].slot};
                 that.createSpell(that.spellSafe[spells[i].slot]);
@@ -153,7 +152,6 @@ SpellController.prototype.castSpell = function(slot) {
                callback();
            }
         } , 100);
-
     }
     var that = this;
     function tryToStartSpell() {
@@ -189,8 +187,8 @@ SpellController.prototype.handleRequest = function(data) {
 };
 
 SpellController.prototype.handleError = function(data) {
-    // TODO for gods sake do something
     this.process.spellActive = false;
+    this.wizard.socketEmit('spell_error', { stack : data.err});
 };
 
 SpellController.prototype.handleDone = function(data) {

@@ -36,7 +36,7 @@
         initEditor();
 
         $scope.$on('$destroy' , function() {
-            socket.disconnect();
+            // Nothing needed?
         });
 
         function initController() {

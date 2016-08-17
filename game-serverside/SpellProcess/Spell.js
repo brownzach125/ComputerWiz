@@ -7,7 +7,7 @@ function Spell(process) {
 
 Spell.prototype.init = function(code , sandbox ) {
     try {
-        this.script = new vm.Script(code);
+        this.script = new vm.Script(code, {filename:"UserSpell"});
         this.context = vm.createContext(sandbox);
         this.code    = code;
         return true;
@@ -19,13 +19,17 @@ Spell.prototype.init = function(code , sandbox ) {
 };
 
 Spell.cast = function(spell) {
-    spell.script.runInContext( spell.context );
-    spell.process.send({type :'done'});
-    //catch(err) {
-        //console.log("Spell Failure");
-        //console.log(err);
-    //    spell.process.send({type:'error',  err: err.message});
-    //}
+    try {
+        spell.script.runInContext(spell.context);
+        spell.process.send({type: 'done'});
+    }
+    catch(err) {
+        // TODO maybe clean this up some
+        var fullErrorMessage = err.stack;
+        var errorMessage = fullErrorMessage.substring(0, fullErrorMessage.lastIndexOf("\n"));
+        errorMessage = errorMessage.substring(0, errorMessage.lastIndexOf("\n"));
+        spell.process.send({type:'error',  err: errorMessage});
+    }
 };
 
 module.exports = Spell;
